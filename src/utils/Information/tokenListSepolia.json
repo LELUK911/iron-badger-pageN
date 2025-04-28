@@ -1,0 +1,37 @@
+[
+    {
+        "name": "mockBtc",
+        "ticker": "mBTC",
+        "address": "0x8cd94ea35225fe7bda2d9574940cced4fa3e4af8"
+    },
+    {
+        "name": "mockDAItoken",
+        "ticker": "mDAI",
+        "address": "0x924310eb92092562D693bF811Dd6306018a3bF48"
+    },
+    {
+        "name": "Cool Cat Coin",
+        "ticker": "mockCat",
+        "address": "0x2c232E440f5e78b9a709f4BF383489d0f1a2937C"
+    },
+    {
+        "name": "Doge Deluxe",
+        "ticker": "mockDog",
+        "address": "0x231c17adf55b53718Cd2bb5445E825A7Eca2f0e5"
+    },
+    {
+        "name": "Flying Feather",
+        "ticker": "mockBird",
+        "address": "0x9E904CF823871ac792569769418900694cdF93f9"
+    },
+    {
+        "name": "Roaring Lion",
+        "ticker": "mockLion",
+        "address": "0xDE2751baee4880eFb840Ddec8Ca002D013f7dE34"
+    },
+    {
+        "name": "Cheeky Monkey",
+        "ticker": "mockMonkey",
+        "address": "0x819c60b29E1EB3ac5685f86455042477F8e8bD99"
+    }
+]

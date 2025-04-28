@@ -1,0 +1,12 @@
+[
+    {
+        "name": "mockBtc",
+        "ticker": "mBTC",
+        "address": "0x8cd94ea35225fe7bda2d9574940cced4fa3e4af8"
+    },
+    {
+        "name": "mockDAItoken",
+        "ticker": "mDAI",
+        "address": "0xc48218e6c6ad46e55739ab6d5e0fd2c075eaaff2"
+    }
+]
