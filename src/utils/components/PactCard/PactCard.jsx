@@ -597,8 +597,9 @@ export const PactCard = ({ id, onChange }) => {
                             <div className="p-4 bg-black/70 border border-blue-700 rounded-md flex flex-col space-y-3">
                                 <div>
                                     <label className="block mb-1 font-semibold text-blue-300" htmlFor="depositQuantity">
-                                        Quantity to Deposit
+                                        Quantity to Deposit 
                                     </label>
+                                        <label className="block mb-1 text-sm text-blue-200">You can deposit maximum amount due reward and refunds</label>
                                     <div className="flex items-center space-x-2">
                                         {/* Input box */}
                                         <input

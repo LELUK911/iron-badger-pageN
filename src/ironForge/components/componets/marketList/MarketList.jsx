@@ -85,16 +85,16 @@ export const MarketList = () => {
             const powerOfSpend = allowance.toString() || "0";
             console.log("allowance", powerOfSpend)
             if (powerOfSpend < NumConvBig(amountToken.toString())) {
-                const txa = await approveERC20(ironForgeAddress, NumConvBig(amountToken), signer, tokenAddress)
-                setIsLoadingBuy(false);
+                const tx = await approveERC20(ironForgeAddress, NumConvBig(amountToken), signer, tokenAddress);
+                alert(`Spending token Approve  tx -> ${tx}`);
             }
-                const tx = await buyPactTX(buyId, _forgeId, buyAmount, signer)
-                setTxHashBuy(tx); // Salva l'hash della transazione
-                alert(`Tx submitted -> ${tx}`);
-                setIsLoadingBuy(false);
+    
+                await buyPactTX(buyId, _forgeId, buyAmount, signer)
             } catch (error) {
                 console.error("Transaction failed:", error);
                 alert("Transaction failed! Check console for details.");
+            }finally{
+                setIsLoadingBuy(false);
             } 
         }
     const withDrawPactOp = async () => {
