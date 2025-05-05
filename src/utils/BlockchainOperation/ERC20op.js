@@ -70,3 +70,17 @@ export const getSymbol = async (addressToken) => {
         return
     }
 };
+
+
+
+export const getBalance = async (addressToken,addressUser) => {
+    try {
+        let provider = takeMeProvider()
+        const contract = new ethers.Contract(addressToken, abi, provider);
+        const balance = await contract.balanceOf(addressUser);
+        return balance;
+    } catch (error) {
+        console.error("Transaction failed:", error.reason)
+        return
+    }
+};

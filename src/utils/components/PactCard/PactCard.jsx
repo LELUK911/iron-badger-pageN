@@ -1,17 +1,15 @@
 import { useState } from "react"
 import { _showRewardFee, _showLiquidationFees, balancePactForId, pactDetails, claimRewardForUser, claimLoan, claimScorePoint, depositTokenForInterest, getMaxQtaInterest, getMissQtaInterest, ironPactAddress, pointDebtor, totalSupply, withdrawCollateral } from "../../BlockchainOperation/IronPactOp"
 import { BigNumConv, convertSecondsToUTC, NumConvBig, srcTokenData } from "../../helper/helper"
-import { AuthorizeERC20 } from "../window/AuthorizeERC20"
 import { useAccount } from "wagmi"
 import { useEthersSigner } from "../../helper/ClientToSigner"
 import { SummaryPact } from "./SummaryPact"
 import { Link } from "react-router-dom"
+import { approveERC20, getBalance, readAllowance } from "../../BlockchainOperation/ERC20op"
 
 
 // eslint-disable-next-line react/prop-types
 export const PactCard = ({ id, onChange }) => {
-
-    const [openAuthWindow, setOpenAuthWindow] = useState(false)
     const [pactDetail, setPactDetails] = useState(null)
     const [pactSupply, setPactSupply] = useState(0)
     const [pactExpired, setPactExpired] = useState(0)
@@ -28,6 +26,7 @@ export const PactCard = ({ id, onChange }) => {
     const [rewardFee, setRewardFee] = useState(0);
     const [liquidationFee, setLiquidationFee] = useState(0);
     const [status, setStatus] = useState('/')
+    const [balanceToken, setBalanceToken] = useState(0)
 
     const [isLoadingClaimReward, setIsLoadingClaimReward] = useState(false);
     const [, setTxHashClaimReward] = useState(null);
@@ -51,11 +50,9 @@ export const PactCard = ({ id, onChange }) => {
 
     const formingData = async (score, liquidationFee) => {
         try {
-
             if (+score.toString() > 1000000) {
                 setStatus("PLATINUM")
                 return +liquidationFee[0].toString()
-
             }
             if (+score.toString() > 700000) {
                 setStatus("GOLD")
@@ -113,8 +110,13 @@ export const PactCard = ({ id, onChange }) => {
 
             setLiquidationFee(+currentLiquidationFee / 10)
 
-
             setgetMaxQtaInterest(maxQtaInterest_)
+
+
+            const balanceToken_ = await getBalance(_pactDetails.tokenLoan, account.address)
+            console.log("balanceToken", balanceToken_)
+            setBalanceToken(BigNumConv(balanceToken_))
+
             if (account.address) {
                 const _balancePact = await balancePactForId(account.address, pactDetail.id)
                 setBalancePact(_balancePact)
@@ -222,7 +224,11 @@ export const PactCard = ({ id, onChange }) => {
     const depositTokenForInterestOP = async () => {
         setIsLoadingDeposit(true)
         try {
-            const _amount = await NumConvBig(amountDep)
+            const _amount = NumConvBig(amountDep)
+            const allowance = await readAllowance(pactDetail.tokenLoan, account.address, ironPactAddress)
+            if (allowance < _amount) {
+                await approveERC20(ironPactAddress, _amount, signer, pactDetail.tokenLoan)
+            }
             const tx = await depositTokenForInterest(pactDetail.id.toString(), _amount.toString(), signer)
             setTxHashDeposit(tx);
             alert(`Tx submitted -> ${tx}`);
@@ -233,43 +239,6 @@ export const PactCard = ({ id, onChange }) => {
             setIsLoadingDeposit(false)
         }
     }
-
-    const closeAuthWin = () => {
-        if (openAuthWindow) {
-            setOpenAuthWindow(false)
-        } else {
-            setOpenAuthWindow(true)
-        }
-
-    }
-
-    const RenderWindoAuthERC20 = () => {
-        return (
-            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                <div className="relative w-full flex items-center justify-center">
-                    {/* Componente Autorizzazione */}
-                    <AuthorizeERC20 contractAddress={ironPactAddress} tokenAddress={pactDetail.tokenLoan} amount={amountDep} setChange={closeAuthWin} />
-                </div>
-            </div>
-        );
-
-    }
-
-    const authSpending = (e) => {
-        e.preventDefault();
-        if (!openAuthWindow) {
-            setOpenAuthWindow(true)
-        }
-    };
-
-
-
-
-
-
-
-
-
 
     if (!id) {
         return (
@@ -599,6 +568,9 @@ export const PactCard = ({ id, onChange }) => {
                                     <label className="block mb-1 font-semibold text-blue-300" htmlFor="depositQuantity">
                                         Quantity to Deposit 
                                     </label>
+                                    <label className="block mb-1 font-medium text-yellow-300" htmlFor="depositQuantity">
+                                        Balance : {balanceToken ? balanceToken : 0} {tokenColl && tokenColl.ticker}
+                                    </label>
                                         <label className="block mb-1 text-sm text-blue-200">You can deposit maximum amount due reward and refunds</label>
                                     <div className="flex items-center space-x-2">
                                         {/* Input box */}
@@ -611,13 +583,6 @@ export const PactCard = ({ id, onChange }) => {
                                             placeholder="0"
                                             onChange={handleChangeDeposit}
                                         />
-                                        {/* Pulsante per autorizzare la spesa */}
-                                        <button
-                                            className="text-blue-400 hover:text-blue-500 underline text-sm transition"
-                                            onClick={authSpending}
-                                        >
-                                            Authorize
-                                        </button>
                                     </div>
                                 </div>
                                 <button
@@ -701,9 +666,6 @@ export const PactCard = ({ id, onChange }) => {
                 </>
             )}
 
-            <div>
-                {openAuthWindow && <RenderWindoAuthERC20 />}
-            </div>
         </div>
 
 

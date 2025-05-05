@@ -26,7 +26,8 @@ export const NavbarHomePage = () => {
     return (
         <nav className="bg-slate-900 text-white px-2 py-4">
             <div className="mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between h-16 items-center">
+            <div className="flex justify-between h-16 items-center w-full">
+            <div className="flex items-center space-x-4">
 
                     {/* Logo a sinistra */}
                     <div className="flex-shrink-0">
@@ -38,7 +39,7 @@ export const NavbarHomePage = () => {
                     {/* Menu Desktop */}
                     <div className="hidden md:flex space-x-6 items-center">
                         <div className="hover:text-blue-400 transition-colors">
-                            <IronEcosistemCollaps list={listEcosistem} title="Iron Ecosistem" />
+                            <IronEcosistemCollaps list={listEcosistem} title="Ecosystem" />
                         </div>
                         <div className="hover:text-blue-400 transition-colors">
                             <IronEcosistemCollaps list={listDocumentation} title="Documentation" />
@@ -51,9 +52,9 @@ export const NavbarHomePage = () => {
                             <FeedbackDropdown />
                         </div>
                     </div>
-
+</div>
                     {/* Pulsante "NewPact" (Desktop) */}
-                    <div className="hidden md:flex">
+                    <div className=" hidden md:flex" >
                         <ConnectEVM />
                     </div>
 
@@ -96,7 +97,7 @@ export const NavbarHomePage = () => {
                 {isMobileMenuOpen && (
                     <div className="md:hidden mt-4 space-y-4">
                         <div className="hover:text-blue-400 transition-colors">
-                            <IronEcosistemCollaps list={listEcosistem} title="Iron Ecosistem" />
+                            <IronEcosistemCollaps list={listEcosistem} title="Ecosystem" />
                         </div>
                         <div className="hover:text-blue-400 transition-colors">
                             <IronEcosistemCollaps list={listDAO} title="Badger Brotherhood" />

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form"
 import { OptionTokenListBox } from "./components/OptionTokenListBox";
 import { RewardMaturityElement } from "./components/RewardMaturityElement";
-import { approveERC20, readAllowance } from "../../../utils/BlockchainOperation/ERC20op";
+import { approveERC20, getBalance, readAllowance } from "../../../utils/BlockchainOperation/ERC20op";
 import { createNewPactTransaction, ironPactAddress, pointDebtor } from "../../../utils/BlockchainOperation/IronPactOp";
 import { ethers } from "ethers";
 import { useWalletContext } from "../../../utils/helper/WalletContext";
@@ -10,7 +10,7 @@ import { Tooltips } from "../../../utils/components/tooltips/Tooltips";
 import { AmountUnitTooltip, CollateralAmountTooltip, RewardRateTooltip, DescriptionTooltip, debtorAddress, MaturityDateInDaysTooltip, PrincipalAmountTooltip } from "../../../utils/components/tooltips/tooltipsInformation/helperTips";
 import { useAccount } from "wagmi";
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
-import { NumConvBig, srcTokenData } from "../../../utils/helper/helper";
+import { BigNumConv, NumConvBig, srcTokenData } from "../../../utils/helper/helper";
 
 
 
@@ -27,6 +27,7 @@ export const NewPactForm = () => {
     const [userData, setUserData] = useState(0)
     const [, setTxHash] = useState(null);
     const [currentStep, setCurrentStep] = useState(0);
+    const [showCollateral, setShowCollateral] = useState("0");
     const formValues = watch()
 
 
@@ -60,6 +61,23 @@ export const NewPactForm = () => {
             fetchData()
         }
     }, [activeAccount, setValue]);
+
+
+
+    const showCollateralBalance = async () => {
+        try {
+            const balance = await getBalance(formValues.tokenCollateral, account.address)
+            setShowCollateral(BigNumConv(balance));
+            console.log("balance ", BigNumConv(balance))
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+
+    useEffect(() => {
+        showCollateralBalance()
+    }, [formValues.tokenCollateral])
 
     const onSubmit = async (data) => {
         const expiredPact = Math.floor(Date.now() / 1000) + (data.expiredPact * secondXday);
@@ -423,6 +441,10 @@ export const NewPactForm = () => {
                                             setAuthTokenAddress(value);
                                         }}
                                     />
+                                    <label className="block mt-2 text-mg  text-yellow-400 font-medium">
+                                        Balance: {showCollateral ? Number(showCollateral).toFixed(4) : "0.0000"}
+                                    </label>
+
                                     <input type="hidden" {...register("tokenCollateral")} />
                                 </div>
 
@@ -580,14 +602,14 @@ export const NewPactForm = () => {
                                 {isLoading ? 'Creating...' : 'Confirm & Create'}
                             </button>
                         )}
-                        {canMint && 
-                        <button
-                        type="submit"
-                        className="ml-auto px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-lg transition-all"
-                        onClick={onSubmit}
-                    >
-                        {isLoading ? 'Creating...' : 'Confirm & Create'}
-                    </button>}
+                        {canMint &&
+                            <button
+                                type="submit"
+                                className="ml-auto px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-lg transition-all"
+                                onClick={onSubmit}
+                            >
+                                {isLoading ? 'Creating...' : 'Confirm & Create'}
+                            </button>}
                     </div>
                 </form>
             </div>
