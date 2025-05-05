@@ -6,9 +6,8 @@ export const requestPactStory = async (user) => {
     try {
         //debtor: ${user}
 
-        const query = `
-        {
-            pactCreateds(first: 1000, where: { debtor: "${user.toLowerCase()}" }) {
+        const query = `{
+            pactCreateds(first: 1000, where:{debtor : "${user.toLowerCase()}"}) {
             idParam
             id
             amount
@@ -17,8 +16,7 @@ export const requestPactStory = async (user) => {
         }
         `;
 
-
-        const endPoint = "https://api.goldsky.com/api/public/project_cm9v5e796a63801y06abnc0uj/subgraphs/newPactIussuerHistory/1.0.0/gn"
+        const endPoint = "https://api.goldsky.com/api/public/project_cm9v5e796a63801y06abnc0uj/subgraphs/userPactStory/1.0.0/gn"
         const res = await fetch(endPoint, {
             method: "POST",
             headers: {
@@ -52,7 +50,7 @@ export const requestNewInstalmentUp = async (index) => {
   }  
 }`
 
-        const endPoint = 'https://api.goldsky.com/api/public/project_cm9v5e796a63801y06abnc0uj/subgraphs/UpwardAuction/1.0.0/gn'
+        const endPoint = 'https://api.goldsky.com/api/public/project_cm9v5e796a63801y06abnc0uj/subgraphs/upWardAuctionStory/1.0.0/gn'
 
         const res = await fetch(endPoint, {
             method: 'POST',
@@ -86,7 +84,7 @@ export const requestNewInstalmentDown = async (index) => {
   }  
 }`
 
-        const endPoint = 'https://api.goldsky.com/api/public/project_cm9v5e796a63801y06abnc0uj/subgraphs/FallAuction/1.0.0/gn'
+        const endPoint = 'https://api.goldsky.com/api/public/project_cm9v5e796a63801y06abnc0uj/subgraphs/downWardAuctionStory/1.0.0/gn'
 
         const res = await fetch(endPoint, {
             method: 'POST',

@@ -2,7 +2,6 @@ import { ethers } from 'ethers';
 import contractJSON from '../Information/ABI/UpwardAuction.json'
 import { takeMeProvider } from '../helper/helper';
 
-//export const ironRiseAddress = "0x0eBE1D04eA58629b808410002c61e324Cd0aE5f3"
 export const ironRiseAddress = '0x4b706DdEFeAF3dde66C2de36B3754748C2a35601'
 const abi = contractJSON.abi
 

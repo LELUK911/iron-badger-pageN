@@ -5,7 +5,6 @@ import { takeMeProvider } from "../helper/helper";
 
 
 
-//export const ironPactAddress = "0x9c7F4DcABdFf2b91F801A3A9dCE48a2d4b16acB8"
 export const ironPactAddress = "0xA54AB187eb479aebbDD2a89681b495DCd38BD0E5"
 
 const abi = contractJSON.abi

@@ -3,7 +3,7 @@ import contractJSON from '../Information/ABI/DownwardAuction.json'
 import { takeMeProvider } from '../helper/helper';
 
 
-//export const ironFallAddress = "0xEAEB9f260f0d4bF00327B369dC9C944E4e51fC99"
+
 export const ironFallAddress = "0xB7c8351801db9F6AABb2B1242E889C643BAF6DD8"
 
 const abi = contractJSON.abi
