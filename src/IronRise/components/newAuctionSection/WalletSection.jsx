@@ -8,6 +8,8 @@ import { useAccount } from "wagmi";
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
 import { NewAuctionInformation } from "./NewAuctionInformation";
 import { tableStyle } from "../../../utils/Information/constantPage";
+import { NewAuctionWizardModal } from "./NewAuctionWizardModal";
+
 
 export const WalletSection = () => {
     const [showPactCard, setShowPactCard] = useState(false)
@@ -17,6 +19,7 @@ export const WalletSection = () => {
     const [sellValueStartPrice, setSellValueStartPrice] = useState("");
     const [sellValueExpired, setSellValueExpired] = useState("");
     const [authPact, setAuthPact] = useState({})
+    const [showWizard, setShowWizard] = useState(false);
     const account = useAccount()
     const signer = useEthersSigner()
 
@@ -122,7 +125,7 @@ export const WalletSection = () => {
                     await authTx.wait()
                     alert(`Tx submitted -> ${authTx}`);
                 }
-                const tx = await newAuctionPact(sellId, sellValueAmount, NumConvBig((+sellValueStartPrice )), calculateSecondToDay(sellValueExpired), signer)
+                const tx = await newAuctionPact(sellId, sellValueAmount, NumConvBig((+sellValueStartPrice)), calculateSecondToDay(sellValueExpired), signer)
                 await tx.wait()
                 setTxHash(tx);
                 alert(`Tx submitted -> ${tx}`);
@@ -190,102 +193,48 @@ export const WalletSection = () => {
             </div>
 
             <NewAuctionInformation />
+
             <div className="flex flex-col items-center justify-center p-6 space-y-6">
                 {/* Secondary Market Section */}
-                <div className="w-3/4 bg-slate-800 rounded-lg shadow-md p-8 space-y-6">
-                    <h2 className="text-white font-semibold text-2xl text-center">Set New Pact Auction</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Pact ID */}
-                        <div>
-                            <label className="block text-gray-300 font-bold mb-2">Pact Id:</label>
-                            <input
-                                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-100 placeholder-gray-500"
-                                type="number"
-                                placeholder="Enter Pact ID"
-                                min={0}
-                                value={sellId}
-                                onChange={handleInputChangeSellId}
-                            />
-                        </div>
-                        {/* Amount */}
-                        <div>
-                            <label className="block text-gray-300 font-bold mb-2">Amount:</label>
-                            <input
-                                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-100 placeholder-gray-500"
-                                type="number"
-                                value={sellValueAmount}
-                                onChange={handleInputChangeAmount}
-                                placeholder="Amount"
-                            />
-                        </div>
-                        {/* Price Start */}
-                        <div>
-                            <label className="block text-gray-300 font-bold mb-2">Starting Price:</label>
-                            <input
-                                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-100 placeholder-gray-500"
-                                type="number"
-                                min={0}
-                                value={sellValueStartPrice}
-                                onChange={handleInputChangeStartPrice}
-                                placeholder="0 mdai"
-                            />
-                        </div>
-                        {/* Auction Duration */}
-                        <div>
-                            <label className="block text-gray-300 font-bold mb-2">Auction Duration (days):</label>
-                            <input
-                                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-100 placeholder-gray-500"
-                                type="number"
-                                min={0}
-                                value={sellValueExpired}
-                                onChange={handleInputChangeExpired}
-                                placeholder="Enter duration in days"
-                            />
-                        </div>
-                    </div>
-                    <div className="flex justify-center mt-6 space-x-5">
-                        <button
-                            onClick={(e) => {
-                                authSpending(e);
-                            }}
-                            disabled={isLoading}
-                            className={`overflow-hidden relative w-48 p-2 h-12 text-white border-none rounded-md text-xl font-bold cursor-pointer z-10 group transition-all duration-500 ease-in-out ${isLoading ? "bg-gray-500 cursor-not-allowed" : "bg-black"
-                                }`}
-                        >
-                            {isLoading ? (
-                                <>
-                                    <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                                    </svg>
-                                    Processing...
-                                </>
-                            ) : (
-                                <>
-                                    New
-                                    <span className="absolute w-52 h-36 -top-10 -left-4 bg-orange-200 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-500 duration-1000 origin-bottom"></span>
-                                    <span className="absolute w-52 h-36 -top-10 -left-4 bg-orange-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-500 duration-1000 origin-bottom"></span>
-                                    <span className="absolute w-52 h-36 -top-10 -left-4 bg-orange-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-500 duration-1000 origin-bottom"></span>
-                                    <span className="opacity-0 absolute top-2.5 left-6 z-10 group-hover:opacity-100 group-hover:duration-1000 duration-100">
-                                        Start Auction!
-                                    </span>
-                                </>
-                            )}
-                        </button>
-                        <button
-                            onClick={() => {
-                                if (sellId) {
-                                    setShowPactCard(true);
-                                }
-                            }}
-                            className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:brightness-110 active:scale-95"
-                        >
-                            Show Pact Card
-                        </button>
+                <div className="w-full sm:w-3/4 bg-slate-800 rounded-xl border border-gray-700 shadow-lg p-6 sm:p-8 space-y-8">
+                    <h2 className="text-2xl font-semibold text-white text-center">Set New Pact Auction</h2>
 
-                    </div>
+                    <div className="flex flex-col md:flex-row items-start md:items-end gap-6">
+    {/* Input + label */}
+    <div className="flex-1">
+        <label className="block text-lg font-semibold text-orange-400 mb-1">Pact ID</label>
+        <p className="text-sm text-gray-400 italic mb-2">
+            This is the ID of the pact you want to auction.
+        </p>
+        <input
+            className="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-white placeholder-gray-500"
+            type="number"
+            placeholder="Enter Pact ID"
+            min={0}
+            value={sellId}
+            onChange={handleInputChangeSellId}
+        />
+    </div>
+
+    {/* Pulsanti in riga */}
+    <div className="flex gap-4 md:mt-6 font-bold">
+        <button
+            onClick={() => setShowWizard(true)}
+            className="px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg shadow-md transition"
+        >
+            New Auction
+        </button>
+        <button
+            onClick={() => sellId && setShowPactCard(true)}
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-lg shadow-md transition-transform transform hover:scale-105"
+        >
+            Show Pact Card
+        </button>
+    </div>
+</div>
 
                 </div>
+
                 <h3 className="text-white text-3xl font-semibold py-4 ">Pact&apos;s in wallet</h3>
                 {/* Table Section */}
 
@@ -293,10 +242,28 @@ export const WalletSection = () => {
                     <p className="text-white text-3xl font-semibold py-4 ">Wallet is empty or wallet disconnect</p>
                 </>)}
             </div>
+
+
             {showPactCard && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/70">
                     <PactCard id={sellId} onChange={() => setShowPactCard(false)} />
                 </div>
+            )}
+
+            {showWizard && (
+
+                <NewAuctionWizardModal
+                    id={sellId}
+                    amount={sellValueAmount}
+                    onClose={() => setShowWizard(false)}
+                    onSubmit={(data) => {
+                        setSellId(data.sellId);
+                        setSellValueAmount(data.amount);
+                        setSellValueStartPrice(data.startPrice);
+                        setSellValueExpired(data.duration);
+                        authSpending(new Event("submit"));
+                    }}
+                />
             )}
         </div>
     )

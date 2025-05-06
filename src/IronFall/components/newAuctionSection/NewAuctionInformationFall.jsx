@@ -39,12 +39,15 @@ export const NewAuctionInformationFall = () => {
                 {/* Create Auction */}
                 <div className="flex items-start space-x-3">
                     <ClipboardDocumentListIcon className="h-6 w-6 text-yellow-400 mt-1" />
-                    <p>
-                        Once ready, click <span className="font-semibold">"New"</span> to create your auction.
+                    <p className="text-gray-300 leading-relaxed">
+                        Before you can create your first auction, you’ll need to <span className="text-yellow-400 font-semibold">authorize</span> the platform to manage your Pact NFTs.
                         <br />
-                        If this is your first time, authorize the contract to spend your Pact NFTs.
+                        This is a <span className="italic">one-time transaction</span> that allows the contract to interact with your assets.
+                        <br />
+                        After this step, you’ll be able to freely create new auctions.
                     </p>
                 </div>
+
             </div>
         </div>
     )

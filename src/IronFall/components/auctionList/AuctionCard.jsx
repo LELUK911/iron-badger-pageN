@@ -36,17 +36,14 @@ export const AuctionCard = ({ auction, auctionId }) => {
                         <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-orange-400 rounded-tr-2xl" />
                         <div className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-orange-500 rounded-bl-2xl" />
                         <div className="absolute bottom-0 right-0 w-20 h-20 border-b-2 border-r-2 border-orange-500 rounded-br-2xl" />
-
                         <div className="relative">
                             <div className="absolute -top-12 left-0 px-6 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full text-sm text-black font-bold">
                                 Expired: {convertSecondsToUTC(+(auction[4].toString()))}
                             </div>
-
                             <h2 className="text-3xl font-bold mb-2 text-white">Auction # {auctionId}</h2>
                             <h3 className="text-2xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-t from-pink-500 via-red-400 to-yellow-500">
                                 Pact ID: {auction[1].toString()} <br /> <span>Amount: {auction[2].toString()}</span>
                             </h3>
-
                             <div className="flex flex-col gap-4 mb-8 text-gray-300">
                                 <div className="flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-red-500/10 to-orange-500/10 border border-red-700">
                                     <p className="font-semibold">Floor Price:</p>
