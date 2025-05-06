@@ -8,7 +8,7 @@ import { Countdown } from '../../../utils/helper/CountDown';
 import { useEthersSigner } from '../../../utils/helper/ClientToSigner';
 import { useAccount } from 'wagmi';
 import { auctionMoneyToken } from '../../../utils/Information/constantPage';
-import { approveERC20, readAllowance } from '../../../utils/BlockchainOperation/ERC20op';
+import { approveERC20, getBalance, readAllowance } from '../../../utils/BlockchainOperation/ERC20op';
 import { requestNewInstalmentUp } from '../../../API/api';
 
 
@@ -26,12 +26,12 @@ export const UpwardCard = ({ id }) => {
     const [sizeLot, setSizeLot] = useState('loading')
     const [infoFee, setInfoFee] = useState(false)
     const [tokenData, setTokenData] = useState({ name: '', ticker: '', address: '' })
-    const [openAuthERC20, setOpenAuthERC20] = useState(false)
     const [feeSystem, setFeeSystem] = useState('')
     const [netAmount, setNetAmount] = useState(0)
     const [netAmountBet, setNetAmountBet] = useState(0)
     const [feeAmount, setFeeAmount] = useState(0)
     const [events, setEvents] = useState([])
+    const [usdBalance, setUSDBalance] = useState(0)
 
     const [isLoadingBid, setIsLoadingBid] = useState(false);
     const [, setTxHashBid] = useState(null);
@@ -189,6 +189,11 @@ export const UpwardCard = ({ id }) => {
         }
     }
 
+    const getUSDbalance = async() => {
+        const balance = await getBalance(auctionMoneyToken, account.address)
+        setUSDBalance(BigNumConv(balance))
+    }
+
     const RenderStatus = () => {
         if (auctionInfo.open) {
             return (
@@ -205,6 +210,7 @@ export const UpwardCard = ({ id }) => {
 
     useEffect(() => {
         fetchData()
+        getUSDbalance()
     }, [account])
 
     useEffect(() => {
@@ -351,6 +357,12 @@ export const UpwardCard = ({ id }) => {
                             </div>
                         </div>
                     </div>
+
+
+                    <div className="text-green-500 text-lg font-medium space-y-6 mt-4 ">
+                        <label>Balance user: {usdBalance? Number(usdBalance).toFixed(2) : "/" } mDai</label>
+                    </div>
+
                     <div className="mt-6">
                         <label className="block text-sm text-gray-200 mb-2">Amount to Allocate in Pool</label>
                         <div className="flex items-center space-x-2">

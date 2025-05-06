@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { pactDetails, pointDebtor } from '../../../../utils/BlockchainOperation/IronPactOp'
 import { BigNumConv, calculateExpired, NumConvBig, srcTokenData } from '../../../../utils/helper/helper'
 import { buyPactTX, ironForgeAddress, showAmountInSell, showPactLaunchListTX, withDrawPactBuy } from '../../../../utils/BlockchainOperation/IronForgeOp.js'
-import { approveERC20, getBalance, readAllowance } from '../../../../utils/BlockchainOperation/ERC20op.js';
+import { approveERC20, getBalance, getSymbol, readAllowance } from '../../../../utils/BlockchainOperation/ERC20op.js';
 import { PactCard } from "../../../../utils/components/PactCard/PactCard";
 import { Tooltips } from '../../../../utils/components/tooltips/Tooltips.jsx';
 import { amountPactBuyInForgeTooltip, pactIDTooltip, forgeIDTooltip } from '../../../../utils/components/tooltips/tooltipsInformation/helperTips.js';
@@ -23,6 +23,7 @@ export const MarketList = () => {
     const [amountToken, setAmountToken] = useState("");
     const [sizeAmount, setSizeAmount] = useState("");
     const [tokenAddress, setTokenAddress] = useState("");
+    const [tokenTicker, setTokenTicker] = useState("");
     const account = useAccount()
     const signer = useEthersSigner()
     const [isLoadingBuy, setIsLoadingBuy] = useState(false);
@@ -131,6 +132,11 @@ export const MarketList = () => {
         })
     }
 
+    const _tokenInfo = async (_tokenAddress) => {
+        const tokenInfo_ = await getSymbol(_tokenAddress)
+        setTokenTicker(tokenInfo_)
+    }
+
 
     const handleRowClick = (params) => {
         setForgeId(params.row.forgeId)
@@ -140,7 +146,7 @@ export const MarketList = () => {
         setAmountToken(+params.row.amount * (+params.row.sizePact))
         setTokenAddress(params.row.tokenaddress)
         _getbalance(params.row.tokenaddress)
-
+        _tokenInfo(params.row.tokenaddress)
     };
 
     const handleInputChangeBuyId = (e) => {
@@ -218,7 +224,10 @@ export const MarketList = () => {
                     <div className="bg-gray-900 border border-gray-700 rounded-lg p-3">
                         <div className="flex justify-between text-sm font-semibold text-blue-300">
                             <span>Cost:</span>
-                            <span>{amountToken ? Number(amountToken).toFixed(4) : "0"}</span>
+                            <span>
+                                {amountToken ? Number(amountToken).toFixed(4) : "0"}
+                                {tokenTicker ? ` ${tokenTicker}` : ""}  
+                            </span>
                         </div>
                         <div className="flex justify-between text-sm font-semibold text-yellow-300 mt-1">
                             <span>Balance:</span>

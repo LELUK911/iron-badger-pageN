@@ -99,7 +99,7 @@ export const BoardList = () => {
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
-        }
+        } 
     }
     useEffect(() => {
         if (account) {
@@ -121,41 +121,6 @@ export const BoardList = () => {
         setSellValueAmount(e.target.value);
     };
 
-    const authSpending = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        try {
-            if (ironForgeAuth) {
-                await newForge()
-                return
-            }
-            if (!openAuthWindow) {
-                setOpenAuthWindow(true)
-            }
-        } catch (e) {
-            console.error(e)
-        } finally {
-            setIsLoading(false)
-        }
-    }
-    const closeAuthWindow = (e) => {
-        e.preventDefault();
-        fetchAuthPact()
-        setOpenAuthWindow(false)
-    };
-
-    const RenderWindoAuthPact = () => {
-
-        return (
-            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                <div className="relative w-full flex items-center justify-center">
-                    {/* Componente Autorizzazione */}
-                    <AuthorizePact contractAddress={ironForgeAddress} setChange={closeAuthWindow} />
-                </div>
-            </div>
-        );
-
-    }
 
 
     return (
@@ -212,7 +177,7 @@ export const BoardList = () => {
                         Show Card
                     </button>
                     <button
-                        onClick={authSpending}
+                        onClick={newForge}
                         disabled={isLoading}
                         className={`bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all duration-500 ease-in-out hover:scale-105 hover:brightness-110 active:scale-95 ${isLoading
                             ? "bg-gray-500 cursor-not-allowed"
@@ -236,7 +201,6 @@ export const BoardList = () => {
                         )}
                     </button>
 
-                    {openAuthWindow && <RenderWindoAuthPact />}
                 </div>
             </div>
 

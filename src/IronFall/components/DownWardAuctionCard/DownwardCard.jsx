@@ -7,7 +7,7 @@ import { pactDetails } from '../../../utils/BlockchainOperation/IronPactOp';
 import { Countdown } from '../../../utils/helper/CountDown';
 import { useEthersSigner } from '../../../utils/helper/ClientToSigner';
 import { auctionMoneyToken } from '../../../utils/Information/constantPage';
-import { approveERC20, readAllowance } from '../../../utils/BlockchainOperation/ERC20op';
+import { approveERC20, getBalance, readAllowance } from '../../../utils/BlockchainOperation/ERC20op';
 import { useAccount } from 'wagmi';
 import { requestNewInstalmentDown } from '../../../API/api';
 
@@ -33,6 +33,7 @@ export const DownwardCard = ({ id }) => {
     const [feeAmount, setFeeAmount] = useState(0)
     const [feeSystem, setFeeSystem] = useState('')
     const [events, setEvents] = useState([])
+    const [usdBalance, setUSDBalance] = useState(0)
 
     const [isLoadingBid, setIsLoadingBid] = useState(false);
     const [, setTxHashBid] = useState(null);
@@ -78,6 +79,12 @@ export const DownwardCard = ({ id }) => {
         } finally {
             setIsLoadingBid(false);
         }
+    }
+
+
+    const getUSDbalance = async () => {
+        const balance = await getBalance(auctionMoneyToken, account.address)
+        setUSDBalance(BigNumConv(balance))
     }
 
     /*
@@ -231,7 +238,8 @@ export const DownwardCard = ({ id }) => {
 
     useEffect(() => {
         fetchData()
-    }, [])
+        getUSDbalance()
+    }, [account])
 
     const handleInputChange = (e) => {
 
@@ -367,6 +375,10 @@ export const DownwardCard = ({ id }) => {
                             </div>
                         </div>
                     </div>
+                    <div className="text-green-500 text-lg font-medium space-y-6 mt-4 ">
+                        <label>Balance user: {usdBalance ? Number(usdBalance).toFixed(2) : "/"} mDai</label>
+                    </div>
+
                     <div className="mt-6">
                         <label className="block text-sm text-gray-200 mb-2">Amount to Allocate in Pot</label>
                         <div className="flex items-center space-x-2">

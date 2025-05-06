@@ -26,33 +26,33 @@ export const NavbarHomePage = () => {
     return (
         <nav className="bg-slate-900 text-white px-2 py-4">
             <div className="mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16 items-center w-full">
-            <div className="flex items-center space-x-4">
+                <div className="flex justify-between h-16 items-center w-full">
+                    <div className="flex items-center space-x-4">
 
-                    {/* Logo a sinistra */}
-                    <div className="flex-shrink-0">
-                        <Link to="/" className="text-xl font-bold">
-                            <img src={logo} alt="Iron Pacts Logo" className="w-16 h-auto rounded-lg" />
-                        </Link>
-                    </div>
+                        {/* Logo a sinistra */}
+                        <div className="flex-shrink-0">
+                            <Link to="/" className="text-xl font-bold">
+                                <img src={logo} alt="Iron Pacts Logo" className="w-16 h-auto rounded-lg" />
+                            </Link>
+                        </div>
 
-                    {/* Menu Desktop */}
-                    <div className="hidden md:flex space-x-6 items-center">
-                        <div className="hover:text-blue-400 transition-colors">
-                            <IronEcosistemCollaps list={listEcosistem} title="Ecosystem" />
-                        </div>
-                        <div className="hover:text-blue-400 transition-colors">
-                            <IronEcosistemCollaps list={listDocumentation} title="Documentation" />
-                        </div>
-                    
-                        <div className="hover:text-red-400 transition-colors">
-                            <IronEcosistemCollaps list={tesnet} title="Tesnet Section" />
-                        </div>
-                        <div className="hover:text-indigo-400 transition-colors">
-                            <FeedbackDropdown />
+                        {/* Menu Desktop */}
+                        <div className="hidden md:flex space-x-6 items-center">
+                            <div className="hover:text-blue-400 transition-colors">
+                                <IronEcosistemCollaps list={listEcosistem} title="Ecosystem" />
+                            </div>
+                            <div className="hover:text-blue-400 transition-colors">
+                                <IronEcosistemCollaps list={listDocumentation} title="Documentation" />
+                            </div>
+
+                            <div className="hover:text-red-400 transition-colors">
+                                <IronEcosistemCollaps list={tesnet} title="Tesnet Section" />
+                            </div>
+                            <div className="hover:text-indigo-400 transition-colors">
+                                <FeedbackDropdown />
+                            </div>
                         </div>
                     </div>
-</div>
                     {/* Pulsante "NewPact" (Desktop) */}
                     <div className=" hidden md:flex" >
                         <ConnectEVM />
@@ -95,7 +95,7 @@ export const NavbarHomePage = () => {
 
                 {/* Menu Mobile */}
                 {isMobileMenuOpen && (
-                    <div className="md:hidden mt-4 space-y-4">
+                    <div className="md:hidden mt-4 space-y-4 relative z-40">
                         <div className="hover:text-blue-400 transition-colors">
                             <IronEcosistemCollaps list={listEcosistem} title="Ecosystem" />
                         </div>
