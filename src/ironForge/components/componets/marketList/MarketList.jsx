@@ -81,22 +81,23 @@ export const MarketList = () => {
         }
     }
     const buyPactOp = async () => {
-        setIsLoadingBuy(true);
+        //setIsLoadingBuy(true);
         try {
             const allowance = await readAllowance(tokenAddress, account.address, ironForgeAddress)
             const powerOfSpend = allowance.toString() || "0";
             console.log("allowance", powerOfSpend)
             if (powerOfSpend < NumConvBig(amountToken.toString())) {
-                const tx = await approveERC20(ironForgeAddress, NumConvBig(amountToken), signer, tokenAddress);
-                alert(`Spending token Approve  tx -> ${tx}`);
+                await approveERC20(ironForgeAddress, NumConvBig(amountToken), signer, tokenAddress);
+                alert(`Spending token Approve`);
             }
 
             await buyPactTX(buyId, _forgeId, buyAmount, signer)
+            alert(`Pacts buyed!`);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
         } finally {
-            setIsLoadingBuy(false);
+            //setIsLoadingBuy(false);
         }
     }
     const withDrawPactOp = async () => {
@@ -251,7 +252,7 @@ export const MarketList = () => {
                         {/* Buy Button */}
                         <button
                             onClick={buyPactOp}
-                            disabled={isLoadingBuy}
+                            //disabled={isLoadingBuy}
                             className={`flex items-center justify-center w-full py-3 px-6 font-bold rounded-lg shadow-lg transform transition-all duration-500 ease-in-out ${isLoadingBuy
                                 ? "bg-gray-500 cursor-not-allowed"
                                 : "bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 hover:scale-105 hover:brightness-110 active:scale-95"

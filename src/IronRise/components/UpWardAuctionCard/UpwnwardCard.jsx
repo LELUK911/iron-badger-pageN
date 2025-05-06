@@ -170,7 +170,7 @@ export const UpwardCard = ({ id }) => {
     }
 
     const instalmentInPot = async () => {
-        setIsLoadingBid(true);
+        //setIsLoadingBid(true);
         try {
             const allowance = await readAllowance(auctionMoneyToken,account.address,ironRiseAddress)
             const powerOfSpend = allowance.toString() || "0";
@@ -185,7 +185,7 @@ export const UpwardCard = ({ id }) => {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
         } finally {
-            setIsLoadingBid(false);
+            //setIsLoadingBid(false);
         }
     }
 
