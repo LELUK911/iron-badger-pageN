@@ -444,10 +444,8 @@ export const NewPactForm = () => {
                                     <label className="block mt-2 text-mg  text-yellow-400 font-medium">
                                         Balance: {showCollateral ? Number(showCollateral).toFixed(4) : "0.0000"}
                                     </label>
-
                                     <input type="hidden" {...register("tokenCollateral")} />
                                 </div>
-
                                 {/* Collateral Amount */}
                                 <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700/50">
                                     <LabelWithTooltip
@@ -464,7 +462,6 @@ export const NewPactForm = () => {
                                         />
                                     </div>
                                 </div>
-
                                 {/* Pact Description */}
                                 <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700/50">
                                     <LabelWithTooltip label="Pact Description" tooltip={DescriptionTooltip} />
@@ -597,9 +594,10 @@ export const NewPactForm = () => {
                             <button
                                 type="submit"
                                 className="ml-auto px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-lg transition-all"
-                                disabled={isLoading}
+                                //disabled={isLoading}
                             >
-                                {isLoading ? 'Creating...' : 'Confirm & Create'}
+                                {/*isLoading ? 'Creating...' : 'Confirm & Create'*/}
+                                Creating
                             </button>
                         )}
                         {canMint &&
@@ -608,7 +606,8 @@ export const NewPactForm = () => {
                                 className="ml-auto px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-lg transition-all"
                                 onClick={onSubmit}
                             >
-                                {isLoading ? 'Creating...' : 'Confirm & Create'}
+                                {/*isLoading ? 'Creating...' : 'Confirm & Create'*/}
+                                Creating
                             </button>}
                     </div>
                 </form>
