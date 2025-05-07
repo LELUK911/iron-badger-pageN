@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { AuctionCardManager } from "./AuctionCardManager"
-import { BigNumConv, NumConvBig } from "../../../utils/helper/helper"
+import { BigNumConv, NumConvBig, truncateToDecimals } from "../../../utils/helper/helper"
 import { downshowUserBalanceFree, downshowUserBalanceLock, showDownAuctionList, withdrawMoneyDownAuction } from "../../../utils/BlockchainOperation/IronFall"
 import { useAccount } from "wagmi"
 import { useEthersSigner } from '../../../utils/helper/ClientToSigner'
@@ -82,10 +82,9 @@ export const ManagerAuction = () => {
     const withDrawTokenMoney = async () => {
         setIsLoading(true)
         try {
-            const _withAmount = NumConvBig(withAmount)
-            const tx = await withdrawMoneyDownAuction(_withAmount, signer)
-            setTxHash(tx)
-            alert(`Tx submitted -> ${tx}`)
+            const _withAmount = NumConvBig(truncateToDecimals(withAmount, 18))
+            await withdrawMoneyDownAuction(_withAmount, signer)
+            alert(`Withdraw ${withAmount} mdai successfully!`)
         } catch (error) {
             console.error("Transaction failed:", error)
             alert("Transaction failed! Check console for details.")

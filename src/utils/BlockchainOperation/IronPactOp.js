@@ -38,7 +38,7 @@ export const depositTokenForInterest = async (_id, _amount, signer) => {
     try {
         const contract = new ethers.Contract(ironPactAddress, abi, signer);
         const tx = await contract.depositTokenForInterest(_id, _amount)
-        tx.wait()
+        await tx.wait()
         return tx
     } catch (error) {
         console.error("Transaction failed:", error.reason)

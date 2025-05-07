@@ -170,22 +170,22 @@ export const UpwardCard = ({ id }) => {
     }
 
     const instalmentInPot = async () => {
-        //setIsLoadingBid(true);
+        setIsLoadingBid(true);
         try {
             const allowance = await readAllowance(auctionMoneyToken,account.address,ironRiseAddress)
             const powerOfSpend = allowance.toString() || "0";
             console.log("allowance",allowance)
             if(+powerOfSpend < +NumConvBig(amountBet).toString()) {
-                const tx = await approveERC20(ironRiseAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
+                await approveERC20(ironRiseAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
+                alert("Approve transaction submitted");
             }
-            const tx = await instalmentPot(id, NumConvBig(amountBet), signer)
-            setTxHashBid(tx);
-            alert(`Tx submitted -> ${tx}`);
+            await instalmentPot(id, NumConvBig(amountBet), signer)
+            alert(`Pot updated successfully!`);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
         } finally {
-            //setIsLoadingBid(false);
+            setIsLoadingBid(false);
         }
     }
 

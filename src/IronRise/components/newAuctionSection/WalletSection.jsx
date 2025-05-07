@@ -23,9 +23,6 @@ export const WalletSection = () => {
     const account = useAccount()
     const signer = useEthersSigner()
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [, setTxHash] = useState(null);
-
 
 
     const columns = [
@@ -118,22 +115,17 @@ export const WalletSection = () => {
 
     const newUpwardAuctionOp = async () => {
         if (account.address) {
-            setIsLoading(true)
             try {
                 if (!authPact) {
-                    const authTx = await setApprovalPact(ironRiseAddress, true, signer)
-                    await authTx.wait()
-                    alert(`Tx submitted -> ${authTx}`);
+                    await setApprovalPact(ironRiseAddress, true, signer)
+                    alert(`Approval tx submitted`);
                 }
-                const tx = await newAuctionPact(sellId, sellValueAmount, NumConvBig((+sellValueStartPrice)), calculateSecondToDay(sellValueExpired), signer)
-                await tx.wait()
-                setTxHash(tx);
-                alert(`Tx submitted -> ${tx}`);
+                await newAuctionPact(sellId, sellValueAmount, NumConvBig((+sellValueStartPrice)), calculateSecondToDay(sellValueExpired), signer)
+                alert(`New Auction tx submitted`);
             } catch (error) {
                 console.error("Transaction failed:", error);
                 alert("Transaction failed! Check console for details.");
             } finally {
-                setIsLoading(false)
                 fetchAuthPact()
             }
         } else {
@@ -155,15 +147,7 @@ export const WalletSection = () => {
     const handleInputChangeSellId = (e) => {
         setSellId(e.target.value); // Aggiorna solo il valore dell'input
     };
-    const handleInputChangeAmount = (e) => {
-        setSellValueAmount(e.target.value); // Aggiorna solo il valore dell'input
-    };
-    const handleInputChangeStartPrice = (e) => {
-        setSellValueStartPrice(e.target.value); // Aggiorna solo il valore dell'input
-    };
-    const handleInputChangeExpired = (e) => {
-        setSellValueExpired(e.target.value); // Aggiorna solo il valore dell'input
-    };
+
 
     const authSpending = async (e) => {
         e.preventDefault();

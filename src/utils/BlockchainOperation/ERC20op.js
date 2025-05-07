@@ -8,7 +8,7 @@ export const approveERC20 = async (spender, value, signer, tokenAddress) => {
     try {
         const contract = new ethers.Contract(tokenAddress, abi, signer)
         const tx = await contract.approve(spender, value)
-        tx.wait()
+        await tx.wait()
         return tx.hash
     } catch (error) {
         console.error("Transaction failed:", error.reason)

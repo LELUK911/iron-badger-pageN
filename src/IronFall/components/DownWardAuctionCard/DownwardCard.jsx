@@ -63,21 +63,22 @@ export const DownwardCard = ({ id }) => {
 
 
     const instalmentInPot = async () => {
-        //setIsLoadingBid(true);
+        setIsLoadingBid(true);
         try {
             const allowance = await readAllowance(auctionMoneyToken, account.address, ironFallAddress)
             const powerOfSpend = allowance.toString() || "0";
             if (+powerOfSpend < +NumConvBig(amountBet).toString()) {
-                const tx = await approveERC20(ironFallAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
+                await approveERC20(ironFallAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
+                alert("Approve transaction submitted");
+
             }
-            const tx = await downInstalmentPot(id, NumConvBig(amountBet), signer)
-            setTxHashBid(tx); // Salva l'hash della transazione
-            alert(`Tx submitted -> ${tx}`);
+            await downInstalmentPot(id, NumConvBig(amountBet), signer)
+            alert(`Pot updated successfully!`);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
         } finally {
-            //setIsLoadingBid(false);
+            setIsLoadingBid(false);
         }
     }
 
@@ -87,26 +88,7 @@ export const DownwardCard = ({ id }) => {
         setUSDBalance(BigNumConv(balance))
     }
 
-    /*
-        const fetchUseEffect = (_qty) => {
-            try {
     
-                const priceThreshold = +feeInformation.priceThreshold.toString()
-                if (+ethers.parseUnits(_qty.toString()).toString() < priceThreshold) {
-                    //setNetAmount(_qty - (+fee))
-                    setFee(ethers.formatUnits(feeInformation.fixedFee))
-                } else {
-                    const dinamicFee = (+feeInformation.dinamicFee.toString()) / 100
-                    const { amountFee, netAmount } = calculateFee(_qty, dinamicFee)
-                    //setNetAmount(netAmount)
-                    setFee(amountFee)
-                }
-    
-            } catch (error) {
-                console.error(error)
-            }
-        }
-    */
     const pactFinancialInformation = () => {
         let rewardInterest = 0;
         let rewards = 0;
@@ -184,7 +166,6 @@ export const DownwardCard = ({ id }) => {
             }
             const _tokenData = await srcTokenData(dataPact.tokenLoan)
             setTokenData(_tokenData)
-
 
             if (+(BigNumConv(_auctionInfo.pot)) == 0) {
                 const val = calcPercFromBasisPoints(BigNumConv(_auctionInfo.startPrice), +(_auctionInfo.tolleratedDiscount.toString()))

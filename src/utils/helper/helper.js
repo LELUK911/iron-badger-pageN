@@ -114,3 +114,11 @@ export const takeMeProvider = () => {
     provider.pollingInterval = 250;
     return provider;
 }
+
+
+
+export const truncateToDecimals = (value, decimals = 18) => {
+    const [intPart, decPart] = value.toString().split(".");
+    if (!decPart) return value;
+    return `${intPart}.${decPart.slice(0, decimals)}`;
+};

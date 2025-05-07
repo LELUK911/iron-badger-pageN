@@ -11,7 +11,7 @@ export const newAuctionPact = async (_id, _amount, _startPrice, _expired, signer
     try {
         const contract = new ethers.Contract(ironRiseAddress, abi, signer)
         const tx = await contract.newAcutionPact(_id, _amount, _startPrice, _expired)
-        tx.wait()
+        await tx.wait()
         return tx
     } catch (error) {
         console.error("Transaction failed:", error.reason)

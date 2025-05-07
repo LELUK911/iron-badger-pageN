@@ -21,7 +21,7 @@ export const newDownAuctionPact = async (_id, _amount, _startPrice, _expired, _t
             _expired,
             _tolleratedDiscount
         )
-        tx.wait()
+        await tx.wait()
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
