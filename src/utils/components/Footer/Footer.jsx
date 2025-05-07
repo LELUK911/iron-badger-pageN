@@ -25,13 +25,16 @@ const Footer = () => {
                                 <FaTwitter className="w-5 h-5 md:w-6 md:h-6" />
                             </a>
                             <a
-                                href="https://github.com"
+                                href="https://github.com/LELUK911/PactContract"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-gray-400 hover:text-gray-100 transition-colors"
                             >
                                 <FaGithub className="w-5 h-5 md:w-6 md:h-6" />
                             </a>
+                            {/* <a
+                            
+                            }
                             <a
                                 href="https://discord.com"
                                 target="_blank"
@@ -47,7 +50,7 @@ const Footer = () => {
                                 className="text-gray-400 hover:text-green-500 transition-colors"
                             >
                                 <FaMedium className="w-5 h-5 md:w-6 md:h-6" />
-                            </a>
+                            </a>*/}
                         </div>
                     </div>
 

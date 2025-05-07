@@ -168,9 +168,8 @@ export const PactCard = ({ id, onChange }) => {
     const claimReward = async (index) => {
         setIsLoadingClaimReward(true)
         try {
-            const tx = await claimRewardForUser(pactDetail.id.toString(), index, signer)
-            setTxHashClaimReward(tx);
-            alert(`Tx submitted -> ${tx}`);
+            await claimRewardForUser(pactDetail.id.toString(), index, signer)
+            alert(`Claim reward for index ${index} submitted!`);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
@@ -182,9 +181,8 @@ export const PactCard = ({ id, onChange }) => {
     const redeemPact = async () => {
         setIsLoadingSettle(true)
         try {
-            const tx = await claimLoan(pactDetail.id.toString(), qty, signer)
-            setTxHashSettle(tx);
-            alert(`Tx submitted -> ${tx}`);
+            await claimLoan(pactDetail.id.toString(), qty, signer)
+            alert(`Redeem pact submitted!`);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
@@ -196,9 +194,8 @@ export const PactCard = ({ id, onChange }) => {
     const claimScoreOP = async () => {
         setIsLoadingClaimScore(true)
         try {
-            const tx = await claimScorePoint(pactDetail.id, signer)
-            setTxHashClaimScore(tx);
-            alert(`Tx submitted -> ${tx}`);
+            await claimScorePoint(pactDetail.id, signer)
+            alert(`Claim score submitted!`);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
@@ -210,9 +207,8 @@ export const PactCard = ({ id, onChange }) => {
     const withdrawCollateralOP = async () => {
         setIsLoadingWithdraw(true)
         try {
-            const tx = await withdrawCollateral(pactDetail.id, signer)
-            setTxHashWithdraw(tx);
-            alert(`Tx submitted -> ${tx}`);
+            await withdrawCollateral(pactDetail.id, signer)
+            alert(`Withdraw collateral submitted!`);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
@@ -229,9 +225,8 @@ export const PactCard = ({ id, onChange }) => {
             if (allowance < _amount) {
                 await approveERC20(ironPactAddress, _amount, signer, pactDetail.tokenLoan)
             }
-            const tx = await depositTokenForInterest(pactDetail.id.toString(), _amount.toString(), signer)
-            setTxHashDeposit(tx);
-            alert(`Tx submitted -> ${tx}`);
+            await depositTokenForInterest(pactDetail.id.toString(), _amount.toString(), signer)
+            alert(`Deposit submitted!`);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
@@ -293,7 +288,7 @@ export const PactCard = ({ id, onChange }) => {
                         Iron Pact: DeFi Pact Manager
                     </h1>
                     <p className="text-sm text-slate-400">
-                    Pact ID {pactDetail.id.toString()} - Manage your Pact holdings
+                        Pact ID {pactDetail.id.toString()} - Manage your Pact holdings
                     </p>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -318,7 +313,7 @@ export const PactCard = ({ id, onChange }) => {
             <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-black/60 p-6 rounded-md border border-blue-800 shadow-sm space-y-1">
                     <h2 className="text-lg font-semibold text-blue-300">
-                    Pact Amount
+                        Pact Amount
                     </h2>
                     <p className="text-2xl font-bold text-blue-400">
                         {pactDetail.amount.toString()}
@@ -329,7 +324,7 @@ export const PactCard = ({ id, onChange }) => {
                 </div>
                 <div className="bg-black/60 p-6 rounded-md border border-blue-800 shadow-sm space-y-1">
                     <h2 className="text-lg font-semibold text-blue-300">
-                    Pact Supply
+                        Pact Supply
                     </h2>
                     <p className="text-2xl font-bold text-blue-400">
                         {pactSupply}
@@ -340,7 +335,7 @@ export const PactCard = ({ id, onChange }) => {
                 </div>
                 <div className="bg-black/60 p-6 rounded-md border border-blue-800 shadow-sm space-y-1">
                     <h2 className="text-lg font-semibold text-blue-300">
-                    Pact Expiration
+                        Pact Expiration
                     </h2>
                     <p className="text-2xl font-bold text-blue-400">
                         {pactExpired}
@@ -355,7 +350,7 @@ export const PactCard = ({ id, onChange }) => {
             {/* Debtor Info */}
             <section className="bg-black/60 p-6 rounded-md border border-blue-800 shadow-sm space-y-4">
                 <h2 className="text-2xl font-bold text-blue-400 border-b border-blue-800 pb-2">
-                Debtor Information
+                    Debtor Information
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 text-base">
                     <p>
@@ -566,12 +561,12 @@ export const PactCard = ({ id, onChange }) => {
                             <div className="p-4 bg-black/70 border border-blue-700 rounded-md flex flex-col space-y-3">
                                 <div>
                                     <label className="block mb-1 font-semibold text-blue-300" htmlFor="depositQuantity">
-                                        Quantity to Deposit 
+                                        Quantity to Deposit
                                     </label>
                                     <label className="block mb-1 font-medium text-yellow-300" htmlFor="depositQuantity">
                                         Balance : {balanceToken ? balanceToken : 0} {tokenColl && tokenColl.ticker}
                                     </label>
-                                        <label className="block mb-1 text-sm text-blue-200">You can deposit maximum amount due reward and refunds</label>
+                                    <label className="block mb-1 text-sm text-blue-200">You can deposit maximum amount due reward and refunds</label>
                                     <div className="flex items-center space-x-2">
                                         {/* Input box */}
                                         <input

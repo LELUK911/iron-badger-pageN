@@ -24,13 +24,12 @@ export const MarketList = () => {
     const [sizeAmount, setSizeAmount] = useState("");
     const [tokenAddress, setTokenAddress] = useState("");
     const [tokenTicker, setTokenTicker] = useState("");
+    const [isLoadingBuy, setIsLoadingBuy] = useState(false);
+    const [isLoadingWith, setIsLoadingWith] = useState(false);
+    const [buyTokenBalance, setBuyTokenBalance] = useState(0);
+    
     const account = useAccount()
     const signer = useEthersSigner()
-    const [isLoadingBuy, setIsLoadingBuy] = useState(false);
-    const [, setTxHashBuy] = useState(null);
-    const [isLoadingWith, setIsLoadingWith] = useState(false);
-    const [, setTxHashWith] = useState(null);
-    const [buyTokenBalance, setBuyTokenBalance] = useState(0);
 
 
 
@@ -105,9 +104,8 @@ export const MarketList = () => {
     const withDrawPactOp = async () => {
         setIsLoadingWith(true);
         try {
-            const tx = await withDrawPactBuy(buyId, signer
+            await withDrawPactBuy(buyId, signer
             )
-            setTxHashWith(tx); // Salva l'hash della transazione
             alert(`Pact withdrawed!`);
         } catch (error) {
             console.error("Transaction failed:", error);

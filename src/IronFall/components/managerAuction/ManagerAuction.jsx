@@ -12,12 +12,9 @@ export const ManagerAuction = () => {
     const [auctionList, setAuctionList] = useState([])
     const [auctionIndex, setAuctionIndex] = useState('')
     const [cardElement, setCardElement] = useState(null)
-    const [userBalance, setUserBalance] = useState('0')
     const [userLockBalance, setUserLockBalance] = useState('0')
     const [withAmount, setWithAmount] = useState(0)
-
     const [isLoading, setIsLoading] = useState(false);
-    const [, setTxHash] = useState(null);
 
 
     const account = useAccount()
@@ -71,7 +68,6 @@ export const ManagerAuction = () => {
             const balance = await downshowUserBalanceFree(account.address)
             const lockBalance = await downshowUserBalanceLock(account.address)
             const freeBalance = (+(balance.toString())) - (+(lockBalance.toString()))
-            setUserBalance(BigNumConv(freeBalance))
             setUserLockBalance(BigNumConv(lockBalance))
             setWithAmount(BigNumConv(freeBalance))
         } catch (error) {

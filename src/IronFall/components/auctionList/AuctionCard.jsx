@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react"
-import { BigNumConv, calcPercFromBasisPoints, convertSecondsToUTC, NumConvBig, renderAddress } from "../../../utils/helper/helper"
+import { BigNumConv, calcPercFromBasisPoints, convertSecondsToUTC, renderAddress } from "../../../utils/helper/helper"
 import { Link } from "react-router-dom"
-import { downInstalmentPot, showDownFeesSystem } from "../../../utils/BlockchainOperation/IronFall"
-import { useEthersSigner } from "../../../utils/helper/ClientToSigner"
+
 
 // eslint-disable-next-line react/prop-types
 export const AuctionCard = ({ auction, auctionId }) => {
-    const [openBet, setOpenBet] = useState(false)
     const [valTolerance, setValTolerance] = useState(0)
-    const signer = useEthersSigner()
+
 
     useEffect(() => {
 

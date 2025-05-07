@@ -7,7 +7,7 @@ import { createNewPactTransaction, ironPactAddress, pointDebtor } from "../../..
 import { ethers } from "ethers";
 import { useWalletContext } from "../../../utils/helper/WalletContext";
 import { Tooltips } from "../../../utils/components/tooltips/Tooltips";
-import { AmountUnitTooltip, CollateralAmountTooltip, RewardRateTooltip, DescriptionTooltip, debtorAddress, MaturityDateInDaysTooltip, PrincipalAmountTooltip } from "../../../utils/components/tooltips/tooltipsInformation/helperTips";
+import { AmountUnitTooltip, CollateralAmountTooltip, RewardRateTooltip, DescriptionTooltip, MaturityDateInDaysTooltip, PrincipalAmountTooltip } from "../../../utils/components/tooltips/tooltipsInformation/helperTips";
 import { useAccount } from "wagmi";
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
 import { BigNumConv, NumConvBig, srcTokenData } from "../../../utils/helper/helper";
@@ -16,7 +16,6 @@ import { BigNumConv, NumConvBig, srcTokenData } from "../../../utils/helper/help
 
 
 export const NewPactForm = () => {
-    const [authTokenAddress, setAuthTokenAddress] = useState('');
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
     const activeAccount = useWalletContext();
     const secondXday = 86400;
@@ -25,7 +24,6 @@ export const NewPactForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [canMint, setCanMint] = useState(false);
     const [userData, setUserData] = useState(0)
-    const [, setTxHash] = useState(null);
     const [currentStep, setCurrentStep] = useState(0);
     const [showCollateral, setShowCollateral] = useState("0");
     const formValues = watch()
@@ -90,13 +88,13 @@ export const NewPactForm = () => {
             const allowance = await readAllowance(data.tokenCollateral, data.debtor, ironPactAddress, activeAccount);
             const powerOfSpend = allowance.toString() || "0";
             if (powerOfSpend < ethers.parseUnits(data.collateral)) {
-                const tx = await approveERC20(ironPactAddress, NumConvBig(+data.collateral), signer, data.tokenCollateral)
-                setTxHash(tx); // Salva l'hash della transazione
+                await approveERC20(ironPactAddress, NumConvBig(+data.collateral), signer, data.tokenCollateral)
+                alert("Appoval Tx submitted");
                 setCanMint(true);
                 setIsLoading(false);
                 return
             }
-            const tx = await createNewPactTransaction(
+            await createNewPactTransaction(
                 data.debtor,
                 data.tokenLoan,
                 ethers.parseEther(data.sizeLoan),
@@ -109,7 +107,7 @@ export const NewPactForm = () => {
                 data.describes,
                 signer
             );
-            setTxHash(tx);
+            alert("New Pact Minted");
         } catch (error) {
             console.error(error);
             alert("Transaction failed! Check console for details.");
@@ -438,7 +436,7 @@ export const NewPactForm = () => {
                                         }
                                         onChange={(value) => {
                                             setValue("tokenCollateral", value);
-                                            setAuthTokenAddress(value);
+
                                         }}
                                     />
                                     <label className="block mt-2 text-mg  text-yellow-400 font-medium">

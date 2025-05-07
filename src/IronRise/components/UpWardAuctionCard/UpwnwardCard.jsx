@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import pactAuctionImg from '../../../assets/pactAuctionImg.png'
-import { ethers } from "ethers"
-import { betListForAuction, closeUpAuction, instalmentPot, ironRiseAddress, showAuction, showFeesSystem, withDrawPactUpAuction } from '../../../utils/BlockchainOperation/IronRiseOp';
-import { BigNumConv, calculateFee, NumConvBig, renderAddress, srcTokenData } from '../../../utils/helper/helper';
+import {  closeUpAuction, instalmentPot, ironRiseAddress, showAuction, showFeesSystem, withDrawPactUpAuction } from '../../../utils/BlockchainOperation/IronRiseOp';
+import { BigNumConv, NumConvBig, renderAddress, srcTokenData } from '../../../utils/helper/helper';
 import { pactDetails } from '../../../utils/BlockchainOperation/IronPactOp';
 import { Countdown } from '../../../utils/helper/CountDown';
 import { useEthersSigner } from '../../../utils/helper/ClientToSigner';
@@ -19,29 +18,19 @@ export const UpwardCard = ({ id }) => {
     const [auctionInfo, setAuctionInfo] = useState(null)
     const [pactInfo, setPactInfo] = useState(null)
     const [financInfo, setFinanceInfo] = useState(null)
-    const [financInfoFinal, setFinanceInfoFinal] = useState(null)
     const [amountBet, setAmountBet] = useState(0)
-    const [feeInformation, setFeeInformation] = useState(null)
-    const [fee, setFee] = useState(0)
     const [sizeLot, setSizeLot] = useState('loading')
     const [infoFee, setInfoFee] = useState(false)
     const [tokenData, setTokenData] = useState({ name: '', ticker: '', address: '' })
     const [feeSystem, setFeeSystem] = useState('')
-    const [netAmount, setNetAmount] = useState(0)
     const [netAmountBet, setNetAmountBet] = useState(0)
     const [feeAmount, setFeeAmount] = useState(0)
     const [events, setEvents] = useState([])
     const [usdBalance, setUSDBalance] = useState(0)
 
     const [isLoadingBid, setIsLoadingBid] = useState(false);
-    const [, setTxHashBid] = useState(null);
-
     const [isLoadingCls, setIsLoadingCls] = useState(false);
-    const [, setTxHashCls] = useState(null);
-
     const [isLoadingWit, setIsLoadingWit] = useState(false);
-    const [, setTxHashWit] = useState(null);
-
 
     const signer = useEthersSigner()
     const account = useAccount()
@@ -62,24 +51,7 @@ export const UpwardCard = ({ id }) => {
         }
     }
 
-    const fetchUseEffect = (_qty) => {
-        try {
-            if (feeInformation) {
-                const priceThreshold = +feeInformation.priceThreshold.toString()
-                if (+ethers.parseUnits(_qty.toString()).toString() < priceThreshold) {
-                    setNetAmount(_qty - (+fee))
-                    setFee(ethers.formatUnits(feeInformation.fixedFee))
-                } else {
-                    const dinamicFee = (+feeInformation.dinamicFee.toString()) / 100
-                    const { amountFee, netAmount } = calculateFee(_qty, dinamicFee)
-                    setNetAmount(netAmount)
-                    setFee(amountFee)
-                }
-            }
-        } catch (error) {
-            console.error(error)
-        }
-    }
+   
 
     const pactFinancialInformation = () => {
         let rewardInterest = 0;
@@ -109,13 +81,9 @@ export const UpwardCard = ({ id }) => {
     }
 
     const pactFinancialInformationOnAuction = () => {
-        //totale di rimborso
         financInfo.totalRepay
-        // ppuntata
         BigNumConv(auctionInfo.pot)
-
         const diffAtExpired = financInfo.totalRepay - (+BigNumConv(auctionInfo.pot))
-
         const apr = (diffAtExpired / financInfo.totalRepay) * 100;
         let sign = ''
         let color = ''
@@ -126,14 +94,6 @@ export const UpwardCard = ({ id }) => {
             sign = '+'
             color = 'text-green-500 font-semibold'
         }
-
-        const info = {
-            diffAtExpired: diffAtExpired,
-            apr: apr,
-            sign: sign,
-            color: color,
-        };
-        setFinanceInfoFinal(info);
     }
 
     const fetchData = async () => {
@@ -161,7 +121,7 @@ export const UpwardCard = ({ id }) => {
 
             //const _events = await betListForAuction(null, 0, null)
             //const reversEvents = _events.slice().reverse()
-            const _events = await  requestNewInstalmentUp(id)
+            const _events = await requestNewInstalmentUp(id)
             console.log(_events)
             setEvents(_events)
         } catch (error) {
@@ -172,10 +132,10 @@ export const UpwardCard = ({ id }) => {
     const instalmentInPot = async () => {
         setIsLoadingBid(true);
         try {
-            const allowance = await readAllowance(auctionMoneyToken,account.address,ironRiseAddress)
+            const allowance = await readAllowance(auctionMoneyToken, account.address, ironRiseAddress)
             const powerOfSpend = allowance.toString() || "0";
-            console.log("allowance",allowance)
-            if(+powerOfSpend < +NumConvBig(amountBet).toString()) {
+            console.log("allowance", allowance)
+            if (+powerOfSpend < +NumConvBig(amountBet).toString()) {
                 await approveERC20(ironRiseAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
                 alert("Approve transaction submitted");
             }
@@ -189,7 +149,7 @@ export const UpwardCard = ({ id }) => {
         }
     }
 
-    const getUSDbalance = async() => {
+    const getUSDbalance = async () => {
         const balance = await getBalance(auctionMoneyToken, account.address)
         setUSDBalance(BigNumConv(balance))
     }
@@ -226,7 +186,6 @@ export const UpwardCard = ({ id }) => {
     }, [financInfo])
 
     useEffect(() => {
-        fetchUseEffect(amountBet.toFixed(3))
         if (feeSystem) {
             calcData()
         }
@@ -247,13 +206,13 @@ export const UpwardCard = ({ id }) => {
     };
 
     const RenderTable = () => {
-        if(events.length==0){
-            return(
+        if (events.length == 0) {
+            return (
                 <>
-                <div className="overflow-x-auto">
-                    <h2 className='text-xl font-semibold'>Not Activities</h2>
-                </div>
-            </>
+                    <div className="overflow-x-auto">
+                        <h2 className='text-xl font-semibold'>Not Activities</h2>
+                    </div>
+                </>
             )
         }
         return (
@@ -265,7 +224,7 @@ export const UpwardCard = ({ id }) => {
                             <tr>
                                 <th className="whitespace-nowrap px-4 py-3 font-semibold text-gray-200 bg-slate-700">Pot</th>
                                 <th className="whitespace-nowrap px-4 py-3 font-semibold text-gray-200 bg-slate-700">Bidder</th>
-                               {/* <th className="whitespace-nowrap px-4 py-3 font-semibold text-gray-200 bg-slate-700">Block Number</th>*/}
+                                {/* <th className="whitespace-nowrap px-4 py-3 font-semibold text-gray-200 bg-slate-700">Block Number</th>*/}
                             </tr>
                         </thead>
                         {/* Corpo della tabella */}
@@ -360,7 +319,7 @@ export const UpwardCard = ({ id }) => {
 
 
                     <div className="text-green-500 text-lg font-medium space-y-6 mt-4 ">
-                        <label>Balance user: {usdBalance? Number(usdBalance).toFixed(2) : "/" } mDai</label>
+                        <label>Balance user: {usdBalance ? Number(usdBalance).toFixed(2) : "/"} mDai</label>
                     </div>
 
                     <div className="mt-6">
@@ -424,16 +383,13 @@ export const UpwardCard = ({ id }) => {
                                 "Place Bid"
                             )}
                         </button>
-
-                      
                         {/* Close Auction Button */}
                         <button
                             onClick={async () => {
                                 setIsLoadingCls(true);
                                 try {
-                                    const tx = await closeUpAuction(id, signer);
-                                    setTxHashCls(tx); // Salva l'hash della transazione
-                                    alert(`Tx submitted -> ${tx}`);
+                                    await closeUpAuction(id, signer);
+                                    alert("Auction closed successfully!");
                                 } catch (error) {
                                     console.error("Transaction failed:", error);
                                     alert("Transaction failed! Check console for details.");
@@ -465,9 +421,8 @@ export const UpwardCard = ({ id }) => {
                             onClick={async () => {
                                 setIsLoadingWit(true);
                                 try {
-                                    const tx = await withDrawPactUpAuction(id, signer);
-                                    setTxHashWit(tx);
-                                    alert(`Tx submitted -> ${tx}`);
+                                    await withDrawPactUpAuction(id, signer);
+                                    alert("Pact withdrawn successfully!");
                                 } catch (error) {
                                     console.error("Transaction failed:", error);
                                     alert("Transaction failed! Check console for details.");

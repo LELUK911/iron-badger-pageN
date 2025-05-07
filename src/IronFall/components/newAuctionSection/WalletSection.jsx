@@ -2,7 +2,6 @@ import { DataGrid } from "@mui/x-data-grid"
 import { balancePactForId, pactDetails, isApprovalForAll, readId, setApprovalPact } from "../../../utils/BlockchainOperation/IronPactOp";
 import { useEffect, useState } from "react";
 import { BigNumConv, calculateExpired, calculateSecondToDay, NumConvBig, srcTokenData } from "../../../utils/helper/helper";
-import { AuthorizePact } from "../../../utils/components/window/AuthorizePact";
 import { ironFallAddress, newDownAuctionPact } from "../../../utils/BlockchainOperation/IronFall";
 import { PactCard } from "../../../utils/components/PactCard/PactCard";
 import { useAccount } from "wagmi";
@@ -16,15 +15,12 @@ export const WalletSection = () => {
     const [showPactCard, setShowPactCard] = useState(false)
     const [, setPactsList] = useState(null)
     const [rows, setRows] = useState([])
-    //const [selectRow, setSelectedRow] = useState(null)
     const [sellId, setSellId] = useState("");
     const [sellValueAmount, setSellValueAmount] = useState("");
     const [sellValueStartPrice, setSellValueStartPrice] = useState("");
     const [sellValueToleranceDiscount, setSellValueToleranceDiscount] = useState("");
     const [showWizard, setShowWizard] = useState(false);
-    //const [sellValueTolerance, setSellValueTolerance] = useState("");
     const [sellValueExpired, setSellValueExpired] = useState("");
-    const [openAuthWindow, setOpenAuthWindow] = useState(false)
     const [authPact, setAuthPact] = useState({})
     const account = useAccount()
     const signer = useEthersSigner()
@@ -94,11 +90,9 @@ export const WalletSection = () => {
                     }
                     rowsArray.push(row)
                 }
-
                 if (!account) {
                     return
                 }
-
             }
             setPactsList(_PactsList)
             setRows(rowsArray)
@@ -107,6 +101,7 @@ export const WalletSection = () => {
 
         }
     }
+
     const fetchAuthPact = async () => {
         try {
             if (!account) {
@@ -123,14 +118,12 @@ export const WalletSection = () => {
         if (account.address) {
             try {
                 if (!authPact) {
-                    const tx = await setApprovalPact(ironFallAddress, true, signer)
+                    await setApprovalPact(ironFallAddress, true, signer)
                     fetchAuthPact()
-                    await tx.wait()
-                    alert(`Tx submitted -> ${await tx}`);
+                    alert(`Approval tx submited`);
                 }
-                const tx = await newDownAuctionPact(sellId, sellValueAmount, NumConvBig((+sellValueStartPrice)), calculateSecondToDay(sellValueExpired), (sellValueToleranceDiscount * 100).toString(), signer)
-                await tx.wait()
-                alert(`Tx submit ->${await tx}`)
+                await newDownAuctionPact(sellId, sellValueAmount, NumConvBig((+sellValueStartPrice)), calculateSecondToDay(sellValueExpired), (sellValueToleranceDiscount * 100).toString(), signer)
+                alert(`New Downward Auction tx submited`);
             } catch (error) {
                 console.error(error)
             }
@@ -153,39 +146,13 @@ export const WalletSection = () => {
     const handleInputChangeSellId = (e) => {
         setSellId(e.target.value);
     };
-    const handleInputChangeAmount = (e) => {
-        setSellValueAmount(e.target.value);
-    };
-    const handleInputChangeStartPrice = (e) => {
-        setSellValueStartPrice(e.target.value);
-    };
-    const handleInputChangeExpired = (e) => {
-        setSellValueExpired(e.target.value);
-    };
-    const handleInputChangeDropTolerance = (e) => {
-        setSellValueToleranceDiscount(e.target.value);
-    };
     const authSpending = async (e) => {
         e.preventDefault();
         await newUpwardAuctionOp()
     };
-    const closeAuthWindow = (e) => {
-        e.preventDefault();
-        fetchAuthPact()
-        setOpenAuthWindow(false)
-    };
 
-    const RenderWindoAuthPact = () => {
-        return (
-            <div className="w-2/3 overflow-x-auto">
-                <div className="w-full max-w-7xl overflow-x-auto">
-                    {/* Componente Autorizzazione */}
-                    <AuthorizePact contractAddress={ironFallAddress} setChange={closeAuthWindow} />
-                </div>
-            </div>
-        );
 
-    }
+
     const RenderTable = () => {
         return (
             <div className="w-3/4 h-max">

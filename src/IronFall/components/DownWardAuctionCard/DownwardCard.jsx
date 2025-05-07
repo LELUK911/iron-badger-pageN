@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import pactAuctionImg from '../../../assets/pactAuctionImg.png'
-//import { ethers } from "ethers"
-import { betListForDownAuction, closeDownAuction, downInstalmentPot, ironFallAddress, showDownAuction, showDownFeesSystem, withDrawPactDownAuction } from '../../../utils/BlockchainOperation/IronFall';
+import {closeDownAuction, downInstalmentPot, ironFallAddress, showDownAuction, showDownFeesSystem, withDrawPactDownAuction } from '../../../utils/BlockchainOperation/IronFall';
 import { BigNumConv, calcPercFromBasisPoints, NumConvBig, renderAddress, srcTokenData } from '../../../utils/helper/helper';
 import { pactDetails } from '../../../utils/BlockchainOperation/IronPactOp';
 import { Countdown } from '../../../utils/helper/CountDown';
@@ -13,18 +12,12 @@ import { requestNewInstalmentDown } from '../../../API/api';
 
 
 
-
-
 // eslint-disable-next-line react/prop-types
 export const DownwardCard = ({ id }) => {
     const [auctionInfo, setAuctionInfo] = useState(null)
     const [pactInfo, setPactInfo] = useState(null)
     const [financInfo, setFinanceInfo] = useState(null)
-    //const [financInfoFinal, setFinanceInfoFinal] = useState(null)
     const [amountBet, setAmountBet] = useState(0)
-    //const [feeInformation, setFeeInformation] = useState(null)
-    //const [netAmount, setNetAmount] = useState(0)
-    //const [fee, setFee] = useState(0)
     const [sizeLot, setSizeLot] = useState('loading')
     const [infoFee, setInfoFee] = useState(false)
     const [tokenData, setTokenData] = useState({ name: '', ticker: '', address: '' })
@@ -36,13 +29,9 @@ export const DownwardCard = ({ id }) => {
     const [usdBalance, setUSDBalance] = useState(0)
 
     const [isLoadingBid, setIsLoadingBid] = useState(false);
-    const [, setTxHashBid] = useState(null);
-
     const [isLoadingCls, setIsLoadingCls] = useState(false);
-    const [, setTxHashCls] = useState(null);
-
     const [isLoadingWit, setIsLoadingWit] = useState(false);
-    const [, setTxHashWit] = useState(null);
+
     const account = useAccount()
     const signer = useEthersSigner()
 
@@ -432,9 +421,10 @@ export const DownwardCard = ({ id }) => {
                                 onClick={async () => {
                                     setIsLoadingCls(true);
                                     try {
-                                        const tx = await closeDownAuction(id, signer);
-                                        setTxHashCls(tx);
-                                        alert(`Tx submitted -> ${tx}`);
+                                       await closeDownAuction(id, signer);
+                                        alert(`Auction closed successfully!`);
+                                    
+            
                                     } catch (error) {
                                         console.error("Transaction failed:", error);
                                         alert("Transaction failed! Check console for details.");
@@ -477,9 +467,9 @@ export const DownwardCard = ({ id }) => {
                                 onClick={async () => {
                                     setIsLoadingWit(true);
                                     try {
-                                        const tx = await withDrawPactDownAuction(id, signer);
-                                        setTxHashWit(tx);
-                                        alert(`Tx submitted -> ${tx}`);
+                                        await withDrawPactDownAuction(id, signer);
+                                        alert(`Withdraw auctioned pacts successfully!`);
+                                     
                                     } catch (error) {
                                         console.error("Transaction failed:", error);
                                         alert("Transaction failed! Check console for details.");

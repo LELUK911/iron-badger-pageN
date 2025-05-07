@@ -7,15 +7,15 @@ export const filterAuctionList = (auctionList, filter, advFilter = null, upward 
 
 
     
-    // Verifica se il filtro "srcAuctionID" supera la lunghezza della lista
+   
     if (filter.srcAuctionID && filter.srcAuctionID > auctionList.length) {
         return [];
     }
 
-    // Inizializza un array filtrato
+ 
     let filteredList = auctionList;
 
-    // Filtraggio base (senza filtri avanzati)
+
     if (!advFilter || Object.keys(advFilter).length === 0) {
         filteredList = auctionList.filter((item, _index) => {
             if (filter.srcAuctionId !== undefined && filter.srcAuctionId !== null && !isNaN(filter.srcAuctionId) && _index !== filter.srcAuctionId) {
@@ -25,7 +25,7 @@ export const filterAuctionList = (auctionList, filter, advFilter = null, upward 
             return true;
         });
     } else {
-        // Filtraggio con filtri avanzati
+
         filteredList = auctionList.filter((item, _index) => {
             // Auction Index
             if (filter.srcAuctionId !== undefined && filter.srcAuctionId !== null && !isNaN(filter.srcAuctionId) && _index !== filter.srcAuctionId) {

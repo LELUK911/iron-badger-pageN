@@ -19,10 +19,10 @@ export const ManagmentForge = () => {
     const signer = useEthersSigner()
 
     const [isLoadingWith, setIsLoadingWith] = useState(false);
-    const [, setTxHashWith] = useState(null);
+
 
     const [isLoadingDel, setIsLoadingDel] = useState(false);
-    const [, setTxHashDel] = useState(null);
+
 
     const showBalance = async () => {
         try {
@@ -36,10 +36,8 @@ export const ManagmentForge = () => {
     const withdrawBalance = async () => {
         setIsLoadingWith(true);
         try {
-            const tx = await withdrawTokenSale(tokenAddress, signer)
-            await tx.wait()
-            setTxHashWith(tx); // Salva l'hash della transazione
-            alert(`Tx submitted -> ${await tx}`);
+            await withdrawTokenSale(tokenAddress, signer)
+            alert("Withdraw Tx submitted");
         } catch (error) {
             console.error(error)
             alert(`Tx unsubmit with error -> ${error}`)
@@ -51,9 +49,8 @@ export const ManagmentForge = () => {
     const deleteLaunchOp = async () => {
         setIsLoadingDel(true);
         try {
-            const tx = await deleteLaunchTX(forgeSelect.pactId.toString(), forgeSelect.forgeId.toString(), signer)
-            setTxHashDel(tx); // Salva l'hash della transazione
-            alert(`Tx submitted -> ${tx}`);
+            await deleteLaunchTX(forgeSelect.pactId.toString(), forgeSelect.forgeId.toString(), signer)
+            alert(`Delete Forge Tx submitted  id -> ${forgeSelect.pactId.toString()}`);
         } catch (error) {
             console.error(error)
             alert(`Tx unsubmit with error -> ${error}`)

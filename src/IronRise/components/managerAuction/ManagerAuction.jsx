@@ -19,9 +19,8 @@ export const ManagerAuction = () => {
     const [withAmount, setWithAmount] = useState(0)
     const account = useAccount()
     const signer = useEthersSigner()
-
     const [isLoading, setIsLoading] = useState(false);
-    const [, setTxHash] = useState(null);
+  
 
 
     const fetchData = async () => {
@@ -83,9 +82,8 @@ export const ManagerAuction = () => {
             setIsLoading(true);
             try {
                 const _withAmount = NumConvBig(withAmount)
-                const tx = await withdrawMoneyUpAuction(_withAmount, signer)
-                setTxHash(tx)
-                alert(`Tx submitted -> ${tx}`);
+                await withdrawMoneyUpAuction(_withAmount, signer)
+                alert(`Withdrawn ${_withAmount} mdai`)
             } catch (error) {
                 console.error("Transaction failed:", error);
                 alert("Transaction failed! Check console for details.");

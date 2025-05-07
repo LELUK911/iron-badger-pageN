@@ -7,10 +7,8 @@ import { BigNumConv, calculateExpired, renderAddress } from "../../../utils/help
 
 export const AuctionCardManager = ({ auction }) => {
     const [isLoadingCls, setIsLoadingCls] = useState(false);
-    const [, setTxHashCls] = useState(null);
 
     const [isLoadingWit, setIsLoadingWit] = useState(false);
-    const [, setTxHashWit] = useState(null);
 
     const signer = useEthersSigner()
     if (!auction) {
@@ -25,9 +23,8 @@ export const AuctionCardManager = ({ auction }) => {
     const closeAuction = async () => {
         setIsLoadingCls(true);
         try {
-            const tx = await closeUpAuction(auction.auctionIndex, signer)
-            setTxHashCls(tx);
-            alert(`tx submitted -> ${tx}`)
+            await closeUpAuction(auction.auctionIndex, signer)
+            alert("Auction closed successfully!");
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
@@ -39,9 +36,8 @@ export const AuctionCardManager = ({ auction }) => {
     const withDrawPact = async () => {
         setIsLoadingWit(true);
         try {
-            const tx = await withDrawPactUpAuction(auction.auctionIndex, signer)
-            setTxHashWit(tx);
-            alert(`tx submitted -> ${tx}`)
+            await withDrawPactUpAuction(auction.auctionIndex, signer)
+            alert("Pact withdrawn successfully!");
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
