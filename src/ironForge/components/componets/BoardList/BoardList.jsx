@@ -3,13 +3,13 @@ import { useEffect, useState } from "react"
 import { balancePactForId, pactDetails, readId, isApprovalForAll, setApprovalPact } from '../../../../utils/BlockchainOperation/IronPactOp'
 import { BigNumConv, calculateExpired, srcTokenData } from '../../../../utils/helper/helper'
 import { ironForgeAddress, launchNewPactTX } from '../../../../utils/BlockchainOperation/IronForgeOp.js'
-import { AuthorizePact } from "../../../../utils/components/window/AuthorizePact"
 import { PactCard } from '../../../../utils/components/PactCard/PactCard.jsx'
 import { Tooltips } from '../../../../utils/components/tooltips/Tooltips.jsx'
 import { amountToForgeTooltip, pactIDTooltip } from '../../../../utils/components/tooltips/tooltipsInformation/helperTips.js'
 import { useAccount } from 'wagmi'
 import { useEthersSigner } from '../../../../utils/helper/ClientToSigner.jsx'
 import { tableStyle } from '../../../../utils/Information/constantPage.js'
+
 
 
 
@@ -20,12 +20,10 @@ export const BoardList = () => {
     //const [selectRow, setSelectedRow] = useState(null)
     const [sellId, setSellId] = useState("");
     const [sellValueAmount, setSellValueAmount] = useState("");
-    const [openAuthWindow, setOpenAuthWindow] = useState(false)
-    const [ironForgeAuth, setIronForgeAuth] = useState(false)
     const account = useAccount()
     const signer = useEthersSigner()
     const [isLoading, setIsLoading] = useState(false);
-    const [, setTxHash] = useState(null);
+
 
     const columns = [
         { field: "id", headerName: "Id", width: 100 },
@@ -77,8 +75,7 @@ export const BoardList = () => {
             if (!account) {
                 return
             }
-            const _ironForgeAuth = await isApprovalForAll(account.address, ironForgeAddress)
-            setIronForgeAuth(_ironForgeAuth)
+            await isApprovalForAll(account.address, ironForgeAddress)
         } catch (error) {
             console.error(error)
         }
@@ -86,19 +83,20 @@ export const BoardList = () => {
 
     const newForge = async () => {
         try {
+            setIsLoading(true)
             const _ironForgeAuth = await isApprovalForAll(account.address, ironForgeAddress)
             console.log("Auth", _ironForgeAuth)
             if (!_ironForgeAuth) {
-                const tx = await setApprovalPact(ironForgeAddress, true, signer)
-                setTxHash(tx);
+                await setApprovalPact(ironForgeAddress, true, signer)
+                alert("Approval tx submitted");
             }
-            const tx = await launchNewPactTX(sellId.toString(), sellValueAmount.toString(), signer)
-            await tx.wait()
-            setTxHash(tx); // Salva l'hash della transazione
-            alert(`Tx submitted -> ${tx}`);
+            await launchNewPactTX(sellId.toString(), sellValueAmount.toString(), signer)
+            alert(`Launch new Pact tx submitted!`);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
+        }finally{
+            setIsLoading(false)
         } 
     }
     useEffect(() => {

@@ -594,9 +594,9 @@ export const NewPactForm = () => {
                             <button
                                 type="submit"
                                 className="ml-auto px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-lg transition-all"
-                                //disabled={isLoading}
+                                disabled={isLoading}
                             >
-                                {/*isLoading ? 'Creating...' : 'Confirm & Create'*/}
+                                {isLoading ? 'Creating...' : 'Confirm & Create'}
                                 Creating
                             </button>
                         )}
@@ -606,7 +606,7 @@ export const NewPactForm = () => {
                                 className="ml-auto px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-lg transition-all"
                                 onClick={onSubmit}
                             >
-                                {/*isLoading ? 'Creating...' : 'Confirm & Create'*/}
+                                {isLoading ? 'Creating...' : 'Confirm & Create'}
                                 Creating
                             </button>}
                     </div>

@@ -42,6 +42,7 @@ import { Documentation } from "./pages/Documentation.jsx"
 
 import { DebtorReportPage } from "./pages/DebtorReportPage.jsx"
 import { TermsPopup } from "./utils/components/TermsPopUp/TermsPopup.jsx"
+import { PowSfuelHelp } from "./utils/components/PowGas/PowSfuelHelp.jsx"
 
 const config = getDefaultConfig({
   appName: import.meta.env.VITE_APPNAME,
@@ -83,36 +84,38 @@ function App() {
                 </div>
               </div>
               <TermsPopup onAccept={handleAcceptTerms} />
-              <Router>
-                <Routes>
-                  <Route>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/documentation" element={<Documentation />} />
-                    <Route path="/app.ironPact" element={<IronPactPAge />} />
-                    <Route path="/app.ironPact/newpact" element={<NewPactPage />} />
-                    <Route path="/app.ironPact/dashboardpacts" element={<DashBoardPacts />} />
-                    <Route path="/app.ironPact/wallet" element={<WalletIronPactPage />} />
-                    <Route path="/app.ironForge" element={<IronForge />} />
-                    <Route path="/app.ironForge/market" element={<IronForgeMarket />} />
-                    <Route path="/app.ironForge/board" element={<IronForgeBoard />} />
-                    <Route path="/app.ironForge/mangment" element={<IronForgeManager />} />
-                    <Route path="/app.ironRise" element={<IronRise />} />
-                    <Route path="/app.ironRise/auction" element={<IronRiseAuctionList />} />
-                    <Route path="/app.ironRise/manager" element={<IronRiseAuctionManager />} />
-                    <Route path="/app.ironRise/newauction" element={<IronRiseNewAuction />} />
-                    <Route path="/app.ironRise/upwardcard" element={<IronRiseUpwardCard />} />
-                    <Route path="/app.ironfall" element={<IronFall />} />
-                    <Route path="/app.ironfall/auction" element={<IronFallAuctionList />} />
-                    <Route path="/app.ironfall/manager" element={<IronFallAuctionManager />} />
-                    <Route path="/app.ironfall/newauction" element={<IronFallNewAuction />} />
-                    <Route path="/app.ironfall/downwardcard" element={<IronFallDownwardCard />} />
-                    <Route path="/tokenFaucet" element={<FaucetPage />} />
-                    <Route path="/app.ironRise/UpwardAuctionId/:id" element={<UpwardAuctionId />} />
-                    <Route path="/app.ironFall/DownwardAuctionId/:id" element={<DownwardAuctionId />} />
-                    <Route path="/app.DebtorReport/:user" element={<DebtorReportPage />} />
-                  </Route>
-                </Routes>
-              </Router>
+              <PowSfuelHelp>
+                <Router>
+                  <Routes>
+                    <Route>
+                      <Route path="/" element={<HomePage />} />
+                      <Route path="/documentation" element={<Documentation />} />
+                      <Route path="/app.ironPact" element={<IronPactPAge />} />
+                      <Route path="/app.ironPact/newpact" element={<NewPactPage />} />
+                      <Route path="/app.ironPact/dashboardpacts" element={<DashBoardPacts />} />
+                      <Route path="/app.ironPact/wallet" element={<WalletIronPactPage />} />
+                      <Route path="/app.ironForge" element={<IronForge />} />
+                      <Route path="/app.ironForge/market" element={<IronForgeMarket />} />
+                      <Route path="/app.ironForge/board" element={<IronForgeBoard />} />
+                      <Route path="/app.ironForge/mangment" element={<IronForgeManager />} />
+                      <Route path="/app.ironRise" element={<IronRise />} />
+                      <Route path="/app.ironRise/auction" element={<IronRiseAuctionList />} />
+                      <Route path="/app.ironRise/manager" element={<IronRiseAuctionManager />} />
+                      <Route path="/app.ironRise/newauction" element={<IronRiseNewAuction />} />
+                      <Route path="/app.ironRise/upwardcard" element={<IronRiseUpwardCard />} />
+                      <Route path="/app.ironfall" element={<IronFall />} />
+                      <Route path="/app.ironfall/auction" element={<IronFallAuctionList />} />
+                      <Route path="/app.ironfall/manager" element={<IronFallAuctionManager />} />
+                      <Route path="/app.ironfall/newauction" element={<IronFallNewAuction />} />
+                      <Route path="/app.ironfall/downwardcard" element={<IronFallDownwardCard />} />
+                      <Route path="/tokenFaucet" element={<FaucetPage />} />
+                      <Route path="/app.ironRise/UpwardAuctionId/:id" element={<UpwardAuctionId />} />
+                      <Route path="/app.ironFall/DownwardAuctionId/:id" element={<DownwardAuctionId />} />
+                      <Route path="/app.DebtorReport/:user" element={<DebtorReportPage />} />
+                    </Route>
+                  </Routes>
+                </Router>
+              </PowSfuelHelp>
             </RainbowKitProvider>
           </WalletProvider>
         </QueryClientProvider>

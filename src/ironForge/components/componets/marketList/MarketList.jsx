@@ -93,6 +93,8 @@ export const MarketList = () => {
 
             await buyPactTX(buyId, _forgeId, buyAmount, signer)
             alert(`Pacts buyed!`);
+            await withDrawPactBuy(buyId, signer)
+            alert(`Pact withdrawed!`);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Transaction failed! Check console for details.");
@@ -297,7 +299,7 @@ export const MarketList = () => {
                                     Processing...
                                 </>
                             ) : (
-                                "Withdraw Pact"
+                                "Manual Withdraw Pact"
                             )}
                         </button>
                     </div>
