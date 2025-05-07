@@ -50,7 +50,14 @@ export const BodyIronPactPage = () => {
                     <div className="p-8 rounded-xl bg-gradient-to-b from-stone-800 to-stone-900 border-2 border-amber-500/20 hover:border-amber-500/40 transition-colors">
                         <div className='flex flex-col justify-center items-center'>
                             <div className="w-24 h-24 rounded-2xl bg-amber-500/10 border-2 border-amber-500/20 flex items-center justify-center mb-4">
-                                <img src={tassoController} alt="Control" className="w-16 h-16" />
+                                <img
+                                    src={tassoController}
+                                    alt="Iron Pact customization controller icon"
+                                    width="64"
+                                    height="64"
+                                    loading="lazy"
+                                    className="w-16 h-16"
+                                />
                             </div>
                         </div>
                         <h4 className="text-3xl font-semibold mb-2 text-amber-400">
@@ -65,7 +72,11 @@ export const BodyIronPactPage = () => {
                     <div className="p-8 rounded-xl bg-gradient-to-b from-stone-800 to-stone-900 border-2 border-amber-500/20 hover:border-amber-500/40 transition-colors">
                         <div className='flex flex-col justify-center items-center'>
                             <div className="w-24 h-24 rounded-2xl bg-amber-500/10 border-2 border-amber-500/20 flex items-center justify-center mb-4">
-                                <img src={tassoLock} alt="Security" className="w-16 h-16" />
+                                <img src={tassoLock} alt="Security"
+                                    width="64"
+                                    height="64"
+                                    loading="lazy"
+                                    className="w-16 h-16" />
                             </div>
                         </div>
                         <h4 className="text-3xl font-semibold mb-2 text-amber-400">
@@ -80,7 +91,11 @@ export const BodyIronPactPage = () => {
                     <div className="p-8 rounded-xl bg-gradient-to-b from-stone-800 to-stone-900 border-2 border-amber-500/20 hover:border-amber-500/40 transition-colors">
                         <div className='flex flex-col justify-center items-center'>
                             <div className="w-24 h-24 rounded-2xl bg-amber-500/10 border-2 border-amber-500/20 flex items-center justify-center mb-4">
-                                <img src={tassoDoctor} alt="Planning" className="w-16 h-16" />
+                                <img src={tassoDoctor} alt="Planning"
+                                    width="64"
+                                    height="64"
+                                    loading="lazy"
+                                    className="w-16 h-16" />
                             </div>
                         </div>
                         <h4 className="text-3xl font-semibold mb-2 text-amber-400">

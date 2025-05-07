@@ -30,9 +30,13 @@ export const BodyIronForgePage = () => {
         </div>
         <img
           src={tassoForgeHero}
-          alt="Iron Forge Interface"
+          alt="User interface of the Iron Forge Protocol"
+          width="500"
+          height="500"
+          loading="lazy"
           className="rounded-2xl border-2 border-green-500/30 shadow-2xl w-full md:w-2/5 mt-8 md:mt-0"
         />
+
       </section>
 
       {/* Features Section */}

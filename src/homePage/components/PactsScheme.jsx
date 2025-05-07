@@ -19,6 +19,7 @@ export const PactsScheme = () => {
                 </h3>
                 <img
                     src={logo}
+                    loading="lazy"
                     alt="Iron Pacts Logo"
                     className="w-full max-w-xs md:max-w-sm h-auto rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-300"
                 />
@@ -34,7 +35,7 @@ export const PactsScheme = () => {
                         </h3>
                         <div className="w-20 h-1.5 bg-gradient-to-r from-blue-300 to-indigo-400 mx-auto mb-6 rounded-full"></div>
                         <p className="text-md md:text-lg mt-2 leading-relaxed text-blue-50/90 font-medium">
-                        Create secured peer-to-peer agreements without selling your assets. Lock your tokens as collateral and create Iron Pacts  programmable semi-NFTs that allow you to access liquidity while maintaining your crypto exposure.
+                            Create secured peer-to-peer agreements without selling your assets. Lock your tokens as collateral and create Iron Pacts  programmable semi-NFTs that allow you to access liquidity while maintaining your crypto exposure.
                         </p>
                         <div className="mt-8 transform transition-transform hover:scale-105 active:scale-95 inline-block">
                             <Link to="/app.ironPact">
@@ -51,6 +52,9 @@ export const PactsScheme = () => {
                         <img
                             src={newPactLogo}
                             alt="Iron Pact Visualization"
+                            width="288"
+                            height="288"
+                            loading="lazy"
                             className="w-72 h-72 rounded-2xl shadow-xl relative z-10 transform transition-transform duration-700 hover:rotate-2 hover:shadow-indigo-500/30"
                         />
                         <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-indigo-400/10 rounded-full blur-md"></div>
@@ -68,7 +72,7 @@ export const PactsScheme = () => {
                         </h3>
                         <div className="w-20 h-1.5 bg-gradient-to-r from-green-300 to-teal-400 mx-auto mb-6 rounded-full"></div>
                         <p className="text-md md:text-lg mt-2 leading-relaxed text-green-50/90 font-medium">
-                        Create custom peer-to-peer lending agreements on-chain. Design, deploy, and manage structured Iron Pacts with automated terms – all with full transparency and no intermediaries.
+                            Create custom peer-to-peer lending agreements on-chain. Design, deploy, and manage structured Iron Pacts with automated terms – all with full transparency and no intermediaries.
                         </p>
                         <div className="mt-8 transform transition-transform hover:scale-105 active:scale-95 inline-block">
                             <button className="px-8 py-3 text-lg font-semibold rounded-xl bg-white text-green-600 hover:bg-green-50 transition-colors shadow-md">
@@ -82,6 +86,9 @@ export const PactsScheme = () => {
                     <div className="relative z-10">
                         <img
                             src={launchPactLogo}
+                            width="288"
+                            height="288"
+                            loading="lazy"
                             alt="Iron Forge Visualization"
                             className="w-72 h-72 rounded-2xl shadow-xl relative z-10 transform transition-transform duration-700 hover:rotate-2 hover:shadow-teal-500/30"
                         />
@@ -100,7 +107,7 @@ export const PactsScheme = () => {
                         </h3>
                         <div className="w-20 h-1.5 bg-gradient-to-r from-amber-300 to-orange-400 mx-auto mb-6 rounded-full"></div>
                         <p className="text-md md:text-lg mt-2 leading-relaxed text-amber-50/90 font-medium">
-                        Participate in transparent, on-chain auctions. Bid competitively for Iron Pacts in real-time with our decentralized auction platform that ensures fair pricing for everyone.
+                            Participate in transparent, on-chain auctions. Bid competitively for Iron Pacts in real-time with our decentralized auction platform that ensures fair pricing for everyone.
                         </p>
                         <div className="mt-8 transform transition-transform hover:scale-105 active:scale-95 inline-block">
                             <button className="px-8 py-3 text-lg font-semibold rounded-xl bg-white text-amber-600 hover:bg-amber-50 transition-colors shadow-md">
@@ -114,6 +121,9 @@ export const PactsScheme = () => {
                     <div className="relative z-10">
                         <img
                             src={selORbuyLogo}
+                            width="288"
+                            height="288"
+                            loading="lazy"
                             alt="Iron Rise Visualization"
                             className="w-72 h-72 rounded-2xl shadow-xl relative z-10 transform transition-transform duration-700 hover:rotate-2 hover:shadow-amber-500/30"
                         />
@@ -132,7 +142,7 @@ export const PactsScheme = () => {
                         </h3>
                         <div className="w-20 h-1.5 bg-gradient-to-r from-rose-300 to-pink-400 mx-auto mb-6 rounded-full"></div>
                         <p className="text-md md:text-lg mt-2 leading-relaxed text-rose-50/90 font-medium">
-                        Iron Fall Protocol Discover unique investment opportunities through descending-price auctions. Our market-responsive system automatically adjusts rates until finding the perfect price point for both creditors and buyers.
+                            Iron Fall Protocol Discover unique investment opportunities through descending-price auctions. Our market-responsive system automatically adjusts rates until finding the perfect price point for both creditors and buyers.
                         </p>
                         <div className="mt-8 transform transition-transform hover:scale-105 active:scale-95 inline-block">
                             <button className="px-8 py-3 text-lg font-semibold rounded-xl bg-white text-rose-600 hover:bg-rose-50 transition-colors shadow-md">
@@ -146,6 +156,9 @@ export const PactsScheme = () => {
                     <div className="relative z-10">
                         <img
                             src={auctionBagder}
+                            width="288"
+                            height="288"
+                            loading="lazy"
                             alt="Iron Fall Visualization"
                             className="w-72 h-72 rounded-2xl shadow-xl relative z-10 transform transition-transform duration-700 hover:rotate-2 hover:shadow-rose-500/30"
                         />
