@@ -123,7 +123,7 @@ export const WalletSection = () => {
                 await newAuctionPact(sellId, sellValueAmount, NumConvBig((+sellValueStartPrice)), calculateSecondToDay(sellValueExpired), signer)
                 alert(`New Auction tx submitted`);
             } catch (error) {
-                console.error("Transaction failed:", error);
+                console.error(error)
                 alert("Transaction failed! Check console for details.");
             } finally {
                 fetchAuthPact()
@@ -235,7 +235,6 @@ export const WalletSection = () => {
             )}
 
             {showWizard && (
-
                 <NewAuctionWizardModal
                     id={sellId}
                     amount={sellValueAmount}

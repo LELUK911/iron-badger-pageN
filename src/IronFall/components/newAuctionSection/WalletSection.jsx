@@ -119,14 +119,18 @@ export const WalletSection = () => {
             try {
                 if (!authPact) {
                     await setApprovalPact(ironFallAddress, true, signer)
-                    fetchAuthPact()
                     alert(`Approval tx submited`);
                 }
                 await newDownAuctionPact(sellId, sellValueAmount, NumConvBig((+sellValueStartPrice)), calculateSecondToDay(sellValueExpired), (sellValueToleranceDiscount * 100).toString(), signer)
                 alert(`New Downward Auction tx submited`);
             } catch (error) {
                 console.error(error)
+                alert("Transaction failed! Check console for details.");
+            }finally{
+                fetchAuthPact()
             }
+        } else {
+            alert("Connect wallet and select Pact for new Auction")
         }
     }
 
