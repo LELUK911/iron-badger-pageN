@@ -8,6 +8,7 @@ import { CollateralChart } from "./components/CollateralChart";
 import { LoansChart } from "./components/LoanChart";
 import { useParams } from "react-router-dom";
 import { requestPactStory } from "../API/api";
+import ReportHelper from "./components/ReportHelper";
 
 export const BodyDebtorReportPage = () => {
     const [allPactDetail, setAllPactDetail] = useState([]);
@@ -141,6 +142,9 @@ export const BodyDebtorReportPage = () => {
                 </h1>
                 <p className="text-gray-400">Detailed overview of reliability and activity history.</p>
             </div>
+
+            {/* Sezione Helper */}
+            <ReportHelper/>
 
 
             {/* Sezione Informazioni Generali */}
@@ -286,7 +290,7 @@ export const BodyDebtorReportPage = () => {
             <div className="bg-gray-800 rounded-lg shadow-lg p-6">
                 <h2 className="text-2xl font-semibold mb-4 flex items-center">
                     <StarIcon className="w-6 h-6 mr-2 text-yellow-400" />
-                    Issue Details
+                    Minted Details
                 </h2>
                 {allPactDetail.length > 0 ? (
                     paginatedData(allPactDetail).map((pact, index) => (

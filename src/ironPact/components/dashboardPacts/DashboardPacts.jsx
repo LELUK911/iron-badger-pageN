@@ -12,9 +12,9 @@ export const DashboardPacts = () => {
     const [searchValue, setSearchValue] = useState("");
 
     const columns = [
-        { field: "id", headerName: "ID", width: 75 },
+        { field: "id", headerName: "ID", width: 85 },
         { field: "sizePact", headerName: "Price Pact", width: 150 },
-        { field: "sizeReward", headerName: "Reward Amount", width: 150 },
+        { field: "sizeReward", headerName: "Reward Amount", width: 170 },
         {
             field: "tokenLoan", headerName: "Price Token",
             renderCell: (params) => (
@@ -24,7 +24,7 @@ export const DashboardPacts = () => {
             ),
             width: 250,
         },
-        { field: "amountCollateral", headerName: "Collateral Amount", width: 150 },
+        { field: "amountCollateral", headerName: "Collateral Amount", width: 190 },
         {
             field: "tokenCollateral",
             headerName: "Collateral Token",

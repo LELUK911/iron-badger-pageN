@@ -1,5 +1,7 @@
-import { HistoricalBuyer } from './components/componets/marketList/HistoricalBuyer'
-import { MarketList } from './components/componets/marketList/MarketList'
+import { Link } from 'react-router-dom';
+import { HistoricalBuyer } from './components/componets/marketList/HistoricalBuyer';
+import { MarketList } from './components/componets/marketList/MarketList';
+import { FaInfoCircle, FaSearch, FaShoppingCart, FaUndo, FaWallet } from 'react-icons/fa';
 
 export const BodyIronForgeMarket = () => {
     return (
@@ -28,20 +30,50 @@ export const BodyIronForgeMarket = () => {
                 <div className="text-white p-6 rounded-lg shadow-lg bg-slate-700 border bg-opacity-55 shadow-slate-500 border-gray-700">
                     <h2 className="font-bold text-2xl text-blue-400 mb-4">How to Use the Market</h2>
 
-                    <div className="space-y-3 text-gray-300">
-                        <p>📌 <span className="font-semibold text-white">All Pacts listed here</span> are available on the market for the first time.</p>
+                    <div className="space-y-4 text-gray-300 text-sm">
+                        <p className="flex items-start gap-2">
+                            <FaInfoCircle className="text-yellow-400 mt-1" />
+                            <span>
+                                <span className="font-semibold text-white">All Pacts listed here</span> are available for purchase for the first time after being minted.
+                            </span>
+                        </p>
 
-                        <p>🧐 Before buying, check the <span className="font-semibold text-white">Pact’s details</span> on its card. We also recommend reviewing the <span className="font-semibold text-white">"debtor's Complete Report"</span> before making a decision.</p>
+                        <p className="flex items-start gap-2">
+                            <FaSearch className="text-green-400 mt-1" />
+                            <span>
+                                Before buying, check the <span className="font-semibold text-white">Pact details</span> and the <span className="font-semibold text-white">debtor’s report</span> directly in the Pact Card.
+                            </span>
+                        </p>
 
-                        <p>💳 To buy, you must <span className="font-semibold text-white">authorize the contract</span> to spend the required tokens (the system will automatically calculate the total amount).</p>
+                        <p className="flex items-start gap-2">
+                            <FaShoppingCart className="text-blue-400 mt-1" />
+                            <span>
+                                To buy: <span className="font-semibold text-white">select a Pact</span>, set the amount, and complete these steps: authorize token spending → buy Pact → withdraw Pact.
+                            </span>
+                        </p>
 
-                        <p>📥 After purchasing, <span className="font-semibold text-white">remember to withdraw your Pacts</span>. If you forget, don't worry! You can do it anytime by entering the Pact ID and clicking "Withdraw".</p>
+                        <p className="flex items-start gap-2">
+                            <FaUndo className="text-red-400 mt-1" />
+                            <span>
+                                If the purchase fails or is rejected, you can retry anytime using the Pact ID and clicking <span className="font-semibold text-white">"Manual Withdraw Pact"</span>.
+                            </span>
+                        </p>
+
+                        <p className="flex items-start gap-2">
+                            <FaWallet className="text-yellow-300 mt-1" />
+                            <span>
+                                Purchased Pacts are visible in your{' '}
+                                <Link to="/app.ironPact/wallet" className="underline text-blue-400 hover:text-blue-300 font-semibold">
+                                    Wallet section
+                                </Link>.
+                            </span>
+                        </p>
                     </div>
                 </div>
+
                 <MarketList />
-                {/*<HistoricalBuyer />*/}
+                {/* <HistoricalBuyer /> */}
             </div>
         </div>
-
-    )
-}
+    );
+};

@@ -55,7 +55,6 @@ export const MarketList = () => {
                 const ScorePoint = await pointDebtor(_pactDetails.debtor)
                 const _showAmountInSel = await showAmountInSell((_pactDetails.id).toString())
                 //if (+(_showAmountInSel.toString()) >0) {
-
                 const tokenInfo = await srcTokenData(_pactDetails.tokenLoan)
                 const row = {
                     forgeId: index,
@@ -71,12 +70,10 @@ export const MarketList = () => {
                 }
                 rowsArray.push(row)
                 //}
-
             }
             setRows(rowsArray)
         } catch (e) {
             console.error(e)
-
         }
     }
     const buyPactOp = async () => {
@@ -89,7 +86,6 @@ export const MarketList = () => {
                 await approveERC20(ironForgeAddress, NumConvBig(amountToken), signer, tokenAddress);
                 alert(`Spending token Approve`);
             }
-
             await buyPactTX(buyId, _forgeId, buyAmount, signer)
             alert(`Pacts buyed!`);
             await withDrawPactBuy(buyId, signer)
@@ -152,6 +148,10 @@ export const MarketList = () => {
 
     const handleInputChangeBuyId = (e) => {
         setBuyId(e.target.value);
+        const itemRow = rows.find((item)=>item.id == e.target.value);
+        setForgeId(itemRow.forgeId)
+        _getbalance(itemRow.tokenaddress)
+        _tokenInfo(itemRow.tokenaddress)
     };
 
     const handleInputChangeAmount = (e) => {
@@ -162,6 +162,10 @@ export const MarketList = () => {
 
     const handleInputChangeForgeID = (e) => {
         setForgeId(e.target.value);
+        const itemRow = rows.find((item)=>item.forgeId == e.target.value);
+        setBuyId(itemRow.id)
+        _getbalance(itemRow.tokenaddress)
+        _tokenInfo(itemRow.tokenaddress)
     };
 
     return (
@@ -169,7 +173,6 @@ export const MarketList = () => {
             {/* Sezione Opzioni */}
             <div className="w-full md:w-1/4 p-6 mx-4 rounded-xl bg-slate-800 text-gray-100 shadow-lg mb-6 md:mb-0">
                 <h3 className="font-bold text-center text-2xl mb-6">Options</h3>
-
                 <div className="space-y-6">
                     {/* Campo # */}
                     <div>
@@ -186,7 +189,6 @@ export const MarketList = () => {
                             placeholder="Enter #"
                         />
                     </div>
-
                     {/* Campo Pact ID */}
                     <div>
                         <div className='flex items-center space-x-2'>
@@ -202,7 +204,6 @@ export const MarketList = () => {
                             placeholder="Enter Pact ID"
                         />
                     </div>
-
                     {/* Campo Amount */}
                     <div>
                         <div className='flex items-center space-x-2'>
@@ -218,10 +219,6 @@ export const MarketList = () => {
                             placeholder="Enter Amount"
                         />
                     </div>
-
-
-
-
                     <div className="bg-gray-900 border border-gray-700 rounded-lg p-3">
                         <div className="flex justify-between text-sm font-semibold text-blue-300">
                             <span>Cost:</span>

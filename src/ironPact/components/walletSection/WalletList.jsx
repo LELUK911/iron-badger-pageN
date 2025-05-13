@@ -6,6 +6,7 @@ import { PactCard } from "../../../utils/components/PactCard/PactCard"
 import { useAccount } from "wagmi"
 import { DebtorInformation } from "./DebtorInformation"
 import { tableStyle } from "../../../utils/Information/constantPage"
+import { Link } from "react-router-dom"
 
 
 
@@ -136,9 +137,7 @@ export const WalletList = () => {
         return (
             <div className="w-2/3 overflow-x-auto">
                 <div className="w-full max-w-7xl overflow-x-auto">
-
                     <h1 className="text-3xl text-yellow-400 font-bold p-4 ">Pact in Wallet</h1>
-
                     <DataGrid
                         columns={columns}
                         rows={rows}
@@ -187,8 +186,25 @@ export const WalletList = () => {
                     <div className="w-full p-6 bg-slate-800 rounded-lg shadow-md flex flex-col items-start space-y-4">
                         <DebtorInformation />
                     </div>
-
-
+                </div>
+                <div className="bg-slate-800 text-white p-4 rounded-lg shadow w-full max-w-3xl text-sm">
+                    <h3 className="text-lg font-semibold text-yellow-300 mb-2">📘 Wallet Table Guide</h3>
+                    <p className="text-gray-200 mb-2">
+                        This table lists all your active and newly minted Pacts. New Pacts can be sold on the{' '}
+                        <Link to="/app.ironForge/board" className="underline text-blue-400 hover:text-blue-300 font-medium">
+                            Iron Forge
+                        </Link>{' '}
+                        marketplace.
+                    </p>
+                    <p className="text-gray-200 mb-2">
+                        Use the table to open Pact Cards and perform actions like claiming rewards or repaying tokens. Rewards are only claimable if you owned the Pact during the valid period.
+                    </p>
+                    <p className="text-gray-400">
+                        Need details? Check the{' '}
+                        <Link to="/documentation" className="underline text-blue-400 hover:text-blue-300 font-medium">
+                            docs
+                        </Link>.
+                    </p>
                 </div>
 
                 {/* Tabella o Messaggio di Portafoglio Vuoto */}
@@ -199,21 +215,33 @@ export const WalletList = () => {
                         Wallet is empty or wallet disconnected
                     </p>
                 )}
+                <div className="bg-slate-800 text-white p-4 rounded-lg shadow w-full max-w-3xl text-sm">
+                    <h3 className="text-lg font-semibold text-yellow-300 mb-2">📘 Minted table helper</h3>
+                    <p className="text-gray-200 mb-2">
+                        This table shows your minted Pacts. Click a row to open the Pact Card, where you can manage:
+                    </p>
+                    <ul className="list-disc list-inside text-gray-300 mb-2 space-y-1">
+                        <li>Deposits for rewards or repayments</li>
+                        <li>Claiming points after expiry</li>
+                        <li>Collateral withdrawal after lock-in</li>
+                    </ul>
+                    <p className="text-gray-400">
+                        Need more info? Check the{' '}
+                        <Link to="/documentation" className="underline text-blue-400 hover:text-blue-300 font-medium">
+                            docs
+                        </Link>.
+                    </p>
+                </div>
 
 
                 {rowIssued.length > 0 ? (
                     <RenderTableIssued />
                 ) : (
                     <p className="text-white text-xl sm:text-2xl font-semibold py-4 text-center">
-                        Nothing Pact issued
+                        Nothing Pact minted
                     </p>
                 )}
-
-
-
             </div>
-
-
             {/* Pact Card Modal */}
             {showPactCard && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/70">

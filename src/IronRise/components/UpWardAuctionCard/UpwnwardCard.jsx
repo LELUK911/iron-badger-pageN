@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import pactAuctionImg from '../../../assets/pactAuctionImg.png'
-import {  closeUpAuction, instalmentPot, ironRiseAddress, showAuction, showFeesSystem, withDrawPactUpAuction } from '../../../utils/BlockchainOperation/IronRiseOp';
+import { closeUpAuction, instalmentPot, ironRiseAddress, showAuction, showFeesSystem, withDrawPactUpAuction } from '../../../utils/BlockchainOperation/IronRiseOp';
 import { BigNumConv, NumConvBig, renderAddress, srcTokenData } from '../../../utils/helper/helper';
 import { pactDetails } from '../../../utils/BlockchainOperation/IronPactOp';
 import { Countdown } from '../../../utils/helper/CountDown';
@@ -9,6 +9,7 @@ import { useAccount } from 'wagmi';
 import { auctionMoneyToken } from '../../../utils/Information/constantPage';
 import { approveERC20, getBalance, readAllowance } from '../../../utils/BlockchainOperation/ERC20op';
 import { requestNewInstalmentUp } from '../../../API/api';
+import { Link } from 'react-router-dom';
 
 
 
@@ -50,8 +51,6 @@ export const UpwardCard = ({ id }) => {
             setNetAmountBet(_netAmount)
         }
     }
-
-   
 
     const pactFinancialInformation = () => {
         let rewardInterest = 0;
@@ -256,12 +255,45 @@ export const UpwardCard = ({ id }) => {
 
     return (
         <div className="py-4">
-            <div className="flex flex-col items-center justify-center p-8  text-gray-200">
-                <h1 className="text-3xl font-bold mb-4">Upward Auction #{id}</h1>
-                <p className="text-gray-300 text-lg text-center mb-8">
-                    In this section, find all auction details and feel more confident while participating. You can also read the Pact&apos;s details.
-                </p>
+
+            <div className="flex flex-col justify-center items-center text-gray-200 p-8 space-y-6  ">
+                <div className="text-center max-w-3xl">
+                    <h1 className="text-3xl font-bold mb-2">Upward Auction #{id}</h1>
+                    <p className="text-gray-300 text-lg">
+                        Welcome to the Upward Auction. Here you’ll find all the relevant details about the auctioned Pact, along with a step-by-step guide to help you participate with confidence.
+                    </p>
+                </div>
+
+                <div className="w-full max-w-3xl">
+                    <h3 className="text-2xl font-bold mb-4">How It Works</h3>
+                    <ul className="list-disc list-inside space-y-3 text-base text-gray-300">
+                        <li>
+                            Approve the auction contract to spend your tokens this enables you to place your bid.
+                        </li>
+                        <li>
+                            Your tokens will remain locked in the contract until another user places a higher bid.
+                        </li>
+                        <li>
+                            If you win the auction, you or the seller must close it. Once closed, you can withdraw your Pacts.
+                        </li>
+                        <li>
+                            Upon closing, your winning bid amount is transferred to the seller.
+                        </li>
+                        <li>
+                            Check and manage your locked funds from the{' '}
+                            <Link to="/app.ironRise/manager" className="text-blue-400 underline hover:text-blue-300">
+                                Auction Manager
+                            </Link>{' '}
+                            section, where you can also withdraw any available balance.
+                        </li>
+                    </ul>
+                    <p className="mt-6 text-yellow-400 text-sm">
+                        ⚠️ Please make sure you understand the process before bidding. Your funds will be locked until you are either outbid or the auction is closed.
+                    </p>
+                </div>
             </div>
+
+
             <div className="flex flex-col lg:flex-row gap-6 p-6">
                 {/* Left Column: Image or Placeholder */}
                 <div className="flex-1 bg-slate-700 rounded-lg p-4">
