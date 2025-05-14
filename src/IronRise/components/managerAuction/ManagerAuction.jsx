@@ -59,6 +59,7 @@ export const ManagerAuction = () => {
     useEffect(() => {
         if (account.address) {
             fetchData()
+            fetchBalance()
         }
     }, [account])
 
@@ -134,7 +135,7 @@ export const ManagerAuction = () => {
                                 onClick={fetchBalance}
                                 className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-2 px-4 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:brightness-110 active:scale-95"
                             >
-                                Show Balance
+                                Update Balance
                             </button>
                             <button
                                 onClick={withDrawTokenMoney}

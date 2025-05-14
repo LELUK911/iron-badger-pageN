@@ -12,7 +12,6 @@ const abi = contractJSON.abi
 
 export const newDownAuctionPact = async (_id, _amount, _startPrice, _expired, _tolleratedDiscount, signer) => {
     try {
-
         const contract = new ethers.Contract(ironFallAddress, abi, signer)
         const tx = await contract.newAcutionPact(
             _id,

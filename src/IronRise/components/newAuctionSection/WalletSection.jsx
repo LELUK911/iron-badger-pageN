@@ -16,8 +16,6 @@ export const WalletSection = () => {
     const [rows, setRows] = useState([])
     const [sellId, setSellId] = useState("");
     const [sellValueAmount, setSellValueAmount] = useState("");
-    const [sellValueStartPrice, setSellValueStartPrice] = useState("");
-    const [sellValueExpired, setSellValueExpired] = useState("");
     const [authPact, setAuthPact] = useState({})
     const [showWizard, setShowWizard] = useState(false);
     const account = useAccount()
@@ -113,26 +111,6 @@ export const WalletSection = () => {
         }
     }
 
-    const newUpwardAuctionOp = async () => {
-        if (account.address) {
-            try {
-                if (!authPact) {
-                    await setApprovalPact(ironRiseAddress, true, signer)
-                    alert(`Approval tx submitted`);
-                }
-                await newAuctionPact(sellId, sellValueAmount, NumConvBig((+sellValueStartPrice)), calculateSecondToDay(sellValueExpired), signer)
-                alert(`New Auction tx submitted`);
-            } catch (error) {
-                console.error(error)
-                alert("Transaction failed! Check console for details.");
-            } finally {
-                fetchAuthPact()
-            }
-        } else {
-            alert("Connect wallet and select Pact for new Auction")
-        }
-    }
-
     useEffect(() => {
         if (account.address) {
             fetchData()
@@ -146,12 +124,6 @@ export const WalletSection = () => {
     };
     const handleInputChangeSellId = (e) => {
         setSellId(e.target.value); // Aggiorna solo il valore dell'input
-    };
-
-
-    const authSpending = async (e) => {
-        e.preventDefault();
-        await newUpwardAuctionOp()
     };
 
     const RenderTable = () => {
@@ -184,38 +156,38 @@ export const WalletSection = () => {
                     <h2 className="text-2xl font-semibold text-white text-center">Set New Pact Auction</h2>
 
                     <div className="flex flex-col md:flex-row items-start md:items-end gap-6">
-    {/* Input + label */}
-    <div className="flex-1">
-        <label className="block text-lg font-semibold text-orange-400 mb-1">Pact ID</label>
-        <p className="text-sm text-gray-400 italic mb-2">
-            This is the ID of the pact you want to auction.
-        </p>
-        <input
-            className="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-white placeholder-gray-500"
-            type="number"
-            placeholder="Enter Pact ID"
-            min={0}
-            value={sellId}
-            onChange={handleInputChangeSellId}
-        />
-    </div>
+                        {/* Input + label */}
+                        <div className="flex-1">
+                            <label className="block text-lg font-semibold text-orange-400 mb-1">Pact ID</label>
+                            <p className="text-sm text-gray-400 italic mb-2">
+                                This is the ID of the pact you want to auction.
+                            </p>
+                            <input
+                                className="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-white placeholder-gray-500"
+                                type="number"
+                                placeholder="Enter Pact ID"
+                                min={0}
+                                value={sellId}
+                                onChange={handleInputChangeSellId}
+                            />
+                        </div>
 
-    {/* Pulsanti in riga */}
-    <div className="flex gap-4 md:mt-6 font-bold">
-        <button
-            onClick={() => setShowWizard(true)}
-            className="px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg shadow-md transition"
-        >
-            New Auction
-        </button>
-        <button
-            onClick={() => sellId && setShowPactCard(true)}
-            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-lg shadow-md transition-transform transform hover:scale-105"
-        >
-            Show Pact Card
-        </button>
-    </div>
-</div>
+                        {/* Pulsanti in riga */}
+                        <div className="flex gap-4 md:mt-6 font-bold">
+                            <button
+                                onClick={() => setShowWizard(true)}
+                                className="px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg shadow-md transition"
+                            >
+                                New Auction
+                            </button>
+                            <button
+                                onClick={() => sellId && setShowPactCard(true)}
+                                className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white rounded-lg shadow-md transition-transform transform hover:scale-105"
+                            >
+                                Show Pact Card
+                            </button>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -238,14 +210,8 @@ export const WalletSection = () => {
                 <NewAuctionWizardModal
                     id={sellId}
                     amount={sellValueAmount}
+                    authPact = {authPact}
                     onClose={() => setShowWizard(false)}
-                    onSubmit={(data) => {
-                        setSellId(data.sellId);
-                        setSellValueAmount(data.amount);
-                        setSellValueStartPrice(data.startPrice);
-                        setSellValueExpired(data.duration);
-                        authSpending(new Event("submit"));
-                    }}
                 />
             )}
         </div>

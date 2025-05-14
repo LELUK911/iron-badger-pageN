@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
+import { setApprovalPact } from "../../../utils/BlockchainOperation/IronPactOp";
+import { ironFallAddress, newDownAuctionPact } from "../../../utils/BlockchainOperation/IronFall";
+import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
+import { calculateSecondToDay, NumConvBig } from "../../../utils/helper/helper";
 
-export const NewDownwardAuctionWizardModal = ({ onClose, onSubmit, id, amount }) => {
+export const NewDownwardAuctionWizardModal = ({ onClose, id, amount, authPact }) => {
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState({
         sellId: "",
@@ -9,6 +13,8 @@ export const NewDownwardAuctionWizardModal = ({ onClose, onSubmit, id, amount })
         duration: "",
         dropTolerance: ""
     });
+
+    const signer = useEthersSigner();
 
     const steps = [
         {
@@ -58,11 +64,32 @@ export const NewDownwardAuctionWizardModal = ({ onClose, onSubmit, id, amount })
         setFormData({ ...formData, [current.key]: e.target.value });
     };
 
-    const handleNext = () => {
+    const newAuctionOp = async () => {
+        try {
+            if (!authPact) {
+                await setApprovalPact(ironFallAddress, true, signer);
+                alert(`Approval tx submited`);
+            }
+            await newDownAuctionPact(
+                formData.sellId,
+                formData.amount,
+                NumConvBig(formData.startPrice),
+                calculateSecondToDay(formData.duration),
+                (formData.dropTolerance * 100).toString(),
+                signer
+            );
+            alert(`New Downward Auction tx submited`);
+        } catch (error) {
+            console.error(error);
+            alert("Transaction failed! Check console for details.");
+        }
+    };
+
+    const handleNext = async () => {
         if (step < steps.length - 1) {
             setStep(step + 1);
         } else {
-            onSubmit(formData);
+            await newAuctionOp();
             onClose();
         }
     };
@@ -75,6 +102,14 @@ export const NewDownwardAuctionWizardModal = ({ onClose, onSubmit, id, amount })
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
             <div className="w-full max-w-md p-6 bg-slate-900 rounded-lg border border-gray-700 text-white shadow-lg relative">
                 <h2 className="text-xl font-semibold text-center mb-6">Create New Downward Auction</h2>
+
+                {/* Progress Bar */}
+                <div className="relative h-2 w-full bg-gray-700 rounded-full overflow-hidden mb-6">
+                    <div
+                        className="absolute top-0 left-0 h-full bg-orange-500 transition-all duration-500"
+                        style={{ width: `${((step + 1) / steps.length) * 100}%` }}
+                    ></div>
+                </div>
 
                 <div className="mb-4">
                     <label className="block text-lg font-semibold text-orange-400 mb-1">

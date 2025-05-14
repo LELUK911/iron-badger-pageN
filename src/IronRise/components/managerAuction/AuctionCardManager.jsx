@@ -3,6 +3,7 @@ import { useState } from "react";
 import { closeUpAuction, withDrawPactUpAuction } from "../../../utils/BlockchainOperation/IronRiseOp"
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner"
 import { BigNumConv, calculateExpired, renderAddress } from "../../../utils/helper/helper"
+import { Countdown } from "../../../utils/helper/CountDown";
 
 
 export const AuctionCardManager = ({ auction }) => {
@@ -72,7 +73,8 @@ export const AuctionCardManager = ({ auction }) => {
                         { label: "Auction Status", value: auction.open ? "Open" : "Closed" },
                         { label: "Expiration Date", value: calculateExpired(auction.expired.toString()) },
                         {
-                            label: "Time Remaining", value: "..." // Aggiorna con il tuo Countdown 
+                            label: "Time Remaining",
+                            value: <Countdown targetTimestamp={+auction.expired.toString()} />
                         }
                     ].map((item, index) => (
                         <div key={index} className="flex justify-between items-center border-b border-gray-600 pb-2">

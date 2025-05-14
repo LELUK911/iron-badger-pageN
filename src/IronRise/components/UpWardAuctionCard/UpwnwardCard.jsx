@@ -264,9 +264,9 @@ export const UpwardCard = ({ id }) => {
                     </p>
                 </div>
 
-                <div className="w-full max-w-3xl">
+                <div className="w-full max-w-3xl  bg-slate-700 p-8 rounded-lg ">
                     <h3 className="text-2xl font-bold mb-4">How It Works</h3>
-                    <ul className="list-disc list-inside space-y-3 text-base text-gray-300">
+                    <ul className="list-disc list-inside space-y-3  font-semibold text-base text-gray-200">
                         <li>
                             Approve the auction contract to spend your tokens this enables you to place your bid.
                         </li>
@@ -287,7 +287,7 @@ export const UpwardCard = ({ id }) => {
                             section, where you can also withdraw any available balance.
                         </li>
                     </ul>
-                    <p className="mt-6 text-yellow-400 text-sm">
+                    <p className="mt-6 text-yellow-400 font-semibold text-sm">
                         ⚠️ Please make sure you understand the process before bidding. Your funds will be locked until you are either outbid or the auction is closed.
                     </p>
                 </div>

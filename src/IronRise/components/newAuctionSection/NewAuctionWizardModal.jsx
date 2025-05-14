@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
+import { newAuctionPact, ironRiseAddress } from "../../../utils/BlockchainOperation/IronRiseOp";
+import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
+import { NumConvBig, calculateSecondToDay } from "../../../utils/helper/helper";
+import { setApprovalPact } from "../../../utils/BlockchainOperation/IronPactOp";
 
-export const NewAuctionWizardModal = ({ onClose, onSubmit, id, amount }) => {
+export const NewAuctionWizardModal = ({ onClose, id, amount, authPact }) => {
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState({
         sellId: "",
@@ -8,6 +12,8 @@ export const NewAuctionWizardModal = ({ onClose, onSubmit, id, amount }) => {
         startPrice: "",
         duration: "",
     });
+
+    const signer = useEthersSigner();
 
     const steps = [
         {
@@ -30,12 +36,11 @@ export const NewAuctionWizardModal = ({ onClose, onSubmit, id, amount }) => {
         },
         {
             label: "Auction Duration (days)",
-            placeholder: "e.g. 5",
+            placeholder: "min. 7 days",
             key: "duration",
             description: "Specify how long the auction will remain open, in days."
         }
     ];
-
 
     const current = steps[step];
 
@@ -46,20 +51,41 @@ export const NewAuctionWizardModal = ({ onClose, onSubmit, id, amount }) => {
         if (amount) {
             setFormData((prev) => ({ ...prev, amount: amount }));
         }
-    }, [])
-
-
+    }, [id, amount]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [current.key]: e.target.value });
     };
 
-    const handleNext = () => {
+
+
+    const createAuction = async () => {
+        try {
+            if (!authPact) {
+                await setApprovalPact(ironRiseAddress, true, signer)
+                alert(`Approval tx submitted`);
+            }
+            await newAuctionPact(
+                formData.sellId,
+                formData.amount,
+                NumConvBig(+formData.startPrice),
+                calculateSecondToDay(formData.duration),
+                signer
+            );
+            alert("Auction created successfully!");
+            onClose();
+        } catch (error) {
+            console.error("Auction creation failed:", error);
+            alert("Something went wrong. Please check the console.");
+        }
+    };
+
+    const handleNext = async () => {
         if (step < steps.length - 1) {
             setStep(step + 1);
         } else {
-            onSubmit(formData);
-            onClose();
+            await createAuction();
+            onClose()
         }
     };
 
@@ -71,7 +97,12 @@ export const NewAuctionWizardModal = ({ onClose, onSubmit, id, amount }) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
             <div className="w-full max-w-md p-6 bg-slate-900 rounded-lg border border-gray-700 text-white shadow-lg">
                 <h2 className="text-xl font-semibold text-center mb-6">Create New Auction</h2>
-
+                <div className="relative h-2 w-full bg-gray-700 rounded-full overflow-hidden mb-6">
+                    <div
+                        className="absolute top-0 left-0 h-full bg-orange-500 transition-all duration-500"
+                        style={{ width: `${((step + 1) / steps.length) * 100}%` }}
+                    ></div>
+                </div>
                 <div className="mb-4">
                     <label className="block text-lg font-semibold text-orange-400 mb-1">
                         {current.label}
@@ -88,7 +119,6 @@ export const NewAuctionWizardModal = ({ onClose, onSubmit, id, amount }) => {
                     />
                 </div>
 
-
                 <div className="flex justify-between mt-4">
                     <button
                         onClick={handleBack}
@@ -101,9 +131,10 @@ export const NewAuctionWizardModal = ({ onClose, onSubmit, id, amount }) => {
                         onClick={handleNext}
                         className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-sm font-bold rounded-lg shadow-md transition-all"
                     >
-                        {step === steps.length - 1 ? "Submit" : "Next"}
+                        {step === steps.length - 1 ? "Submit Auction" : "Next"}
                     </button>
                 </div>
+
                 <button
                     onClick={onClose}
                     className="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold"

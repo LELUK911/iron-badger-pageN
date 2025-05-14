@@ -17,10 +17,7 @@ export const WalletSection = () => {
     const [rows, setRows] = useState([])
     const [sellId, setSellId] = useState("");
     const [sellValueAmount, setSellValueAmount] = useState("");
-    const [sellValueStartPrice, setSellValueStartPrice] = useState("");
-    const [sellValueToleranceDiscount, setSellValueToleranceDiscount] = useState("");
     const [showWizard, setShowWizard] = useState(false);
-    const [sellValueExpired, setSellValueExpired] = useState("");
     const [authPact, setAuthPact] = useState({})
     const account = useAccount()
     const signer = useEthersSigner()
@@ -114,27 +111,7 @@ export const WalletSection = () => {
         }
     }
 
-    const newUpwardAuctionOp = async () => {
-        if (account.address) {
-            try {
-                if (!authPact) {
-                    await setApprovalPact(ironFallAddress, true, signer)
-                    alert(`Approval tx submited`);
-                }
-                await newDownAuctionPact(sellId, sellValueAmount, NumConvBig((+sellValueStartPrice)), calculateSecondToDay(sellValueExpired), (sellValueToleranceDiscount * 100).toString(), signer)
-                alert(`New Downward Auction tx submited`);
-            } catch (error) {
-                console.error(error)
-                alert("Transaction failed! Check console for details.");
-            }finally{
-                fetchAuthPact()
-            }
-        } else {
-            alert("Connect wallet and select Pact for new Auction")
-        }
-    }
-
-
+    
     useEffect(() => {
         if (account.address) {
             fetchData()
@@ -150,10 +127,7 @@ export const WalletSection = () => {
     const handleInputChangeSellId = (e) => {
         setSellId(e.target.value);
     };
-    const authSpending = async (e) => {
-        e.preventDefault();
-        await newUpwardAuctionOp()
-    };
+
 
 
 
@@ -248,15 +222,9 @@ export const WalletSection = () => {
                 <NewDownwardAuctionWizardModal
                     id={sellId}
                     amount={sellValueAmount}
+                    authPact = {authPact}
                     onClose={() => setShowWizard(false)}
-                    onSubmit={(data) => {
-                        setSellId(data.sellId);
-                        setSellValueAmount(data.amount);
-                        setSellValueStartPrice(data.startPrice);
-                        setSellValueExpired(data.duration);
-                        setSellValueToleranceDiscount(data.dropTolerance);
-                        authSpending(new Event("submit"));
-                    }}
+                
                 />
             )}
         </div>
