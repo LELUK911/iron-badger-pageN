@@ -28,6 +28,8 @@ export const NewPactForm = () => {
     const [userData, setUserData] = useState(0)
     const [currentStep, setCurrentStep] = useState(0);
     const [showCollateral, setShowCollateral] = useState("0");
+    const [showBalLoan, setShowBalLoan] = useState("0");
+
     const formValues = watch()
 
 
@@ -74,10 +76,30 @@ export const NewPactForm = () => {
         }
     }
 
-
     useEffect(() => {
         showCollateralBalance()
     }, [formValues.tokenCollateral])
+
+
+
+
+    const showTokenLoanBalance = async () => {
+        try {
+            const balance = await getBalance(formValues.tokenLoan, account.address)
+            setShowBalLoan(BigNumConv(balance));
+            console.log("balance ", BigNumConv(balance))
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    useEffect(() => {
+        showTokenLoanBalance()
+    }, [formValues.tokenLoan])
+
+
+
+
 
     const onSubmit = async (data) => {
         const expiredPact = Math.floor(Date.now() / 1000) + (data.expiredPact * secondXday);
@@ -304,6 +326,9 @@ export const NewPactForm = () => {
                                         }
                                         onChange={(value) => setValue("tokenLoan", value)}
                                     />
+                                    <label className="block mt-2 text-mg  text-yellow-400 font-medium">
+                                        Balance: {showBalLoan ? Number(showBalLoan).toFixed(4) : "0.0000"} 
+                                    </label>
                                     <input type="hidden" {...register("tokenLoan")} />
                                 </div>
 
