@@ -15,7 +15,7 @@ export const newAuctionPact = async (_id, _amount, _startPrice, _expired, signer
         return tx
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 export const instalmentPot = async (_index, _amount, signer) => {
@@ -28,7 +28,7 @@ export const instalmentPot = async (_index, _amount, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error)
-        return
+        return false
     }
 };
 export const withdrawMoneyUpAuction = async (_amount, signer) => {
@@ -39,8 +39,8 @@ export const withdrawMoneyUpAuction = async (_amount, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
-    }
+        return false
+    } 
 };
 export const closeUpAuction = async (_index, signer) => {
     try {
@@ -50,7 +50,7 @@ export const closeUpAuction = async (_index, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const withDrawPactUpAuction = async (_index, signer) => {
@@ -61,7 +61,7 @@ export const withDrawPactUpAuction = async (_index, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const showAuctionsList = async () => {
@@ -73,7 +73,7 @@ export const showAuctionsList = async () => {
         return data
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 export const showFeesSystem = async () => {
@@ -85,7 +85,7 @@ export const showFeesSystem = async () => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const showAuction = async (_index) => {
@@ -96,7 +96,7 @@ export const showAuction = async (_index) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const showUserBalanceFree = async (_user) => {
@@ -107,7 +107,7 @@ export const showUserBalanceFree = async (_user) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const showUserBalanceLock = async (_user) => {
@@ -119,7 +119,7 @@ export const showUserBalanceLock = async (_user) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 

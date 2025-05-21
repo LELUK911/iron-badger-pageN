@@ -10,6 +10,7 @@ import { amountPactBuyInForgeTooltip, pactIDTooltip, forgeIDTooltip } from '../.
 import { useAccount } from 'wagmi';
 import { useEthersSigner } from '../../../../utils/helper/ClientToSigner.jsx';
 import { tableStyle } from '../../../../utils/Information/constantPage.js';
+import { toast } from 'react-toastify';
 
 
 
@@ -83,16 +84,28 @@ export const MarketList = () => {
             const powerOfSpend = allowance.toString() || "0";
             console.log("allowance", powerOfSpend)
             if (powerOfSpend < NumConvBig(amountToken.toString())) {
-                await approveERC20(ironForgeAddress, NumConvBig(amountToken), signer, tokenAddress);
-                alert(`Spending token Approve`);
+                const response = await approveERC20(ironForgeAddress, NumConvBig(amountToken), signer, tokenAddress);
+                if(response != false){
+                    toast.success(`Spending token Approve`);
+                }else{
+                    toast.error(`Approval Transaction failed`);
+                }
             }
-            await buyPactTX(buyId, _forgeId, buyAmount, signer)
-            alert(`Pacts buyed!`);
-            await withDrawPactBuy(buyId, signer)
-            alert(`Pact withdrawed!`);
+            const responseB =  await buyPactTX(buyId, _forgeId, buyAmount, signer)
+            if(responseB != false){
+                toast.success(`Pacts buyed!`);
+            }else{
+                toast.error(`Buyed Transaction failed details`);
+            }
+            const responseW = await withDrawPactBuy(buyId, signer)
+            if(responseW!= false){
+                toast.success(`Pact withdrawed!`);
+            }else{
+                toast.error(`Withdrawed Transaction failed details`);
+            }
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error(`Transaction failed details ${error}`);
         } finally {
             setIsLoadingBuy(false);
         }
@@ -102,10 +115,10 @@ export const MarketList = () => {
         try {
             await withDrawPactBuy(buyId, signer
             )
-            alert(`Pact withdrawed!`);
+            toast.success(`Pact withdrawed!`);
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! Check console for details.");
         } finally {
             setIsLoadingWith(false);
         }

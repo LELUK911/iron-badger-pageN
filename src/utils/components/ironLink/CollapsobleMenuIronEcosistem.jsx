@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export const CollapsobleMenuIronEcosistem = () => {
+export const CollapsobleMenuIronEcosistem = ({ actualID }) => {
     const listEcosistem = [
         { name: "Badger Brotherhood", path: "/" },
         { name: "Iron Pact", path: "/app.ironPact" },
@@ -24,16 +24,22 @@ export const CollapsobleMenuIronEcosistem = () => {
             {isOpen && (
                 <div className="absolute left-0 w-48 bg-slate-900 rounded-lg shadow-lg border border-gray-700 z-50">
                     <ul className="py-2">
-                        {listEcosistem.map((item, index) => (
-                            <li key={index}>
-                                <a
-                                    href={item.path}
-                                    className="block px-4 py-2 text-gray-300 hover:text-white hover:bg-slate-700 rounded-md transition-colors duration-200"
-                                >
-                                    {item.name}
-                                </a>
-                            </li>
-                        ))}
+                        {listEcosistem.map((item, index) => {
+                            console.log(actualID)
+                            if (index == actualID) {
+                                return (<></>)
+                            } else {
+                                return (
+                                    <li key={index}>
+                                        <a
+                                            href={item.path}
+                                            className="block px-4 py-2 text-gray-300 hover:text-white hover:bg-slate-700 rounded-md transition-colors duration-200"
+                                        >
+                                            {item.name}
+                                        </a>
+                                    </li>)
+                            }
+                        })}
                     </ul>
                 </div>
             )}

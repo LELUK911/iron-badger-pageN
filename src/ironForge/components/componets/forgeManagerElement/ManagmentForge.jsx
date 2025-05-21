@@ -7,6 +7,7 @@ import { PactCard } from "../../../../utils/components/PactCard/PactCard"
 import { useWalletContext } from "../../../../utils/helper/WalletContext"
 import { useAccount } from "wagmi"
 import { useEthersSigner } from "../../../../utils/helper/ClientToSigner"
+import { toast } from "react-toastify"
 
 export const ManagmentForge = () => {
     const [showPactCard, setShowPactCard] = useState(false)
@@ -36,11 +37,15 @@ export const ManagmentForge = () => {
     const withdrawBalance = async () => {
         setIsLoadingWith(true);
         try {
-            await withdrawTokenSale(tokenAddress, signer)
-            alert("Withdraw Tx submitted");
+            const response = await withdrawTokenSale(tokenAddress, signer)
+            if(response != false){
+                toast.success("Withdraw Tx submitted")
+            }else{
+                toast.error("Withdraw Tx failed")
+            }
         } catch (error) {
             console.error(error)
-            alert(`Tx unsubmit with error -> ${error}`)
+            toast.error(`Tx unsubmit with error -> ${error}`)
         } finally {
             setIsLoadingWith(false);
         }
@@ -49,11 +54,16 @@ export const ManagmentForge = () => {
     const deleteLaunchOp = async () => {
         setIsLoadingDel(true);
         try {
-            await deleteLaunchTX(forgeSelect.pactId.toString(), forgeSelect.forgeId.toString(), signer)
-            alert(`Delete Forge Tx submitted  id -> ${forgeSelect.pactId.toString()}`);
+            const response = await deleteLaunchTX(forgeSelect.pactId.toString(), forgeSelect.forgeId.toString(), signer)
+            if(response != false){
+                toast.success(`Delete Forge Tx submitted  id -> ${forgeSelect.pactId.toString()}`)
+            }else{
+                toast.error(`Delete Forge Tx failed  id -> ${forgeSelect.pactId.toString()}`)
+            }
+         
         } catch (error) {
             console.error(error)
-            alert(`Tx unsubmit with error -> ${error}`)
+            toast.error(`Tx unsubmit with error -> ${error}`)
         } finally {
             setIsLoadingDel(false);
         }
@@ -264,7 +274,7 @@ export const ManagmentForge = () => {
                     <button
                         onClick={() => {
                             if (forgeSelect == null || forgeSelect.forgeId == null) {
-                                alert("Please select a valid pact before continuing.");
+                                toast.info("Please select a valid pact before continuing.");
                                 return;
                             }
                             setShowPactCard(true);
@@ -276,7 +286,7 @@ export const ManagmentForge = () => {
                     <button
                         onClick={() => {
                             if (!activeAccount.address) {
-                                alert("Please select a valid pact before deleting forge.");
+                                toast.info("Please select a valid pact before deleting forge.");
                             } else {
                                 deleteLaunchOp();
                             }
@@ -302,7 +312,7 @@ export const ManagmentForge = () => {
                     <button
                         onClick={() => {
                             if (!activeAccount.address) {
-                                alert("Connect Wallet to watch data.");
+                                toast.info("Connect Wallet to watch data.");
                             } else {
                                 fetchData();
                             }

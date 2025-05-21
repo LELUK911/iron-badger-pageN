@@ -3,6 +3,7 @@ import { setApprovalPact } from "../../../utils/BlockchainOperation/IronPactOp";
 import { ironFallAddress, newDownAuctionPact } from "../../../utils/BlockchainOperation/IronFall";
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
 import { calculateSecondToDay, NumConvBig } from "../../../utils/helper/helper";
+import { toast } from "react-toastify";
 
 export const NewDownwardAuctionWizardModal = ({ onClose, id, amount, authPact }) => {
     const [step, setStep] = useState(0);
@@ -67,10 +68,14 @@ export const NewDownwardAuctionWizardModal = ({ onClose, id, amount, authPact })
     const newAuctionOp = async () => {
         try {
             if (!authPact) {
-                await setApprovalPact(ironFallAddress, true, signer);
-                alert(`Approval tx submited`);
+                const response = await setApprovalPact(ironFallAddress, true, signer);
+                if(response != false){
+                    toast.success(`Approval transaction submited`);
+                }else{
+                    toast.error(`Approval transaction failed`);
+                }
             }
-            await newDownAuctionPact(
+            const response = await newDownAuctionPact(
                 formData.sellId,
                 formData.amount,
                 NumConvBig(formData.startPrice),
@@ -78,10 +83,14 @@ export const NewDownwardAuctionWizardModal = ({ onClose, id, amount, authPact })
                 (formData.dropTolerance * 100).toString(),
                 signer
             );
-            alert(`New Downward Auction tx submited`);
+            if(response != false){
+                toast.success(`New Downward Auction tx submited`);
+            }else{
+                toast.error(`New Downward Auction tx failed`);
+            }
         } catch (error) {
             console.error(error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! ",error);
         }
     };
 

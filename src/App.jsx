@@ -23,6 +23,10 @@ import { DownwardAuctionId } from "./pages/IronFallPages/DownWardAuctionId"
 import { FaucetPage } from "./tesnet/FaucetPage/FaucetPage"
 import { WalletProvider } from './utils/helper/WalletContext.jsx'
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 import '@rainbow-me/rainbowkit/styles.css';
 import {
   getDefaultConfig,
@@ -115,6 +119,18 @@ function App() {
                     </Route>
                   </Routes>
                 </Router>
+                <ToastContainer
+                  position="top-right"
+                  autoClose={4000}
+                  hideProgressBar={false}
+                  newestOnTop
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="dark"
+                />
               </PowSfuelHelp>
             </RainbowKitProvider>
           </WalletProvider>

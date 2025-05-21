@@ -9,6 +9,7 @@ import { amountToForgeTooltip, pactIDTooltip } from '../../../../utils/component
 import { useAccount } from 'wagmi'
 import { useEthersSigner } from '../../../../utils/helper/ClientToSigner.jsx'
 import { tableStyle } from '../../../../utils/Information/constantPage.js'
+import { toast } from 'react-toastify'
 
 
 
@@ -78,23 +79,35 @@ export const BoardList = () => {
             await isApprovalForAll(account.address, ironForgeAddress)
         } catch (error) {
             console.error(error)
+            toast.error("Problem with auth spending Pact")
         }
     }
 
     const newForge = async () => {
+        if (!account.address){
+            toast.error("Not wallet connect");
+            return        
+        }
         try {
             setIsLoading(true)
             const _ironForgeAuth = await isApprovalForAll(account.address, ironForgeAddress)
-            console.log("Auth", _ironForgeAuth)
             if (!_ironForgeAuth) {
-                await setApprovalPact(ironForgeAddress, true, signer)
-                alert("Approval tx submitted");
+                const response = await setApprovalPact(ironForgeAddress, true, signer)
+                if(response != false){
+                    toast.success("Approval tx submitted");
+                }else{
+                    toast.error("Approval Transaction failed");
+                }
             }
-            await launchNewPactTX(sellId.toString(), sellValueAmount.toString(), signer)
-            alert(`Launch new Pact tx submitted!`);
+            const response = await launchNewPactTX(sellId.toString(), sellValueAmount.toString(), signer)
+            if(response != false){
+                toast.success(`Launch new Pact tx submitted!`);
+            }else{
+                toast.error("Transaction failed");
+            }
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed, ",error);
         }finally{
             setIsLoading(false)
         } 

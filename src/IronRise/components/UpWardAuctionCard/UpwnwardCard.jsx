@@ -10,6 +10,7 @@ import { auctionMoneyToken } from '../../../utils/Information/constantPage';
 import { approveERC20, getBalance, readAllowance } from '../../../utils/BlockchainOperation/ERC20op';
 import { requestNewInstalmentUp } from '../../../API/api';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 
@@ -135,14 +136,23 @@ export const UpwardCard = ({ id }) => {
             const powerOfSpend = allowance.toString() || "0";
             console.log("allowance", allowance)
             if (+powerOfSpend < +NumConvBig(amountBet).toString()) {
-                await approveERC20(ironRiseAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
-                alert("Approve transaction submitted");
+                const response = await approveERC20(ironRiseAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
+                if(response != false){
+                    toast.success("Approve transaction submitted");
+                }else{
+                    toast.error("Approve transaction failed");
+                }
             }
-            await instalmentPot(id, NumConvBig(amountBet), signer)
-            alert(`Pot updated successfully!`);
+            const response = await instalmentPot(id, NumConvBig(amountBet), signer)
+            if(response != false){
+                toast.success("Pot updated successfully!");
+            }else{
+                toast.error("Pot updated failed");
+            }
+
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! Check console for details.");
         } finally {
             setIsLoadingBid(false);
         }
@@ -420,11 +430,15 @@ export const UpwardCard = ({ id }) => {
                             onClick={async () => {
                                 setIsLoadingCls(true);
                                 try {
-                                    await closeUpAuction(id, signer);
-                                    alert("Auction closed successfully!");
+                                    const response = await closeUpAuction(id, signer);
+                                    if(response != false){
+                                        toast.success("Auction closed successfully!");
+                                    }else{
+                                        toast.error("Auction closed failed!")
+                                    }
                                 } catch (error) {
                                     console.error("Transaction failed:", error);
-                                    alert("Transaction failed! Check console for details.");
+                                    toast.error("Transaction failed, ",error);
                                 } finally {
                                     setIsLoadingCls(false);
                                 }
@@ -453,11 +467,15 @@ export const UpwardCard = ({ id }) => {
                             onClick={async () => {
                                 setIsLoadingWit(true);
                                 try {
-                                    await withDrawPactUpAuction(id, signer);
-                                    alert("Pact withdrawn successfully!");
+                                    const response = await withDrawPactUpAuction(id, signer);
+                                    if(response != false){
+                                        toast.success("Pact withdrawn successfully!");
+                                    }else{
+                                        toast.error("Pact withdrawn failed!");
+                                    }
                                 } catch (error) {
                                     console.error("Transaction failed:", error);
-                                    alert("Transaction failed! Check console for details.");
+                                    toast.error("Transaction failed! ",error);
                                 } finally {
                                     setIsLoadingWit(false);
                                 }

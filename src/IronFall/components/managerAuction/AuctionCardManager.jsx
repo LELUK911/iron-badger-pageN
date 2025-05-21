@@ -3,6 +3,7 @@ import { changeTolleratedDiscountTX, closeDownAuction, emergencyCloseDownAuction
 import { useState } from "react"
 import { Countdown } from "../../../utils/helper/CountDown"
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner"
+import { toast } from "react-toastify"
 
 export const AuctionCardManager = ({ auction }) => {
     const [dropValueToken, setDropValueToken] = useState(0)
@@ -32,9 +33,15 @@ export const AuctionCardManager = ({ auction }) => {
     const closeAuction = async () => {
         try {
             const tx = await closeDownAuction(auction.auctionIndex, signer)
-            alert(`tx submit -> ${tx}`)
+            if(tx != false){
+                toast.success(`Auction Close transaction submitted`)
+            }else{
+                toast.error(`Auction Close transaction failed`)
+            }
         } catch (error) {
             console.error(error)
+            toast.error(`Transaction failed! ${error}`)
+
         }
     }
 
@@ -42,9 +49,14 @@ export const AuctionCardManager = ({ auction }) => {
     const emergencyCloseAuction = async () => {
         try {
             const tx = await emergencyCloseDownAuction(auction.auctionIndex, signer)
-            alert(`tx submit -> ${tx}`)
+            if(tx != false){
+                toast.success(`Emergency Auction Close transaction submitted`)
+            }else{
+                toast.error(`Emergency Auction Close transaction failed`)
+            }
         } catch (error) {
             console.error(error)
+            toast.error(`Transaction failed! ${error}`)
         }
     }
 
@@ -55,9 +67,14 @@ export const AuctionCardManager = ({ auction }) => {
     const changeTolleratedDiscountOP = async () => {
         try {
             const tx = await changeTolleratedDiscountTX(auction.auctionIndex, dropPerc, signer)
-            alert(`tx submit -> ${tx}`)
+            if(tx != false){
+                toast.success(`Change Tollerated Discount transaction submitted`)
+            }else{
+                toast.error(`Change Tollerated Discount transaction failed`)
+            }
         } catch (error) {
             console.error(error)
+            toast.error(`Transaction failed! ${error}`)
         }
     }
 
@@ -65,10 +82,15 @@ export const AuctionCardManager = ({ auction }) => {
     const withDrawPact = async () => {
         try {
             const tx = await withDrawPactDownAuction(auction.auctionIndex, signer)
-            alert(`tx submit -> ${tx}`)
-
+            if(tx != false){
+                toast.success(`WithDraw Pact DownAuction transaction submitted`)
+            }else{
+                toast.error(`WithDraw Pact DownAuction transaction failed`)
+            }
+ 
         } catch (error) {
             console.error(error)
+            toast.error(`Transaction failed! ${error}`)
         }
     }
 

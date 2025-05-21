@@ -24,7 +24,7 @@ export const newDownAuctionPact = async (_id, _amount, _startPrice, _expired, _t
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 
@@ -37,7 +37,7 @@ export const downInstalmentPot = async (_index, _amount, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const closeDownAuction = async (_index, signer) => {
@@ -48,7 +48,7 @@ export const closeDownAuction = async (_index, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const emergencyCloseDownAuction = async (_index, signer) => {
@@ -59,7 +59,7 @@ export const emergencyCloseDownAuction = async (_index, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const changeTolleratedDiscountTX = async (_index, _newDiscount, signer) => {
@@ -70,7 +70,7 @@ export const changeTolleratedDiscountTX = async (_index, _newDiscount, signer) =
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const withdrawMoneyDownAuction = async (_amount, signer) => {
@@ -81,7 +81,7 @@ export const withdrawMoneyDownAuction = async (_amount, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const withDrawPactDownAuction = async (_index, signer) => {
@@ -92,7 +92,7 @@ export const withDrawPactDownAuction = async (_index, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 
@@ -105,7 +105,7 @@ export const showDownAuction = async (_index, account) => {
         return data
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 
@@ -117,7 +117,7 @@ export const showDownAuctionList = async () => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const showDownFeesSystem = async () => {
@@ -128,7 +128,7 @@ export const showDownFeesSystem = async () => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const downshowUserBalanceFree = async (_user) => {
@@ -139,7 +139,7 @@ export const downshowUserBalanceFree = async (_user) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const downshowUserBalanceLock = async (_user) => {
@@ -150,7 +150,7 @@ export const downshowUserBalanceLock = async (_user) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 

@@ -10,6 +10,7 @@ import { approveERC20, getBalance, readAllowance } from '../../../utils/Blockcha
 import { useAccount } from 'wagmi';
 import { requestNewInstalmentDown } from '../../../API/api';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 
@@ -58,15 +59,23 @@ export const DownwardCard = ({ id }) => {
             const allowance = await readAllowance(auctionMoneyToken, account.address, ironFallAddress)
             const powerOfSpend = allowance.toString() || "0";
             if (+powerOfSpend < +NumConvBig(amountBet).toString()) {
-                await approveERC20(ironFallAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
-                alert("Approve transaction submitted");
+                const response = await approveERC20(ironFallAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
+                if(response!=false){
+                    toast.success("Approve transaction submitted");
+                }else{
+                    toast.error("Approve transaction failed");
+                }
 
             }
-            await downInstalmentPot(id, NumConvBig(amountBet), signer)
-            alert(`Pot updated successfully!`);
+            const response = await downInstalmentPot(id, NumConvBig(amountBet), signer)
+            if(response!= false){
+                toast.success(`Pot updated successfully!`);
+            }else{
+                toast.error(`Pot updated failed!`);
+            }
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! ",error);
         } finally {
             setIsLoadingBid(false);
         }
@@ -457,13 +466,17 @@ export const DownwardCard = ({ id }) => {
                                 onClick={async () => {
                                     setIsLoadingCls(true);
                                     try {
-                                       await closeDownAuction(id, signer);
-                                        alert(`Auction closed successfully!`);
+                                        const response = await closeDownAuction(id, signer);
+                                        if(response != false){
+                                            toast.success(`Auction closed successfully!`);
+                                        }else{
+                                            toast.error(`Auction closed failed!`);
+                                        }
                                     
             
                                     } catch (error) {
                                         console.error("Transaction failed:", error);
-                                        alert("Transaction failed! Check console for details.");
+                                        toast.error("Transaction failed! ",error);
                                     } finally {
                                         setIsLoadingCls(false);
                                     }
@@ -503,12 +516,16 @@ export const DownwardCard = ({ id }) => {
                                 onClick={async () => {
                                     setIsLoadingWit(true);
                                     try {
-                                        await withDrawPactDownAuction(id, signer);
-                                        alert(`Withdraw auctioned pacts successfully!`);
+                                        const response = await withDrawPactDownAuction(id, signer);
+                                        if(response != false){
+                                            toast.success(`Withdraw auctioned pacts successfully!`);
+                                        }else{
+                                            toast.error(`Withdraw auctioned pacts failed!`);
+                                        }
                                      
                                     } catch (error) {
                                         console.error("Transaction failed:", error);
-                                        alert("Transaction failed! Check console for details.");
+                                        toast.error("Transaction failed! ",error);
                                     } finally {
                                         setIsLoadingWit(false);
                                     }

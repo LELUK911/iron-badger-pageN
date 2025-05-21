@@ -23,7 +23,7 @@ export const transferERC20 = async (to, value, signer, tokenAddress) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const transferFromERC20 = async (from, to, value, signer, tokenAddress) => {
@@ -34,7 +34,7 @@ export const transferFromERC20 = async (from, to, value, signer, tokenAddress) =
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const readAllowance = async (addressToken, owner, spender) => {
@@ -45,7 +45,7 @@ export const readAllowance = async (addressToken, owner, spender) => {
         return allowance;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const getName = async (addressToken) => {
@@ -56,7 +56,7 @@ export const getName = async (addressToken) => {
         return name;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const getSymbol = async (addressToken) => {
@@ -67,8 +67,8 @@ export const getSymbol = async (addressToken) => {
         return symbol;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
-    }
+        return false
+    } 
 };
 
 
@@ -81,6 +81,6 @@ export const getBalance = async (addressToken,addressUser) => {
         return balance;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };

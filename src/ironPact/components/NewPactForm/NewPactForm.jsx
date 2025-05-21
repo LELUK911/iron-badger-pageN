@@ -12,6 +12,8 @@ import { useAccount } from "wagmi";
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
 import { BigNumConv, NumConvBig, srcTokenData } from "../../../utils/helper/helper";
 
+import { toast } from 'react-toastify';
+
 
 
 
@@ -89,7 +91,7 @@ export const NewPactForm = () => {
             const powerOfSpend = allowance.toString() || "0";
             if (powerOfSpend < ethers.parseUnits(data.collateral)) {
                 await approveERC20(ironPactAddress, NumConvBig(+data.collateral), signer, data.tokenCollateral)
-                alert("Appoval Tx submitted");
+                toast.success("Appoval Tx submitted");
                 setCanMint(true);
                 setIsLoading(false);
                 return
@@ -107,10 +109,11 @@ export const NewPactForm = () => {
                 data.describes,
                 signer
             );
-            alert("New Pact Minted");
+            toast.success("New Pact Minted");
+            toast.info("Remember Sell your pact on Iron Forge for research liquidity")
         } catch (error) {
             console.error(error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! Check console for details.");
         } finally {
             setCanMint(false);
         }

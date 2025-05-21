@@ -17,7 +17,7 @@ export const launchNewPactTX = async (_id, _amount, signer) => {
         return tx
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 export const withDrawPactBuy = async (_id, signer) => {
@@ -28,7 +28,7 @@ export const withDrawPactBuy = async (_id, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const withdrawTokenSale = async (_token, signer) => {
@@ -39,7 +39,7 @@ export const withdrawTokenSale = async (_token, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const deleteLaunchTX = async (_id, index, signer) => {
@@ -50,7 +50,7 @@ export const deleteLaunchTX = async (_id, index, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const buyPactTX = async (_id, _index, _amount, signer) => {
@@ -61,7 +61,7 @@ export const buyPactTX = async (_id, _index, _amount, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const withdrawPactForLaunch = async (_id, signer) => {
@@ -72,7 +72,7 @@ export const withdrawPactForLaunch = async (_id, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const showPactLaunchListTX = async () => {
@@ -84,7 +84,7 @@ export const showPactLaunchListTX = async () => {
         return data
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 export const showAmountInSell = async (_id) => {
@@ -96,7 +96,7 @@ export const showAmountInSell = async (_id) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const balanceDebtorTX = async (_user, _token) => {
@@ -108,7 +108,7 @@ export const balanceDebtorTX = async (_user, _token) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 

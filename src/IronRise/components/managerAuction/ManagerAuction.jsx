@@ -5,6 +5,7 @@ import { BigNumConv, NumConvBig } from "../../../utils/helper/helper"
 import { useAccount } from "wagmi"
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner"
 import { InfoManagerAuction } from "./InfoManagerAuction"
+import { toast } from "react-toastify"
 
 
 
@@ -83,11 +84,15 @@ export const ManagerAuction = () => {
             setIsLoading(true);
             try {
                 const _withAmount = NumConvBig(withAmount)
-                await withdrawMoneyUpAuction(_withAmount, signer)
-                alert(`Withdrawn ${_withAmount} mdai`)
+                const response = await withdrawMoneyUpAuction(_withAmount, signer)
+                if(response !=false){
+                    toast.success(`Withdrawn ${_withAmount} mdai`)
+                }else{
+                    toast.error("Withdrawn failed")
+                }
             } catch (error) {
                 console.error("Transaction failed:", error);
-                alert("Transaction failed! Check console for details.");
+                toast.error("Transaction failed! ",error);
             } finally {
                 setIsLoading(false);
             }

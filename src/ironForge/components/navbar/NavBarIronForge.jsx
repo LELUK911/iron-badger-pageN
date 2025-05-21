@@ -28,6 +28,7 @@ export const NavBarIronForge = () => {
     const renderOnDesktop = () => (
         <div className="flex space-x-7 font-semibold">
             {/* Link principali */}
+            <CollapsobleMenuIronEcosistem actualID={2} />
             {navLinks.map((link) => (
                 <Link
                     key={link.name}
@@ -44,7 +45,6 @@ export const NavBarIronForge = () => {
                 </Link>
             ))}
             {/* Ecosistem */}
-            <CollapsobleMenuIronEcosistem />
             <div className="hover:text-indigo-400 transition-colors">
                 <FeedbackDropdown />
             </div>
@@ -68,6 +68,7 @@ export const NavBarIronForge = () => {
                 >
                     <div className="flex flex-col items-center space-y-4 py-4">
                         {/* Link principali */}
+                        <CollapsobleMenuIronEcosistem actualID={2} />
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
@@ -85,7 +86,6 @@ export const NavBarIronForge = () => {
                             </Link>
                         ))}
                         {/* Ecosistem */}
-                        <CollapsobleMenuIronEcosistem />
                         <div className="hover:text-indigo-400 transition-colors">
                             <FeedbackDropdown />
                         </div>

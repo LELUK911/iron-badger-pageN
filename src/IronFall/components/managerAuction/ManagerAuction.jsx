@@ -5,6 +5,7 @@ import { downshowUserBalanceFree, downshowUserBalanceLock, showDownAuctionList, 
 import { useAccount } from "wagmi"
 import { useEthersSigner } from '../../../utils/helper/ClientToSigner'
 import { InfoManagerAuctionFall } from "./InfoManagerAuctionFall"
+import { toast } from "react-toastify"
 
 
 
@@ -79,11 +80,15 @@ export const ManagerAuction = () => {
         setIsLoading(true)
         try {
             const _withAmount = NumConvBig(truncateToDecimals(withAmount, 18))
-            await withdrawMoneyDownAuction(_withAmount, signer)
-            alert(`Withdraw ${withAmount} mdai successfully!`)
+            const response = await withdrawMoneyDownAuction(_withAmount, signer)
+            if(response!=false){
+                toast.success(`Withdraw ${withAmount} mdai successfully!`)
+            }else{
+                toast.error(`Withdraw ${withAmount} mdai failed!`)
+            }
         } catch (error) {
             console.error("Transaction failed:", error)
-            alert("Transaction failed! Check console for details.")
+            toast.error("Transaction failed! ",error)
         } finally {
             setIsLoading(false)
         }

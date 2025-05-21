@@ -1,11 +1,11 @@
 import { DataGrid } from "@mui/x-data-grid"
-import { balancePactForId, pactDetails, isApprovalForAll, readId, setApprovalPact } from "../../../utils/BlockchainOperation/IronPactOp";
+import { balancePactForId, pactDetails, isApprovalForAll, readId } from "../../../utils/BlockchainOperation/IronPactOp";
 import { useEffect, useState } from "react";
-import { BigNumConv, calculateExpired, calculateSecondToDay, NumConvBig, srcTokenData } from "../../../utils/helper/helper";
-import { ironFallAddress, newDownAuctionPact } from "../../../utils/BlockchainOperation/IronFall";
+import { BigNumConv, calculateExpired,srcTokenData } from "../../../utils/helper/helper";
+import { ironFallAddress } from "../../../utils/BlockchainOperation/IronFall";
 import { PactCard } from "../../../utils/components/PactCard/PactCard";
 import { useAccount } from "wagmi";
-import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
+
 import { NewAuctionInformationFall } from "./NewAuctionInformationFall";
 import { tableStyle } from "../../../utils/Information/constantPage";
 import { NewDownwardAuctionWizardModal } from "./NewDownwardAuctionWizardModal";
@@ -20,7 +20,7 @@ export const WalletSection = () => {
     const [showWizard, setShowWizard] = useState(false);
     const [authPact, setAuthPact] = useState({})
     const account = useAccount()
-    const signer = useEthersSigner()
+
 
 
     const columns = [

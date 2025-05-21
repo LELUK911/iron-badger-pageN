@@ -6,6 +6,7 @@ import { useEthersSigner } from "../../helper/ClientToSigner"
 import { SummaryPact } from "./SummaryPact"
 import { Link } from "react-router-dom"
 import { approveERC20, getBalance, readAllowance } from "../../BlockchainOperation/ERC20op"
+import { toast } from "react-toastify"
 
 
 // eslint-disable-next-line react/prop-types
@@ -168,11 +169,15 @@ export const PactCard = ({ id, onChange }) => {
     const claimReward = async (index) => {
         setIsLoadingClaimReward(true)
         try {
-            await claimRewardForUser(pactDetail.id.toString(), index, signer)
-            alert(`Claim reward for index ${index} submitted!`);
+            const response = await claimRewardForUser(pactDetail.id.toString(), index, signer)
+            if ( response != false){
+                toast.success(`Claim reward for index ${index} submitted!`);
+            }else{
+                toast.error(`Claim reward for index ${index} failed!`);
+            }
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! ",error);
         } finally {
             setIsLoadingClaimReward(false)
         }
@@ -181,11 +186,15 @@ export const PactCard = ({ id, onChange }) => {
     const redeemPact = async () => {
         setIsLoadingSettle(true)
         try {
-            await claimLoan(pactDetail.id.toString(), qty, signer)
-            alert(`Redeem pact submitted!`);
+            const response = await claimLoan(pactDetail.id.toString(), qty, signer)
+            if(response != false){
+                toast.success(`Redeem pact submitted!`);
+            }else{
+                toast.error(`Redeem pact submitted!`);
+            }
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! ",error);
         } finally {
             setIsLoadingSettle(false)
         }
@@ -194,11 +203,15 @@ export const PactCard = ({ id, onChange }) => {
     const claimScoreOP = async () => {
         setIsLoadingClaimScore(true)
         try {
-            await claimScorePoint(pactDetail.id, signer)
-            alert(`Claim score submitted!`);
+            const response = await claimScorePoint(pactDetail.id, signer)
+            if(response != false){
+                toast.success(`Claim score submitted!`);
+            }else{
+                toast.error(`Claim score failed!`);
+            }
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! ",error);
         } finally {
             setIsLoadingClaimScore(false)
         }
@@ -207,11 +220,15 @@ export const PactCard = ({ id, onChange }) => {
     const withdrawCollateralOP = async () => {
         setIsLoadingWithdraw(true)
         try {
-            await withdrawCollateral(pactDetail.id, signer)
-            alert(`Withdraw collateral submitted!`);
+            const response = await withdrawCollateral(pactDetail.id, signer)
+            if(response != false){
+                toast.success(`Withdraw collateral submitted!`);
+            }else{
+                toast.error(`Withdraw collateral failed!`);
+            }
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! ",error);
         } finally {
             setIsLoadingWithdraw(false)
         }
@@ -223,13 +240,22 @@ export const PactCard = ({ id, onChange }) => {
             const _amount = NumConvBig(amountDep)
             const allowance = await readAllowance(pactDetail.tokenLoan, account.address, ironPactAddress)
             if (allowance < _amount) {
-                await approveERC20(ironPactAddress, _amount, signer, pactDetail.tokenLoan)
+                const response = await approveERC20(ironPactAddress, _amount, signer, pactDetail.tokenLoan)
+                if(response!= false ){
+                    toast.success("Approva transaction success")
+                }else{
+                    toast.error("Approva transaction failed")
+                }
             }
-            await depositTokenForInterest(pactDetail.id.toString(), _amount.toString(), signer)
-            alert(`Deposit submitted!`);
+            const response = await depositTokenForInterest(pactDetail.id.toString(), _amount.toString(), signer)
+            if(response!=false){
+                toast.success(`Deposit submitted!`);
+            }else{
+                toast.error("Deposit failed")
+            }
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! ",error);
         } finally {
             setIsLoadingDeposit(false)
         }

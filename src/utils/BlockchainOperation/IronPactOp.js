@@ -19,7 +19,7 @@ export const claimRewardForUser = async (_id, _indexReward, signer) => {
         return tx
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 
@@ -31,7 +31,7 @@ export const claimLoan = async (_id, _amount, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 export const depositTokenForInterest = async (_id, _amount, signer) => {
@@ -42,7 +42,7 @@ export const depositTokenForInterest = async (_id, _amount, signer) => {
         return tx
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 export const claimScorePoint = async (_id, signer) => {
@@ -53,7 +53,7 @@ export const claimScorePoint = async (_id, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const withdrawCollateral = async (_id, signer) => {
@@ -64,7 +64,7 @@ export const withdrawCollateral = async (_id, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const setApprovalPact = async (operator, approved, signer) => {
@@ -75,7 +75,7 @@ export const setApprovalPact = async (operator, approved, signer) => {
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const createNewPactTransaction = async (
@@ -109,7 +109,7 @@ export const createNewPactTransaction = async (
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error)
-        return
+        return false
     }
 };
 export const safeTransferFromPact = async (from, to, id, amount, data, account) => {
@@ -120,7 +120,7 @@ export const safeTransferFromPact = async (from, to, id, amount, data, account) 
         return tx;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const readId = async () => {
@@ -132,7 +132,7 @@ export const readId = async () => {
         return data
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 export const pactDetails = async (_id, account = null) => {
@@ -143,7 +143,7 @@ export const pactDetails = async (_id, account = null) => {
         return data
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 export const pointDebtor = async (debtor) => {
@@ -155,7 +155,7 @@ export const pointDebtor = async (debtor) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const balancePactForId = async (account, id,) => {
@@ -167,7 +167,7 @@ export const balancePactForId = async (account, id,) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const supplyPactForID = async (id) => {
@@ -179,7 +179,7 @@ export const supplyPactForID = async (id) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const isApprovalForAll = async (account, operator,) => {
@@ -190,7 +190,7 @@ export const isApprovalForAll = async (account, operator,) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 export const totalSupply = async (id) => {
@@ -201,7 +201,7 @@ export const totalSupply = async (id) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 
@@ -213,7 +213,7 @@ export const getMissQtaInterest = async (id) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 
@@ -225,7 +225,7 @@ export const getMaxQtaInterest = async (id) => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 };
 
@@ -238,7 +238,7 @@ export const _showLiquidationFees = async () => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 
@@ -250,7 +250,7 @@ export const _showRewardFee = async () => {
         return data;
     } catch (error) {
         console.error("Transaction failed:", error.reason)
-        return
+        return false
     }
 }
 

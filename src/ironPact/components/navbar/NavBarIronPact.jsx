@@ -24,6 +24,7 @@ export const NavBarIronPact = () => {
                         <img src={logo} alt="Iron Pacts Logo" className="w-16 h-auto rounded-lg" />
                     </Link>
                     <div className="hidden md:flex space-x-7 font-semibold">
+                        <CollapsobleMenuIronEcosistem actualID={1}/>
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
@@ -36,7 +37,6 @@ export const NavBarIronPact = () => {
                                 {link.name}
                             </Link>
                         ))}
-                        <CollapsobleMenuIronEcosistem />
                         <div className="hover:text-indigo-400 transition-colors">
                             <FeedbackDropdown />
                         </div>
@@ -66,6 +66,7 @@ export const NavBarIronPact = () => {
             {isOpen && (
                 <div className="md:hidden bg-gray-800 bg-opacity-95 shadow-lg">
                     <div className="flex flex-col items-center space-y-4 py-4">
+                    <CollapsobleMenuIronEcosistem actualID={1}/>
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
@@ -80,7 +81,6 @@ export const NavBarIronPact = () => {
                             </Link>
                         ))}
                         {/* Pulsante Ecosistem */}
-                        <CollapsobleMenuIronEcosistem />
                         <div className="hover:text-indigo-400 transition-colors">
                             <FeedbackDropdown />
                         </div>

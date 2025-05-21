@@ -3,6 +3,7 @@ import { newAuctionPact, ironRiseAddress } from "../../../utils/BlockchainOperat
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
 import { NumConvBig, calculateSecondToDay } from "../../../utils/helper/helper";
 import { setApprovalPact } from "../../../utils/BlockchainOperation/IronPactOp";
+import { toast } from "react-toastify";
 
 export const NewAuctionWizardModal = ({ onClose, id, amount, authPact }) => {
     const [step, setStep] = useState(0);
@@ -62,21 +63,29 @@ export const NewAuctionWizardModal = ({ onClose, id, amount, authPact }) => {
     const createAuction = async () => {
         try {
             if (!authPact) {
-                await setApprovalPact(ironRiseAddress, true, signer)
-                alert(`Approval tx submitted`);
+                const response = await setApprovalPact(ironRiseAddress, true, signer)
+                if(response!= false){
+                    toast.success(`Approval tx submitted`)
+                }else{
+                    toast.error(`Approval tx failed`)
+                }
             }
-            await newAuctionPact(
+            const response = await newAuctionPact(
                 formData.sellId,
                 formData.amount,
                 NumConvBig(+formData.startPrice),
                 calculateSecondToDay(formData.duration),
                 signer
             );
-            alert("Auction created successfully!");
+            if(response != false){
+                toast.success("Auction created successfully!")
+            }else{
+                toast.error("Auction created failed");
+            }
             onClose();
         } catch (error) {
             console.error("Auction creation failed:", error);
-            alert("Something went wrong. Please check the console.");
+            toast.error("Something went wrong, ",error);
         }
     };
 

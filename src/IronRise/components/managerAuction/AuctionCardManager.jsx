@@ -4,6 +4,7 @@ import { closeUpAuction, withDrawPactUpAuction } from "../../../utils/Blockchain
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner"
 import { BigNumConv, calculateExpired, renderAddress } from "../../../utils/helper/helper"
 import { Countdown } from "../../../utils/helper/CountDown";
+import { toast } from "react-toastify";
 
 
 export const AuctionCardManager = ({ auction }) => {
@@ -24,11 +25,15 @@ export const AuctionCardManager = ({ auction }) => {
     const closeAuction = async () => {
         setIsLoadingCls(true);
         try {
-            await closeUpAuction(auction.auctionIndex, signer)
-            alert("Auction closed successfully!");
+            const response = await closeUpAuction(auction.auctionIndex, signer)
+            if(response != false){
+                toast.success("Auction closed successfully!")
+            }else{
+                toast.error("Auction closed failed!")
+            }
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed, ",error);
         } finally {
             setIsLoadingCls(false);
         }
@@ -37,11 +42,15 @@ export const AuctionCardManager = ({ auction }) => {
     const withDrawPact = async () => {
         setIsLoadingWit(true);
         try {
-            await withDrawPactUpAuction(auction.auctionIndex, signer)
-            alert("Pact withdrawn successfully!");
+            const response = await withDrawPactUpAuction(auction.auctionIndex, signer)
+            if(response != false){
+                toast.success("Pact withdrawn successfully!")
+            }else{
+                toast.error("Pact withdrawn failed!")
+            }
         } catch (error) {
             console.error("Transaction failed:", error);
-            alert("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! ",error);
         } finally {
             setIsLoadingWit(false);
         }
