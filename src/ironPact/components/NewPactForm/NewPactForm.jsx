@@ -90,13 +90,17 @@ export const NewPactForm = () => {
             const allowance = await readAllowance(data.tokenCollateral, data.debtor, ironPactAddress, activeAccount);
             const powerOfSpend = allowance.toString() || "0";
             if (powerOfSpend < ethers.parseUnits(data.collateral)) {
-                await approveERC20(ironPactAddress, NumConvBig(+data.collateral), signer, data.tokenCollateral)
-                toast.success("Appoval Tx submitted");
+                const response = await approveERC20(ironPactAddress, NumConvBig(+data.collateral), signer, data.tokenCollateral)
+                if(response!= false){
+                    toast.success("Appoval Tx submitted");
+                }else{
+                    toast.error("Appoval Tx failed");
+                }
                 setCanMint(true);
                 setIsLoading(false);
                 return
             }
-            await createNewPactTransaction(
+            const response = await createNewPactTransaction(
                 data.debtor,
                 data.tokenLoan,
                 ethers.parseEther(data.sizeLoan),
@@ -109,11 +113,15 @@ export const NewPactForm = () => {
                 data.describes,
                 signer
             );
-            toast.success("New Pact Minted");
+            if(response!=false){
+                toast.success("New Pact Minted");
+            }else{
+                toast.error("New Pact Minted failed");
+            }
             toast.info("Remember Sell your pact on Iron Forge for research liquidity")
         } catch (error) {
             console.error(error);
-            toast.error("Transaction failed! Check console for details.");
+            toast.error("Transaction failed! ",error);
         } finally {
             setCanMint(false);
         }

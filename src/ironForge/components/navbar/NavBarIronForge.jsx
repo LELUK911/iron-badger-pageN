@@ -20,7 +20,7 @@ export const NavBarIronForge = () => {
 
     const navLinks = [
         { name: 'Forge Market', path: '/app.ironForge/market' },
-        { name: 'Forge New Pact', path: '/app.ironForge/board' },
+        { name: 'Sell Minted Pact', path: '/app.ironForge/board' },
         { name: 'Managment Forge', path: '/app.ironForge/mangment' },
     ];
 

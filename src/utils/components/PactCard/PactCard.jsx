@@ -190,7 +190,7 @@ export const PactCard = ({ id, onChange }) => {
             if(response != false){
                 toast.success(`Redeem pact submitted!`);
             }else{
-                toast.error(`Redeem pact submitted!`);
+                toast.error(`Redeem pact failed!`);
             }
         } catch (error) {
             console.error("Transaction failed:", error);
