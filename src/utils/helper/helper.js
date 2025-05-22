@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import tokenList from '../Information/tokenList.json'
 import { getName, getSymbol } from "../BlockchainOperation/ERC20op";
 import { JsonRpcProvider } from "ethers";
-import { config } from '../wagmi/config';
+
 import { publicRPC } from "../Information/constantPage";
 
 export const renderAddress = (address) => {
@@ -95,7 +95,7 @@ export const debounce = (func, delay) => {
 };
 
 export const calculateFee = (amount, fee) => {
-    const amountFee = (amount * fee )/ 100;
+    const amountFee = (amount * fee) / 100;
     const netAmount = amount - amountFee;
     return { amountFee, netAmount }
 }
@@ -109,31 +109,33 @@ export const calcPercFromBasisPoints = (amount, basisPoints) => {
 
 
 /*
-export const takeMeProvider = () => {
-    //const api=import.meta.env.VITE_ALCHEMY_ENDPOINT
-    //const provider = new JsonRpcProvider(`https://eth-sepolia.g.alchemy.com/v2/${api}`);
+export const takeMeProvider = async () => {
     const provider = new JsonRpcProvider(`https://testnet.skalenodes.com/v1/juicy-low-small-testnet`);
     provider.pollingInterval = 250;
     return provider;
 }*/
 
+
 export const takeMeProvider = async () => {
     try {
-        const network = await config.publicClient.getNetwork();
-        const rpcUrl = publicRPC[network.chain.id];
+        if (!window.ethereum) throw new Error("No injected provider found");
 
-        if (!rpcUrl) {
-            throw new Error(`No RPC URL configured for chain ID: ${network.chain.id}`);
-        }
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const { chainId } = await provider.getNetwork();
 
-        const provider = new JsonRpcProvider(rpcUrl);
-        provider.pollingInterval = 250;
-        return provider;
-    } catch (error) {
-        console.error("Failed to create provider:", error);
-        throw error;
+        const rpcUrl = publicRPC[chainId];
+        if (!rpcUrl) throw new Error(`Unsupported chainId: ${chainId}`);
+
+        const jsonProvider = new ethers.JsonRpcProvider(rpcUrl);
+        jsonProvider.pollingInterval = 250;
+
+        return jsonProvider;
+    } catch (err) {
+        console.error("Dynamic provider error:", err.message);
+        return null;
     }
 };
+
 
 
 

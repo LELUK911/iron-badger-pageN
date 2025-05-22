@@ -23,6 +23,7 @@ export const PowSfuelHelp = ({ children }) => {
             try {
                 const provider = await takeMeProvider();
                 const balance = await provider.getBalance(address);
+                console.log(provider)
                 if (balance > 0n) return;
                 console.log("No sFUEL found, mining PoW...");
                 alert("We're getting your wallet ready to use the app. Please wait a moment...");
