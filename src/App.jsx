@@ -34,8 +34,9 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import {
-  sepolia,
-  skaleEuropaTestnet
+  skaleEuropaTestnet,
+  skaleEuropa,
+
 } from 'wagmi/chains';
 import {
   QueryClientProvider,
@@ -51,7 +52,7 @@ import { PowSfuelHelp } from "./utils/components/PowGas/PowSfuelHelp.jsx"
 const config = getDefaultConfig({
   appName: import.meta.env.VITE_APPNAME,
   projectId: import.meta.env.VITE_PROJECTID,
-  chains: [skaleEuropaTestnet],
+  chains: [skaleEuropaTestnet,skaleEuropa],
   ssr: true,
 });
 

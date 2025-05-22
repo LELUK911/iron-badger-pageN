@@ -8,7 +8,7 @@ import { ethers } from "ethers";
 import { useWalletContext } from "../../../utils/helper/WalletContext";
 import { Tooltips } from "../../../utils/components/tooltips/Tooltips";
 import { AmountUnitTooltip, CollateralAmountTooltip, RewardRateTooltip, DescriptionTooltip, MaturityDateInDaysTooltip, PrincipalAmountTooltip } from "../../../utils/components/tooltips/tooltipsInformation/helperTips";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
 import { BigNumConv, NumConvBig, srcTokenData } from "../../../utils/helper/helper";
 
@@ -31,7 +31,7 @@ export const NewPactForm = () => {
     const [showBalLoan, setShowBalLoan] = useState("0");
 
     const formValues = watch()
-
+    const chainId = useChainId()
 
     const fetchData = async () => {
         try {
@@ -109,10 +109,10 @@ export const NewPactForm = () => {
 
         setIsLoading(true);
         try {
-            const allowance = await readAllowance(data.tokenCollateral, data.debtor, ironPactAddress, activeAccount);
+            const allowance = await readAllowance(data.tokenCollateral, data.debtor, ironPactAddress(chainId), activeAccount);
             const powerOfSpend = allowance.toString() || "0";
             if (powerOfSpend < ethers.parseUnits(data.collateral)) {
-                const response = await approveERC20(ironPactAddress, NumConvBig(+data.collateral), signer, data.tokenCollateral)
+                const response = await approveERC20(ironPactAddress(chainId), NumConvBig(+data.collateral), signer, data.tokenCollateral)
                 if(response!= false){
                     toast.success("Appoval Tx submitted");
                 }else{

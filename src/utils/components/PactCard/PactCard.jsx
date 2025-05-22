@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { _showRewardFee, _showLiquidationFees, balancePactForId, pactDetails, claimRewardForUser, claimLoan, claimScorePoint, depositTokenForInterest, getMaxQtaInterest, getMissQtaInterest, ironPactAddress, pointDebtor, totalSupply, withdrawCollateral } from "../../BlockchainOperation/IronPactOp"
 import { BigNumConv, convertSecondsToUTC, NumConvBig, srcTokenData } from "../../helper/helper"
-import { useAccount } from "wagmi"
+import { useAccount, useChainId } from "wagmi"
 import { useEthersSigner } from "../../helper/ClientToSigner"
 import { SummaryPact } from "./SummaryPact"
 import { Link } from "react-router-dom"
@@ -30,22 +30,15 @@ export const PactCard = ({ id, onChange }) => {
     const [balanceToken, setBalanceToken] = useState(0)
 
     const [isLoadingClaimReward, setIsLoadingClaimReward] = useState(false);
-    const [, setTxHashClaimReward] = useState(null);
-
     const [isLoadingSettle, setIsLoadingSettle] = useState(false);
-    const [, setTxHashSettle] = useState(null);
-
     const [isLoadingDeposit, setIsLoadingDeposit] = useState(false);
-    const [, setTxHashDeposit] = useState(null);
-
     const [isLoadingClaimScore, setIsLoadingClaimScore] = useState(false);
-    const [, setTxHashClaimScore] = useState(null);
-
     const [isLoadingWithdraw, setIsLoadingWithdraw] = useState(false);
-    const [, setTxHashWithdraw] = useState(null);
+
 
     const account = useAccount()
     const signer = useEthersSigner()
+    const chainId = useChainId()
 
 
 
@@ -238,9 +231,9 @@ export const PactCard = ({ id, onChange }) => {
         setIsLoadingDeposit(true)
         try {
             const _amount = NumConvBig(amountDep)
-            const allowance = await readAllowance(pactDetail.tokenLoan, account.address, ironPactAddress)
+            const allowance = await readAllowance(pactDetail.tokenLoan, account.address, ironPactAddress(chainId))
             if (allowance < _amount) {
-                const response = await approveERC20(ironPactAddress, _amount, signer, pactDetail.tokenLoan)
+                const response = await approveERC20(ironPactAddress(chainId), _amount, signer, pactDetail.tokenLoan)
                 if(response!= false ){
                     toast.success("Approva transaction success")
                 }else{

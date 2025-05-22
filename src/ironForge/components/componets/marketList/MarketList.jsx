@@ -7,7 +7,7 @@ import { approveERC20, getBalance, getSymbol, readAllowance } from '../../../../
 import { PactCard } from "../../../../utils/components/PactCard/PactCard";
 import { Tooltips } from '../../../../utils/components/tooltips/Tooltips.jsx';
 import { amountPactBuyInForgeTooltip, pactIDTooltip, forgeIDTooltip } from '../../../../utils/components/tooltips/tooltipsInformation/helperTips.js';
-import { useAccount } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
 import { useEthersSigner } from '../../../../utils/helper/ClientToSigner.jsx';
 import { tableStyle } from '../../../../utils/Information/constantPage.js';
 import { toast } from 'react-toastify';
@@ -31,6 +31,7 @@ export const MarketList = () => {
     
     const account = useAccount()
     const signer = useEthersSigner()
+    const chainId = useChainId()
 
 
 
@@ -80,11 +81,11 @@ export const MarketList = () => {
     const buyPactOp = async () => {
         setIsLoadingBuy(true);
         try {
-            const allowance = await readAllowance(tokenAddress, account.address, ironForgeAddress)
+            const allowance = await readAllowance(tokenAddress, account.address, ironForgeAddress(chainId))
             const powerOfSpend = allowance.toString() || "0";
             console.log("allowance", powerOfSpend)
             if (powerOfSpend < NumConvBig(amountToken.toString())) {
-                const response = await approveERC20(ironForgeAddress, NumConvBig(amountToken), signer, tokenAddress);
+                const response = await approveERC20(ironForgeAddress(chainId), NumConvBig(amountToken), signer, tokenAddress);
                 if(response != false){
                     toast.success(`Spending token Approve`);
                 }else{

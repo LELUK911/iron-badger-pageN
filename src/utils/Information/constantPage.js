@@ -1,13 +1,12 @@
-export const auctionMoneyToken = '0x1a07D3BD80A2B6335d5871b82fb3270602840e62'
-export const auctionMoneyTokenSepolia = '0x924310eb92092562D693bF811Dd6306018a3bF48'
+export const auctionMoneyToken = {
+    123456:'0x1a07D3BD80A2B6335d5871b82fb3270602840e62',
+    1444673419 : "" // SKALE Europa 
+}
 
-
-export const publicRPCsepoli = 'https://rpc.ankr.com/eth_sepolia'
-
-export const publicRPC = 'https://testnet.skalenodes.com/v1/juicy-low-small-testnet'
-
-
-
+export const publicRPC = {
+    123456:'https://testnet.skalenodes.com/v1/juicy-low-small-testnet', // SKALE Europa Testnet
+    1444673419 : "https://mainnet.skalenodes.com/v1/elated-tan-skat" // SKALE Europa 
+}
 
 export const tableStyle = {
     color: "#f1f5f9",
@@ -87,4 +86,28 @@ export const tableStyle = {
         minWidth: '600px',
         maxWidth: '100%',
     },
+}
+
+
+
+export const ironFallAddresses = {
+  123456: "0xB7c8351801db9F6AABb2B1242E889C643BAF6DD8", // SKALE Europa Testnet
+  1444673419 : "" // SKALE Europa 
+};
+
+
+export const ironForgeAddresses = {
+  123456: "0x40aFB5F4B83cb2Fb21d9A407475BD2b3571410E2", // SKALE Europa Testnet
+  1444673419 : "" // SKALE Europa 
+};
+
+export const ironPactAddresses = {
+  123456: "0xA54AB187eb479aebbDD2a89681b495DCd38BD0E5", // SKALE Europa Testnet
+  1444673419 : "" // SKALE Europa 
+}
+
+
+export const ironRiseAddresses = {
+  123456: "0x4b706DdEFeAF3dde66C2de36B3754748C2a35601", // SKALE Europa Testnet
+  1444673419 : "" // SKALE Europa 
 }

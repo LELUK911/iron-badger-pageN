@@ -5,7 +5,7 @@ import { BigNumConv, NumConvBig, renderAddress, srcTokenData } from '../../../ut
 import { pactDetails } from '../../../utils/BlockchainOperation/IronPactOp';
 import { Countdown } from '../../../utils/helper/CountDown';
 import { useEthersSigner } from '../../../utils/helper/ClientToSigner';
-import { useAccount } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
 import { auctionMoneyToken } from '../../../utils/Information/constantPage';
 import { approveERC20, getBalance, readAllowance } from '../../../utils/BlockchainOperation/ERC20op';
 import { requestNewInstalmentUp } from '../../../API/api';
@@ -36,6 +36,7 @@ export const UpwardCard = ({ id }) => {
 
     const signer = useEthersSigner()
     const account = useAccount()
+    const chainId = useChainId()
 
     const calcData = () => {
         const priceThreshold = BigNumConv(feeSystem[1])
@@ -132,11 +133,11 @@ export const UpwardCard = ({ id }) => {
     const instalmentInPot = async () => {
         setIsLoadingBid(true);
         try {
-            const allowance = await readAllowance(auctionMoneyToken, account.address, ironRiseAddress)
+            const allowance = await readAllowance(auctionMoneyToken(chainId), account.address, ironRiseAddress)
             const powerOfSpend = allowance.toString() || "0";
             console.log("allowance", allowance)
             if (+powerOfSpend < +NumConvBig(amountBet).toString()) {
-                const response = await approveERC20(ironRiseAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
+                const response = await approveERC20(ironRiseAddress, NumConvBig(amountBet), signer, auctionMoneyToken(chainId))
                 if(response != false){
                     toast.success("Approve transaction submitted");
                 }else{
@@ -159,7 +160,7 @@ export const UpwardCard = ({ id }) => {
     }
 
     const getUSDbalance = async () => {
-        const balance = await getBalance(auctionMoneyToken, account.address)
+        const balance = await getBalance(auctionMoneyToken(chainId), account.address)
         setUSDBalance(BigNumConv(balance))
     }
 

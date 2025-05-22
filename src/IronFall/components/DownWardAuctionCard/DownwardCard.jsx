@@ -7,7 +7,7 @@ import { Countdown } from '../../../utils/helper/CountDown';
 import { useEthersSigner } from '../../../utils/helper/ClientToSigner';
 import { auctionMoneyToken } from '../../../utils/Information/constantPage';
 import { approveERC20, getBalance, readAllowance } from '../../../utils/BlockchainOperation/ERC20op';
-import { useAccount } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
 import { requestNewInstalmentDown } from '../../../API/api';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -36,6 +36,7 @@ export const DownwardCard = ({ id }) => {
 
     const account = useAccount()
     const signer = useEthersSigner()
+    const chainId = useChainId()
 
     const calcData = () => {
         const priceThreshold = BigNumConv(feeSystem[1])
@@ -56,10 +57,10 @@ export const DownwardCard = ({ id }) => {
     const instalmentInPot = async () => {
         setIsLoadingBid(true);
         try {
-            const allowance = await readAllowance(auctionMoneyToken, account.address, ironFallAddress)
+            const allowance = await readAllowance(auctionMoneyToken(chainId), account.address, ironFallAddress(chainId))
             const powerOfSpend = allowance.toString() || "0";
             if (+powerOfSpend < +NumConvBig(amountBet).toString()) {
-                const response = await approveERC20(ironFallAddress, NumConvBig(amountBet), signer, auctionMoneyToken)
+                const response = await approveERC20(ironFallAddress(chainId), NumConvBig(amountBet), signer, auctionMoneyToken(chainId))
                 if(response!=false){
                     toast.success("Approve transaction submitted");
                 }else{
@@ -83,7 +84,7 @@ export const DownwardCard = ({ id }) => {
 
 
     const getUSDbalance = async () => {
-        const balance = await getBalance(auctionMoneyToken, account.address)
+        const balance = await getBalance(auctionMoneyToken(chainId), account.address)
         setUSDBalance(BigNumConv(balance))
     }
 

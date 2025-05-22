@@ -1,10 +1,23 @@
 import { ethers } from 'ethers';
 import contractJSON from '../Information/ABI/DownwardAuction.json'
 import { takeMeProvider } from '../helper/helper';
+import { ironFallAddresses } from '../Information/constantPage';
 
 
 
-export const ironFallAddress = "0xB7c8351801db9F6AABb2B1242E889C643BAF6DD8"
+
+
+//export const ironFallAddress = "0xB7c8351801db9F6AABb2B1242E889C643BAF6DD8"
+
+export const ironFallAddress = (chainId) => {
+    return ironFallAddresses[chainId] || null;
+};
+
+const getchainID = async (signer) => {
+    const network = await signer.provider.getNetwork();
+    const chainId = network.chainId;
+    return chainId
+}
 
 const abi = contractJSON.abi
 
@@ -12,7 +25,8 @@ const abi = contractJSON.abi
 
 export const newDownAuctionPact = async (_id, _amount, _startPrice, _expired, _tolleratedDiscount, signer) => {
     try {
-        const contract = new ethers.Contract(ironFallAddress, abi, signer)
+        const address = await getchainID(signer);
+        const contract = new ethers.Contract(address, abi, signer)
         const tx = await contract.newAcutionPact(
             _id,
             _amount,
@@ -31,7 +45,8 @@ export const newDownAuctionPact = async (_id, _amount, _startPrice, _expired, _t
 
 export const downInstalmentPot = async (_index, _amount, signer) => {
     try {
-        const contract = new ethers.Contract(ironFallAddress, abi, signer);
+        const address = await getchainID(signer);
+        const contract = new ethers.Contract(address, abi, signer)
         const tx = await contract.instalmentPot(_index, _amount);
         await tx.wait();
         return tx;
@@ -42,7 +57,8 @@ export const downInstalmentPot = async (_index, _amount, signer) => {
 };
 export const closeDownAuction = async (_index, signer) => {
     try {
-        const contract = new ethers.Contract(ironFallAddress, abi, signer);
+        const address = await getchainID(signer);
+        const contract = new ethers.Contract(address, abi, signer)
         const tx = await contract.closeAuction(_index);
         await tx.wait();
         return tx;
@@ -53,7 +69,8 @@ export const closeDownAuction = async (_index, signer) => {
 };
 export const emergencyCloseDownAuction = async (_index, signer) => {
     try {
-        const contract = new ethers.Contract(ironFallAddress, abi, signer);
+        const address = await getchainID(signer);
+        const contract = new ethers.Contract(address, abi, signer)
         const tx = await contract.emergencyCloseAuction(_index);
         await tx.wait();
         return tx;
@@ -64,7 +81,8 @@ export const emergencyCloseDownAuction = async (_index, signer) => {
 };
 export const changeTolleratedDiscountTX = async (_index, _newDiscount, signer) => {
     try {
-        const contract = new ethers.Contract(ironFallAddress, abi, signer);
+        const address = await getchainID(signer);
+        const contract = new ethers.Contract(address, abi, signer)
         const tx = await contract.changeTolleratedDiscount(_index, _newDiscount);
         await tx.wait();
         return tx;
@@ -75,7 +93,8 @@ export const changeTolleratedDiscountTX = async (_index, _newDiscount, signer) =
 };
 export const withdrawMoneyDownAuction = async (_amount, signer) => {
     try {
-        const contract = new ethers.Contract(ironFallAddress, abi, signer);
+        const address = await getchainID(signer);
+        const contract = new ethers.Contract(address, abi, signer)
         const tx = await contract.withdrawMoney(_amount);
         await tx.wait();
         return tx;
@@ -86,7 +105,8 @@ export const withdrawMoneyDownAuction = async (_amount, signer) => {
 };
 export const withDrawPactDownAuction = async (_index, signer) => {
     try {
-        const contract = new ethers.Contract(ironFallAddress, abi, signer);
+        const address = await getchainID(signer);
+        const contract = new ethers.Contract(address, abi, signer)
         const tx = await contract.withDrawPact(_index);
         await tx.wait();
         return tx;
@@ -99,8 +119,10 @@ export const withDrawPactDownAuction = async (_index, signer) => {
 
 export const showDownAuction = async (_index, account) => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironFallAddress, abi, provider)
+        let provider = await takeMeProvider()
+        const { chainId } = await provider.getNetwork();
+
+        const contract = new ethers.Contract(ironFallAddress(chainId), abi, provider)
         const data = await contract.showAuction(_index)
         return data
     } catch (error) {
@@ -111,8 +133,10 @@ export const showDownAuction = async (_index, account) => {
 
 export const showDownAuctionList = async () => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironFallAddress, abi, provider);
+        let provider = await takeMeProvider()
+        const { chainId } = await provider.getNetwork();
+
+        const contract = new ethers.Contract(ironFallAddress(chainId), abi, provider)
         const data = await contract.showAuctionsList();
         return data;
     } catch (error) {
@@ -122,8 +146,10 @@ export const showDownAuctionList = async () => {
 };
 export const showDownFeesSystem = async () => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironFallAddress, abi, provider);
+        let provider = await takeMeProvider()
+        const { chainId } = await provider.getNetwork();
+
+        const contract = new ethers.Contract(ironFallAddress(chainId), abi, provider)
         const data = await contract.showFeesSystem();
         return data;
     } catch (error) {
@@ -133,8 +159,10 @@ export const showDownFeesSystem = async () => {
 };
 export const downshowUserBalanceFree = async (_user) => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironFallAddress, abi, provider);
+        let provider = await takeMeProvider()
+        const { chainId } = await provider.getNetwork();
+
+        const contract = new ethers.Contract(ironFallAddress(chainId), abi, provider)
         const data = await contract.showUserBalanceFree(_user);
         return data;
     } catch (error) {
@@ -144,8 +172,10 @@ export const downshowUserBalanceFree = async (_user) => {
 };
 export const downshowUserBalanceLock = async (_user) => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironFallAddress, abi, provider);
+        let provider = await takeMeProvider()
+        const { chainId } = await provider.getNetwork();
+
+        const contract = new ethers.Contract(ironFallAddress(chainId), abi, provider)
         const data = await contract.showUserBalanceLock(_user);
         return data;
     } catch (error) {
@@ -157,8 +187,10 @@ export const downshowUserBalanceLock = async (_user) => {
 
 export const betListForDownAuction = async (_player = null, _index = null, _amountPot = null) => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironFallAddress, abi, provider);
+        let provider = await takeMeProvider()
+        const { chainId } = await provider.getNetwork();
+
+        const contract = new ethers.Contract(ironFallAddress(chainId), abi, provider)
 
         const filter = contract.filters.newInstalmentPot(
             _player,

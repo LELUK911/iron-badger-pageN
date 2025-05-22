@@ -4,6 +4,7 @@ import { ironFallAddress, newDownAuctionPact } from "../../../utils/BlockchainOp
 import { useEthersSigner } from "../../../utils/helper/ClientToSigner";
 import { calculateSecondToDay, NumConvBig } from "../../../utils/helper/helper";
 import { toast } from "react-toastify";
+import { useChainId } from "wagmi";
 
 export const NewDownwardAuctionWizardModal = ({ onClose, id, amount, authPact }) => {
     const [step, setStep] = useState(0);
@@ -15,6 +16,7 @@ export const NewDownwardAuctionWizardModal = ({ onClose, id, amount, authPact })
         dropTolerance: ""
     });
 
+    const chainId = useChainId()
     const signer = useEthersSigner();
 
     const steps = [
@@ -68,7 +70,7 @@ export const NewDownwardAuctionWizardModal = ({ onClose, id, amount, authPact })
     const newAuctionOp = async () => {
         try {
             if (!authPact) {
-                const response = await setApprovalPact(ironFallAddress, true, signer);
+                const response = await setApprovalPact(ironFallAddress(chainId), true, signer);
                 if(response != false){
                     toast.success(`Approval transaction submited`);
                 }else{

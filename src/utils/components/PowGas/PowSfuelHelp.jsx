@@ -13,16 +13,15 @@ const functionSignature = "0x0c11dedd";
 //const isMainnet = false;
 
 export const PowSfuelHelp = ({ children }) => {
-    const provider = takeMeProvider();
     const { address } = useAccount();
-
-
+    
 
     useEffect(() => {
         if (!address) return;
-
+        
         const checkAndMintGas = async () => {
             try {
+                const provider = await takeMeProvider();
                 const balance = await provider.getBalance(address);
                 if (balance > 0n) return;
                 console.log("No sFUEL found, mining PoW...");

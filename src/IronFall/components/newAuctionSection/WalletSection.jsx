@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { BigNumConv, calculateExpired,srcTokenData } from "../../../utils/helper/helper";
 import { ironFallAddress } from "../../../utils/BlockchainOperation/IronFall";
 import { PactCard } from "../../../utils/components/PactCard/PactCard";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 
 import { NewAuctionInformationFall } from "./NewAuctionInformationFall";
 import { tableStyle } from "../../../utils/Information/constantPage";
@@ -20,7 +20,7 @@ export const WalletSection = () => {
     const [showWizard, setShowWizard] = useState(false);
     const [authPact, setAuthPact] = useState({})
     const account = useAccount()
-
+const chainId = useChainId()
 
 
     const columns = [
@@ -104,7 +104,7 @@ export const WalletSection = () => {
             if (!account) {
                 return
             }
-            const _ironRiseAuth = await isApprovalForAll(account.address, ironFallAddress)
+            const _ironRiseAuth = await isApprovalForAll(account.address, ironFallAddress(chainId))
             setAuthPact(_ironRiseAuth)
         } catch (error) {
             console.error(error)

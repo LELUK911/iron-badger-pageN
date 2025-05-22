@@ -39,7 +39,7 @@ export const transferFromERC20 = async (from, to, value, signer, tokenAddress) =
 };
 export const readAllowance = async (addressToken, owner, spender) => {
     try {
-        let provider = takeMeProvider()
+        let provider = await takeMeProvider()
         const contract = new ethers.Contract(addressToken, abi, provider);
         const allowance = await contract.allowance(owner, spender);
         return allowance;
@@ -50,7 +50,7 @@ export const readAllowance = async (addressToken, owner, spender) => {
 };
 export const getName = async (addressToken) => {
     try {
-        let provider = takeMeProvider()
+        let provider = await takeMeProvider()
         const contract = new ethers.Contract(addressToken, abi, provider);
         const name = await contract.name();
         return name;
@@ -61,7 +61,7 @@ export const getName = async (addressToken) => {
 };
 export const getSymbol = async (addressToken) => {
     try {
-        let provider = takeMeProvider()
+        let provider = await takeMeProvider()
         const contract = new ethers.Contract(addressToken, abi, provider);
         const symbol = await contract.symbol();
         return symbol;
@@ -75,7 +75,7 @@ export const getSymbol = async (addressToken) => {
 
 export const getBalance = async (addressToken,addressUser) => {
     try {
-        let provider = takeMeProvider()
+        let provider = await takeMeProvider()
         const contract = new ethers.Contract(addressToken, abi, provider);
         const balance = await contract.balanceOf(addressUser);
         return balance;

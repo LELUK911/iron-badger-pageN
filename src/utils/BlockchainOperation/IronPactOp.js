@@ -1,19 +1,40 @@
 import { ethers } from "ethers";
 import contractJSON from '../Information/ABI/PactContract.json'
 import { takeMeProvider } from "../helper/helper";
+import { ironPactAddresses } from "../Information/constantPage";
 
 
 
 
-export const ironPactAddress = "0xA54AB187eb479aebbDD2a89681b495DCd38BD0E5"
+//export const ironPactAddress = "0xA54AB187eb479aebbDD2a89681b495DCd38BD0E5"
 
 const abi = contractJSON.abi
+
+export const ironPactAddress = (chainId) => {
+    return ironPactAddresses[chainId] || null;
+};
+
+
+const getProviderAndContract = async (signer = null) => {
+    if(signer){
+        const provider = await takeMeProvider();
+        const { chainId } = await provider.getNetwork();
+        const address = ironPactAddress(chainId);
+        return new ethers.Contract(address, abi, signer);
+    }else{
+        const provider = await takeMeProvider();
+        const { chainId } = await provider.getNetwork();
+        const address = ironPactAddress(chainId);
+        return new ethers.Contract(address, abi, provider);
+    }
+};
+
 
 
 export const claimRewardForUser = async (_id, _indexReward, signer) => {
 
     try {
-        const contract = new ethers.Contract(ironPactAddress, abi, signer)
+        const contract = await getProviderAndContract(signer)
         const tx = await contract.claimRewardForUSer(_id, _indexReward)
         await tx.wait()
         return tx
@@ -25,7 +46,7 @@ export const claimRewardForUser = async (_id, _indexReward, signer) => {
 
 export const claimLoan = async (_id, _amount, signer) => {
     try {
-        const contract = new ethers.Contract(ironPactAddress, abi, signer)
+        const contract = await getProviderAndContract(signer)
         const tx = await contract.claimLoan(_id, _amount)
         await tx.wait();
         return tx;
@@ -36,7 +57,7 @@ export const claimLoan = async (_id, _amount, signer) => {
 }
 export const depositTokenForInterest = async (_id, _amount, signer) => {
     try {
-        const contract = new ethers.Contract(ironPactAddress, abi, signer);
+        const contract = await getProviderAndContract(signer);
         const tx = await contract.depositTokenForInterest(_id, _amount)
         await tx.wait()
         return tx
@@ -47,7 +68,7 @@ export const depositTokenForInterest = async (_id, _amount, signer) => {
 }
 export const claimScorePoint = async (_id, signer) => {
     try {
-        const contract = new ethers.Contract(ironPactAddress, abi, signer);
+        const contract = await getProviderAndContract(signer);
         const tx = await contract.claimScorePoint(_id);
         await tx.wait();
         return tx;
@@ -58,7 +79,7 @@ export const claimScorePoint = async (_id, signer) => {
 };
 export const withdrawCollateral = async (_id, signer) => {
     try {
-        const contract = new ethers.Contract(ironPactAddress, abi, signer);
+        const contract = await getProviderAndContract(signer);
         const tx = await contract.withdrawCollateral(_id);
         await tx.wait();
         return tx;
@@ -69,7 +90,7 @@ export const withdrawCollateral = async (_id, signer) => {
 };
 export const setApprovalPact = async (operator, approved, signer) => {
     try {
-        const contract = new ethers.Contract(ironPactAddress, abi, signer);
+        const contract = await getProviderAndContract(signer);
         const tx = await contract.setApprovalForAll(operator, approved);
         await tx.wait();
         return tx;
@@ -92,7 +113,7 @@ export const createNewPactTransaction = async (
     signer
 ) => {
     try {
-        const contract = new ethers.Contract(ironPactAddress, abi, signer);
+        const contract = await getProviderAndContract(signer);
         const tx = await contract.createNewPact(
             //_debtor,
             _tokenLoan,
@@ -125,9 +146,7 @@ export const safeTransferFromPact = async (from, to, id, amount, data, account) 
 };
 export const readId = async () => {
     try {
-        let provider = takeMeProvider()
-
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const contract = await getProviderAndContract()
         const data = await contract.viewPactID()
         return data
     } catch (error) {
@@ -137,8 +156,7 @@ export const readId = async () => {
 }
 export const pactDetails = async (_id, account = null) => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironPactAddress, abi, provider)
+        const contract = await getProviderAndContract()
         const data = await contract.showDeatailPactForId(_id)
         return data
     } catch (error) {
@@ -148,9 +166,7 @@ export const pactDetails = async (_id, account = null) => {
 }
 export const pointDebtor = async (debtor) => {
     try {
-        let provider = takeMeProvider()
-
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const contract = await getProviderAndContract()
         const data = await contract.checkStatusPoints(debtor);
         return data;
     } catch (error) {
@@ -160,9 +176,7 @@ export const pointDebtor = async (debtor) => {
 };
 export const balancePactForId = async (account, id,) => {
     try {
-        let provider = takeMeProvider()
-
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const contract = await getProviderAndContract()
         const data = await contract.balanceOf(account, id);
         return data;
     } catch (error) {
@@ -172,9 +186,7 @@ export const balancePactForId = async (account, id,) => {
 };
 export const supplyPactForID = async (id) => {
     try {
-        let provider = takeMeProvider()
-
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const contract = await getProviderAndContract()
         const data = await contract.totalSupply(id);
         return data;
     } catch (error) {
@@ -184,8 +196,7 @@ export const supplyPactForID = async (id) => {
 };
 export const isApprovalForAll = async (account, operator,) => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const contract = await getProviderAndContract()
         const data = await contract.isApprovedForAll(account, operator);
         return data;
     } catch (error) {
@@ -195,8 +206,7 @@ export const isApprovalForAll = async (account, operator,) => {
 };
 export const totalSupply = async (id) => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const contract = await getProviderAndContract()
         const data = await contract.totalSupply(id);
         return data;
     } catch (error) {
@@ -207,8 +217,7 @@ export const totalSupply = async (id) => {
 
 export const getMissQtaInterest = async (id) => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const contract = await getProviderAndContract()
         const data = await contract.getMissQtaInterest(id);
         return data;
     } catch (error) {
@@ -219,8 +228,7 @@ export const getMissQtaInterest = async (id) => {
 
 export const getMaxQtaInterest = async (id) => {
     try {
-        let provider = takeMeProvider()
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const contract = await getProviderAndContract()
         const data = await contract.getMaxQtaInterest(id);
         return data;
     } catch (error) {
@@ -232,8 +240,7 @@ export const getMaxQtaInterest = async (id) => {
 
 export const _showLiquidationFees = async () => {
     try {
-        let provider = takeMeProvider();
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const contract = await getProviderAndContract()
         const data = await contract.showLiquidationFees();
         return data;
     } catch (error) {
@@ -244,8 +251,7 @@ export const _showLiquidationFees = async () => {
 
 export const _showRewardFee = async () => {
     try {
-        let provider = takeMeProvider();
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const contract = await getProviderAndContract()
         const data = await contract.showCouponFee();
         return data;
     } catch (error) {
@@ -257,8 +263,8 @@ export const _showRewardFee = async () => {
 export const newPactIussuerHistory = async (id = null, address = null) => {
     try {
 
-        const provider = takeMeProvider();
-        const contract = new ethers.Contract(ironPactAddress, abi, provider);
+        const provider = await takeMeProvider();
+        const contract = await getProviderAndContract()
 
         const latestBlock = await provider.getBlockNumber();
         const blockStep = 10000;

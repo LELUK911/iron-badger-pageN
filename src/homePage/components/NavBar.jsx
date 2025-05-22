@@ -114,11 +114,9 @@ export const NavbarHomePage = () => {
                         <div className="hover:text-indigo-400 transition-colors">
                             <FeedbackDropdown />
                         </div>
-                        <Link to="/app.ironPact/newpact">
-                            <button className="w-full text-center bg-gray-700 text-white px-4 py-2 rounded-lg">
-                                New Pact
-                            </button>
-                        </Link>
+                        <div>
+                            <ConnectEVM />
+                        </div>
                     </div>
                 )}
             </div>

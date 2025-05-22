@@ -6,7 +6,7 @@ import { ironForgeAddress, launchNewPactTX } from '../../../../utils/BlockchainO
 import { PactCard } from '../../../../utils/components/PactCard/PactCard.jsx'
 import { Tooltips } from '../../../../utils/components/tooltips/Tooltips.jsx'
 import { amountToForgeTooltip, pactIDTooltip } from '../../../../utils/components/tooltips/tooltipsInformation/helperTips.js'
-import { useAccount } from 'wagmi'
+import { useAccount, useChainId } from 'wagmi'
 import { useEthersSigner } from '../../../../utils/helper/ClientToSigner.jsx'
 import { tableStyle } from '../../../../utils/Information/constantPage.js'
 import { toast } from 'react-toastify'
@@ -24,6 +24,7 @@ export const BoardList = () => {
     const account = useAccount()
     const signer = useEthersSigner()
     const [isLoading, setIsLoading] = useState(false);
+    const chainId = useChainId()
 
 
     const columns = [
@@ -76,7 +77,7 @@ export const BoardList = () => {
             if (!account) {
                 return
             }
-            await isApprovalForAll(account.address, ironForgeAddress)
+            await isApprovalForAll(account.address, ironForgeAddress(chainId))
         } catch (error) {
             console.error(error)
             toast.error("Problem with auth spending Pact")
@@ -90,9 +91,9 @@ export const BoardList = () => {
         }
         try {
             setIsLoading(true)
-            const _ironForgeAuth = await isApprovalForAll(account.address, ironForgeAddress)
+            const _ironForgeAuth = await isApprovalForAll(account.address, ironForgeAddress(chainId))
             if (!_ironForgeAuth) {
-                const response = await setApprovalPact(ironForgeAddress, true, signer)
+                const response = await setApprovalPact(ironForgeAddress(chainId), true, signer)
                 if(response != false){
                     toast.success("Approval tx submitted");
                 }else{

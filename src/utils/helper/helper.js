@@ -2,6 +2,8 @@ import { ethers } from "ethers";
 import tokenList from '../Information/tokenList.json'
 import { getName, getSymbol } from "../BlockchainOperation/ERC20op";
 import { JsonRpcProvider } from "ethers";
+import { config } from '../wagmi/config';
+import { publicRPC } from "../Information/constantPage";
 
 export const renderAddress = (address) => {
     if (!address) {
@@ -106,14 +108,32 @@ export const calcPercFromBasisPoints = (amount, basisPoints) => {
 }
 
 
-
+/*
 export const takeMeProvider = () => {
     //const api=import.meta.env.VITE_ALCHEMY_ENDPOINT
     //const provider = new JsonRpcProvider(`https://eth-sepolia.g.alchemy.com/v2/${api}`);
     const provider = new JsonRpcProvider(`https://testnet.skalenodes.com/v1/juicy-low-small-testnet`);
     provider.pollingInterval = 250;
     return provider;
-}
+}*/
+
+export const takeMeProvider = async () => {
+    try {
+        const network = await config.publicClient.getNetwork();
+        const rpcUrl = publicRPC[network.chain.id];
+
+        if (!rpcUrl) {
+            throw new Error(`No RPC URL configured for chain ID: ${network.chain.id}`);
+        }
+
+        const provider = new JsonRpcProvider(rpcUrl);
+        provider.pollingInterval = 250;
+        return provider;
+    } catch (error) {
+        console.error("Failed to create provider:", error);
+        throw error;
+    }
+};
 
 
 
